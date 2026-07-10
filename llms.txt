@@ -1,0 +1,13 @@
+# Science Workbench machine index
+start: AGENTS.md
+navigation: docs/INDEX.md
+architecture: docs/architecture/top-level-design.md
+constitution: docs/architecture/constitution.md
+experiment_schema: schemas/experiment.schema.json
+project_schema: schemas/project.schema.json
+campaign_schema: schemas/campaign.schema.json
+handoff_schema: schemas/handoff.schema.json
+run_schema: schemas/run.schema.json
+registry: docs/_machine/experiments.json
+cli: python -m science_repo.cli --help
+validate: python -m science_repo.cli validate

@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+.test-tmp/
+pytest-cache-files-*/
+dist/
+.wheelhouse/
+build/
+*.egg-info/
+.env
+
+# Keep source data policy explicit; large/private datasets should live outside git.
+experiments/*/data/derived/*
+!experiments/*/data/derived/.gitkeep

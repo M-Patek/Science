@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/science-workbench/handoff.schema.json",
+  "title": "Science Workbench agent handoff",
+  "type": "object",
+  "required": ["schema_version", "campaign_id", "task_id", "agent_role", "status", "summary", "outputs", "evidence", "unresolved", "recommended_next"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "campaign_id": {"type": "string"},
+    "task_id": {"type": "string"},
+    "agent_role": {"type": "string"},
+    "status": {"enum": ["complete", "blocked", "failed"]},
+    "summary": {"type": "string"},
+    "outputs": {"type": "array", "items": {"type": "string"}},
+    "evidence": {"type": "array", "items": {"type": "string"}},
+    "unresolved": {"type": "array", "items": {"type": "string"}},
+    "recommended_next": {"type": "array", "items": {"type": "string"}}
+  }
+}
+

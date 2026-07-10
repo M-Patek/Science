@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "run_id": "20260710T131634Z-45d518af",
+  "experiment_id": "linear-demo",
+  "status": "succeeded",
+  "started_at": "2026-07-10T13:16:34.986276+00:00",
+  "ended_at": "2026-07-10T13:16:35.033349+00:00",
+  "duration_seconds": 0.050538,
+  "command": [
+    "C:\\Users\\asus\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "src/run.py"
+  ],
+  "exit_code": 0,
+  "git_revision": null,
+  "manifest_sha256": "f8b003c05f58a30f533258af993b7a6576157b0d35583ccf69f588aac4c82e98",
+  "environment_sha256": "a66ccf98603a85ce62f8eb8a774ff86debd41f4e40d4f03d7c7324fef6ccdb36",
+  "inputs": [
+    {
+      "path": "data/raw/points.csv",
+      "exists": true,
+      "sha256": "ae91c9cff27f1c5976c2c46b33cfb9954f4a7cfbf8a8c67943d7b36b8310383a",
+      "bytes": 21
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "artifacts/results.json",
+      "exists": true,
+      "sha256": "ff49a4c74d032464a351d7693c9714d960888662635b532658bf483cbde27328",
+      "bytes": 155
+    },
+    {
+      "path": "artifacts/fit.svg",
+      "exists": true,
+      "sha256": "30f1bdc4e2c0c9b608850915598e0521c71462a30a856ffdd637b41f35876ee3",
+      "bytes": 598
+    }
+  ]
+}

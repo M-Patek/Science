@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "experiments": [
+    {
+      "id": "framework-onboarding",
+      "title": "Can a fresh agent reproduce the framework workflow with bounded context?",
+      "stage": "designed",
+      "owner": "framework-maintainer"
+    }
+  ]
+}

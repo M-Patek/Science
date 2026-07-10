@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "campaign_id": "template-campaign",
+  "task_id": "task-frame-question",
+  "agent_role": "research-planner",
+  "status": "complete",
+  "summary": "Replace with an evidence-grounded summary.",
+  "outputs": [],
+  "evidence": [],
+  "unresolved": [],
+  "recommended_next": []
+}

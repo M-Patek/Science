@@ -1,0 +1,58 @@
+schema_version: 1
+id: framework-self-evaluation
+title: Evaluate Science Workbench using a generated project
+objective: Measure whether the framework enables correct, bounded-context, auditable agent research workflows.
+status: approved
+owner: framework-maintainer
+human_gates:
+  - id: gate-publish-results
+    trigger: Before publishing comparative agent performance externally
+    approver: project-owner
+tasks:
+  - id: task-define-benchmark
+    role: research-designer
+    status: complete
+    depends_on: []
+    inputs: [science-project.yaml]
+    outputs:
+      - experiments/framework-onboarding/hypothesis.md
+      - experiments/framework-onboarding/protocol.md
+    write_scope: [experiments/framework-onboarding/]
+    review_required: true
+    human_gate: false
+  - id: task-collect-observations
+    role: experiment-operator
+    status: pending
+    depends_on: [task-define-benchmark]
+    inputs:
+      - experiments/framework-onboarding/protocol.md
+    outputs:
+      - experiments/framework-onboarding/data/raw/observations-v1.csv
+    write_scope: [experiments/framework-onboarding/data/raw/]
+    review_required: true
+    human_gate: false
+  - id: task-analyze-onboarding
+    role: analysis-agent
+    status: pending
+    depends_on: [task-collect-observations]
+    inputs:
+      - experiments/framework-onboarding/data/raw/observations-v1.csv
+    outputs:
+      - experiments/framework-onboarding/artifacts/results.json
+    write_scope:
+      - experiments/framework-onboarding/artifacts/
+      - experiments/framework-onboarding/records/
+    review_required: true
+    human_gate: false
+  - id: task-independent-review
+    role: reviewer-agent
+    status: pending
+    depends_on: [task-analyze-onboarding]
+    inputs:
+      - experiments/framework-onboarding/artifacts/results.json
+    outputs:
+      - campaigns/framework-self-evaluation/handoffs/task-independent-review.json
+    write_scope: [campaigns/framework-self-evaluation/handoffs/]
+    review_required: false
+    human_gate: false
+

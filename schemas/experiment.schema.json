@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/science-workbench/experiment.schema.json",
+  "title": "Science Workbench experiment",
+  "type": "object",
+  "required": ["schema_version", "id", "title", "stage", "question", "hypothesis", "execution"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,63}$"},
+    "title": {"type": "string", "minLength": 1},
+    "stage": {"enum": ["idea", "designed", "running", "analyzed", "reviewed", "published", "abandoned"]},
+    "owner": {"type": "string"},
+    "question": {"type": "string", "minLength": 1},
+    "hypothesis": {"type": "string", "minLength": 1},
+    "inputs": {"type": "array", "items": {"type": "object", "required": ["path", "role"]}},
+    "execution": {
+      "type": "object",
+      "required": ["command", "outputs"],
+      "properties": {
+        "command": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "outputs": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "acceptance": {"type": "array", "items": {"type": "object"}},
+    "ethics": {"type": "object"}
+  },
+  "additionalProperties": true
+}
+

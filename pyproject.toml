@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "science-workbench"
+version = "0.2.0.dev0"
+description = "Agent-friendly, auditable scientific experiment workbench"
+requires-python = ">=3.11"
+dependencies = ["PyYAML>=6.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "jsonschema>=4.21", "ruff>=0.5"]
+
+[project.scripts]
+science = "science_repo.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["science_repo*"]
+
+[tool.setuptools.package-data]
+science_repo = ["assets/**/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-p no:cacheprovider"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
