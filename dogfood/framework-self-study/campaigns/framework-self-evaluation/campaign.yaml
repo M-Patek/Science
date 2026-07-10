@@ -4,6 +4,7 @@ title: Evaluate Science Workbench using a generated project
 objective: Measure whether the framework enables correct, bounded-context, auditable agent research workflows.
 status: approved
 owner: framework-maintainer
+framework_revision_under_test: a368b567003fba094692336904bc4cc176630867
 human_gates:
   - id: gate-publish-results
     trigger: Before publishing comparative agent performance externally
@@ -55,4 +56,3 @@ tasks:
     write_scope: [campaigns/framework-self-evaluation/handoffs/]
     review_required: false
     human_gate: false
-

@@ -11,6 +11,7 @@
     "objective": {"type": "string", "minLength": 1},
     "status": {"enum": ["draft", "approved", "running", "review", "complete", "blocked", "abandoned"]},
     "owner": {"type": "string"},
+    "framework_revision_under_test": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
     "human_gates": {"type": "array", "items": {"type": "object"}},
     "tasks": {
       "type": "array",
@@ -32,4 +33,3 @@
     }
   }
 }
-
