@@ -4,6 +4,7 @@ status: experimental
 last_validated: 2026-07-10
 code_anchors:
   - science_repo/cli.py:cmd_init
+  - science_repo/campaign.py:validate_campaign
   - schemas/project.schema.json
   - schemas/campaign.schema.json
   - schemas/handoff.schema.json
@@ -23,3 +24,7 @@ Claude, local workers, or a future cloud scheduler can implement it.
 Current boundary: schemas and DAG validation exist, but leases, heartbeat, worktrees, retries, message
 transport, and transactional task claiming remain future runtime work.
 
+Unordered campaign tasks are assumed to be concurrently dispatchable. Their repository-relative
+`write_scope` paths must therefore be disjoint; tasks that intentionally reuse a scope must be ordered
+by an explicit dependency. Validation rejects absolute paths and traversal segments, but it does not
+enforce filesystem access at runtime.

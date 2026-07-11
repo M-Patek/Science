@@ -1,6 +1,33 @@
 from __future__ import annotations
 
+from pathlib import PurePosixPath
 from typing import Any
+
+
+def _normalize_write_scope(value: Any) -> str | None:
+    """Return a comparable repository-relative scope, or None when unsafe."""
+    if not isinstance(value, str) or not value.strip():
+        return None
+    raw = value.strip().replace("\\", "/")
+    path = PurePosixPath(raw)
+    segments = raw.split("/")
+    if (
+        path.is_absolute()
+        or raw.startswith("/")
+        or (segments and segments[0].endswith(":"))
+        or any(part in (".", "..") for part in segments)
+        or any(not part for part in segments[:-1])
+    ):
+        return None
+    # PurePosixPath removes a trailing slash, making ``work/a`` and ``work/a/`` equivalent.
+    return path.as_posix()
+
+
+def _scopes_overlap(left: str, right: str) -> bool:
+    left_parts = PurePosixPath(left).parts
+    right_parts = PurePosixPath(right).parts
+    common = min(len(left_parts), len(right_parts))
+    return left_parts[:common] == right_parts[:common]
 
 
 def validate_campaign(data: dict[str, Any]) -> list[str]:
@@ -16,6 +43,7 @@ def validate_campaign(data: dict[str, Any]) -> list[str]:
         errors.append("task ids must be unique")
     known = set(task_ids)
     graph: dict[str, list[str]] = {}
+    scopes: dict[str, list[str]] = {}
     for task in tasks:
         if not isinstance(task, dict):
             errors.append("every task must be a mapping")
@@ -28,6 +56,17 @@ def validate_campaign(data: dict[str, Any]) -> list[str]:
             errors.append(f"{task_id}: unknown dependencies {sorted(missing)}")
         if not task.get("write_scope"):
             errors.append(f"{task_id}: write_scope must not be empty")
+        elif not isinstance(task.get("write_scope"), list):
+            errors.append(f"{task_id}: write_scope must be an array")
+        else:
+            normalized: list[str] = []
+            for scope in task["write_scope"]:
+                safe_scope = _normalize_write_scope(scope)
+                if safe_scope is None:
+                    errors.append(f"{task_id}: unsafe write_scope {scope!r}; use a repository-relative path")
+                else:
+                    normalized.append(safe_scope)
+            scopes[str(task_id)] = normalized
 
     visiting: set[str] = set()
     visited: set[str] = set()
@@ -46,5 +85,31 @@ def validate_campaign(data: dict[str, Any]) -> list[str]:
 
     for task_id in graph:
         visit(task_id, [])
-    return errors
 
+    def depends_on(task_id: str, dependency_id: str, seen: set[str] | None = None) -> bool:
+        if task_id == dependency_id:
+            return True
+        seen = set() if seen is None else seen
+        if task_id in seen:
+            return False
+        seen.add(task_id)
+        return any(
+            str(dependency) == dependency_id or depends_on(str(dependency), dependency_id, seen)
+            for dependency in graph.get(task_id, [])
+        )
+
+    # Unordered tasks can be dispatched concurrently. Their declared write sets must be disjoint;
+    # an explicit dependency is the opt-in mechanism for serial access to the same path.
+    scope_tasks = sorted(scopes)
+    for index, left_id in enumerate(scope_tasks):
+        for right_id in scope_tasks[index + 1 :]:
+            if depends_on(left_id, right_id) or depends_on(right_id, left_id):
+                continue
+            collisions = sorted(
+                {f"{left} <> {right}" for left in scopes[left_id] for right in scopes[right_id] if _scopes_overlap(left, right)}
+            )
+            if collisions:
+                errors.append(
+                    f"concurrent write_scope overlap: {left_id} and {right_id}: {', '.join(collisions)}"
+                )
+    return errors

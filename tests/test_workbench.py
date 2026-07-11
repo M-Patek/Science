@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 from pathlib import Path
 
 from science_repo.review import review_run
@@ -28,12 +29,22 @@ def test_distributable_assets_and_dogfood_project_are_valid():
 
 
 def test_demo_run_and_review():
-    code, run_dir = run_experiment(ROOT, "linear-demo")
-    assert code == 0
-    record = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
-    assert record["status"] == "succeeded"
-    passed, report = review_run(run_dir)
-    assert passed
-    assert report.is_file()
-    review = json.loads(report.read_text(encoding="utf-8"))
-    assert any(check["name"] == "acceptance:slope_absolute_error" for check in review["checks"])
+    # This disposable fixture is intentionally separate from the repository's
+    # append-only evidence. Always remove the generated test record afterward.
+    isolated = ROOT / "tests" / "fixtures" / "runner-repo"
+    target = isolated / "experiments" / "linear-demo"
+    code, run_dir = run_experiment(isolated, "linear-demo")
+    try:
+        assert code == 0
+        assert run_dir.parent == target / "records"
+        record = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
+        assert record["status"] == "succeeded"
+        passed, report = review_run(run_dir)
+        assert passed
+        assert report.is_file()
+        review = json.loads(report.read_text(encoding="utf-8"))
+        assert any(
+            check["name"] == "acceptance:slope_absolute_error" for check in review["checks"]
+        )
+    finally:
+        shutil.rmtree(run_dir)
