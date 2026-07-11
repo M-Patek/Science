@@ -5,6 +5,8 @@ last_validated: 2026-07-10
 code_anchors:
   - science_repo/cli.py:cmd_init
   - science_repo/campaign.py:validate_campaign
+  - science_repo/task_runtime.py:TaskRuntime
+  - science_repo/handoff.py:validate_handoff
   - schemas/project.schema.json
   - schemas/campaign.schema.json
   - schemas/handoff.schema.json
@@ -21,10 +23,15 @@ review requirement, and whether it crosses a human gate. Main agents coordinate;
 only inside assigned scopes and return a structured handoff. The contract is runtime-neutral: Codex,
 Claude, local workers, or a future cloud scheduler can implement it.
 
-Current boundary: schemas and DAG validation exist, but leases, heartbeat, worktrees, retries, message
-transport, and transactional task claiming remain future runtime work.
+Current boundary: schemas, DAG validation, a local task lease reference runtime, and handoff validation
+exist. Worktree creation, retries, message transport, and a distributed scheduler remain future work.
 
 Unordered campaign tasks are assumed to be concurrently dispatchable. Their repository-relative
 `write_scope` paths must therefore be disjoint; tasks that intentionally reuse a scope must be ordered
 by an explicit dependency. Validation rejects absolute paths and traversal segments, but it does not
 enforce filesystem access at runtime.
+
+The local coordinator atomically claims a task with an expiring capability token. Only the current
+worker/token pair may heartbeat or release it; an expired claim creates a new attempt. Every transition
+is appended to an audit log. A returned handoff must identify the declared campaign task and role, and
+its output paths must remain within that task's normalized `write_scope`.

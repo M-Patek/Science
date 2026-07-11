@@ -16,9 +16,16 @@ python -m science_repo.cli validate
 python -m science_repo.cli run exp-id
 python -m science_repo.cli review exp-id
 science --project ../my-research campaign-validate campaign-id
+science --project ../my-research task-claim campaign-id task-id --worker agent-1
+science --project ../my-research task-heartbeat campaign-id task-id --worker agent-1 --token TOKEN
+science --project ../my-research task-release campaign-id task-id --worker agent-1 --token TOKEN --outcome completed
+science --project ../my-research handoff-validate campaign-id path/to/handoff.json
 python scripts/check_docs.py
 pytest
 ```
 
 Do not run an experiment directly when the output will be cited as evidence; direct execution lacks a
 provenance record.
+
+Treat task lease tokens as ephemeral coordinator capabilities. Do not commit them or place them in a
+handoff. Campaign runtime directories are operational state, not scientific evidence.

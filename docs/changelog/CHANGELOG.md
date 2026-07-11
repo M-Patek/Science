@@ -6,6 +6,15 @@ last_validated: 2026-07-10
 
 # Changelog
 
+## 2026-07-11 — Local multi-agent coordination baseline (T4)
+
+- Added atomic local task claiming, expiring capability leases, heartbeat, release, retry attempts, and
+  append-only coordination audit events.
+- Added campaign-bound handoff validation, including role and write-scope enforcement.
+- Added CLI commands for task leases and handoff validation and ignored ephemeral campaign runtime state.
+- Froze onboarding cohort v1 at framework revision `d62e38c` with independent writable copies, immutable
+  prompts/hashes, a binary rubric, metadata requirements, and censoring rules; no observations were added.
+
 ## 2026-07-11 — Self-bootstrap campaign safety (T4)
 
 - Reject unsafe or overlapping write scopes for campaign tasks that may run concurrently.

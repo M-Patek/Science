@@ -9,9 +9,11 @@ from pathlib import Path
 
 from .io import dump_json, dump_yaml, load_yaml
 from .campaign import validate_campaign
+from .handoff import load_handoff, validate_handoff
 from .models import ID_RE
 from .review import review_run
 from .runner import run_experiment
+from .task_runtime import LeaseConflict, TaskRuntime
 from .validate import validate_repository
 
 
@@ -142,6 +144,85 @@ def cmd_campaign_validate(args: argparse.Namespace) -> int:
     return 0
 
 
+def _campaign(root: Path, campaign_id: str) -> tuple[Path, dict]:
+    directory = root / "campaigns" / campaign_id
+    path = directory / "campaign.yaml"
+    if not path.is_file():
+        raise SystemExit(f"campaign not found: {path}")
+    return directory, load_yaml(path)
+
+
+def _task_runtime(root: Path, campaign_id: str) -> TaskRuntime:
+    directory, campaign = _campaign(root, campaign_id)
+    errors = validate_campaign(campaign)
+    if errors:
+        raise SystemExit("campaign must validate before task dispatch: " + "; ".join(errors))
+    return TaskRuntime(directory / "runtime")
+
+
+def _ensure_campaign_task(root: Path, campaign_id: str, task_id: str) -> None:
+    _, campaign = _campaign(root, campaign_id)
+    if not any(
+        isinstance(task, dict) and task.get("id") == task_id for task in campaign.get("tasks", [])
+    ):
+        raise SystemExit(f"campaign task not found: {task_id}")
+
+
+def cmd_task_claim(args: argparse.Namespace) -> int:
+    root = selected_project(args)
+    _ensure_campaign_task(root, args.campaign, args.task)
+    runtime = _task_runtime(root, args.campaign)
+    try:
+        state = runtime.claim(args.task, args.worker, lease_seconds=args.lease_seconds)
+    except LeaseConflict as error:
+        print(str(error), file=sys.stderr)
+        return 2
+    print(json.dumps(state, indent=2))
+    return 0
+
+
+def cmd_task_heartbeat(args: argparse.Namespace) -> int:
+    root = selected_project(args)
+    _ensure_campaign_task(root, args.campaign, args.task)
+    runtime = _task_runtime(root, args.campaign)
+    try:
+        state = runtime.heartbeat(
+            args.task, args.worker, args.token, lease_seconds=args.lease_seconds
+        )
+    except LeaseConflict as error:
+        print(str(error), file=sys.stderr)
+        return 2
+    print(json.dumps(state, indent=2))
+    return 0
+
+
+def cmd_task_release(args: argparse.Namespace) -> int:
+    root = selected_project(args)
+    _ensure_campaign_task(root, args.campaign, args.task)
+    runtime = _task_runtime(root, args.campaign)
+    try:
+        state = runtime.release(args.task, args.worker, args.token, outcome=args.outcome)
+    except LeaseConflict as error:
+        print(str(error), file=sys.stderr)
+        return 2
+    print(json.dumps(state, indent=2))
+    return 0
+
+
+def cmd_handoff_validate(args: argparse.Namespace) -> int:
+    root = selected_project(args)
+    _, campaign = _campaign(root, args.campaign)
+    handoff = load_handoff(Path(args.handoff))
+    errors = validate_handoff(handoff, campaign)
+    if errors:
+        print("Handoff validation failed:")
+        for error in errors:
+            print(f"- {error}")
+        return 1
+    print(f"Handoff validation passed: {args.handoff}")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="science", description="Auditable experiment workbench")
     parser.add_argument("--project", help="project path; otherwise discover from current directory")
@@ -169,6 +250,30 @@ def build_parser() -> argparse.ArgumentParser:
     campaign = sub.add_parser("campaign-validate", help="validate a multi-agent campaign DAG")
     campaign.add_argument("id")
     campaign.set_defaults(func=cmd_campaign_validate)
+    claim = sub.add_parser("task-claim", help="atomically lease a validated campaign task")
+    claim.add_argument("campaign")
+    claim.add_argument("task")
+    claim.add_argument("--worker", required=True)
+    claim.add_argument("--lease-seconds", type=float, default=300)
+    claim.set_defaults(func=cmd_task_claim)
+    heartbeat = sub.add_parser("task-heartbeat", help="extend a campaign task lease")
+    heartbeat.add_argument("campaign")
+    heartbeat.add_argument("task")
+    heartbeat.add_argument("--worker", required=True)
+    heartbeat.add_argument("--token", required=True)
+    heartbeat.add_argument("--lease-seconds", type=float, default=300)
+    heartbeat.set_defaults(func=cmd_task_heartbeat)
+    release = sub.add_parser("task-release", help="release a campaign task lease")
+    release.add_argument("campaign")
+    release.add_argument("task")
+    release.add_argument("--worker", required=True)
+    release.add_argument("--token", required=True)
+    release.add_argument("--outcome", default="released")
+    release.set_defaults(func=cmd_task_release)
+    handoff = sub.add_parser("handoff-validate", help="validate a task handoff against its campaign")
+    handoff.add_argument("campaign")
+    handoff.add_argument("handoff")
+    handoff.set_defaults(func=cmd_handoff_validate)
     return parser
 
 

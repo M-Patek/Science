@@ -10,6 +10,7 @@ dist/
 build/
 *.egg-info/
 .env
+campaigns/*/runtime/
 
 # Keep source data policy explicit; large/private datasets should live outside git.
 experiments/*/data/derived/*

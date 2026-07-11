@@ -2,6 +2,6 @@ __pycache__/
 *.py[cod]
 .env
 .venv/
+campaigns/*/runtime/
 experiments/*/data/derived/*
 !experiments/*/data/derived/.gitkeep
-
