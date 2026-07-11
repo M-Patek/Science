@@ -32,8 +32,8 @@ rather than assuming that labels in the cohort manifest remove files.
 
 ## Freeze status
 
-A deterministic fixture alone is insufficient to authorize observation. The cohort is freezable only
-after its pinned framework revision contains the audited generator/assets, the exact fixture hash replaces
-the pending value, runtime/model metadata is registered, and the preregistered analysis implementation and
-synthetic tests pass. Any later change to subject-visible bytes requires a new fixture hash and, after the
-first subject starts, a new cohort.
+A deterministic fixture alone is insufficient to authorize observation. Revision `dd46404` contains the
+audited generator, subject assets, packaged schemas, and conforming analysis; cohort v1 registers fixture
+hash `9c1ffbf39ce642b96fdc00e1ba74b013e92c47d9a3123b1e06255d2292a71407`.
+Observation remains blocked until exact runtime/model metadata is registered. Any later change to
+subject-visible bytes requires a new fixture hash and, after the first subject starts, a new cohort.

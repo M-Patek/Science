@@ -2,9 +2,9 @@ schema_version: 1
 cohort_id: framework-onboarding-v1
 protocol_id: framework-onboarding-v1
 registration_status: amended-before-observation-blocked
-registration_note: "Independent review on 2026-07-11 occurred with zero observation rows. The session-level analysis contract is now conforming; execution remains blocked pending a frozen fixture hash and exact runtime registration."
+registration_note: "Independent review and analysis repair occurred before observations. The committed revision and fixture hash are frozen; execution remains blocked pending exact runtime registration."
 framework:
-  git_commit: d62e38c65ceba9e25583e32d55ef49b64c69e646
+  git_commit: dd4640449fa647e16b3dc69b8bb802a69319cf5f
   version: 0.2.0.dev0
 contracts:
   experiment: 1
@@ -19,7 +19,7 @@ frozen_materials:
 fixture:
   fixture_id: generated-project-onboarding-v1
   construction: "Use a pre-observation immutable construction manifest with exact commands, inputs, seeded defects, smoke experiment, and tool versions; register its canonical tree hash before dispatch. Reviewer-only registration materials must be absent from subject copies."
-  fixture_tree_sha256: pending-before-observation
+  fixture_tree_sha256: 9c1ffbf39ce642b96fdc00e1ba74b013e92c47d9a3123b1e06255d2292a71407
   subject_excludes: [framework-onboarding-registration, scoring-rubric, answer-keys, prior-transcripts, prior-scores]
 isolation:
   writable_copy_per_session: true
