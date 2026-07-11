@@ -5,6 +5,9 @@ import shutil
 from uuid import uuid4
 
 from science_repo.cli import (
+    cmd_campaign_status,
+    cmd_cohort_plan,
+    cmd_cohort_validate,
     cmd_handoff_validate,
     cmd_task_claim,
     cmd_task_heartbeat,
@@ -91,3 +94,36 @@ def test_cli_validates_handoff_against_campaign(capsys):
         assert "passed" in capsys.readouterr().out
     finally:
         shutil.rmtree(root)
+
+
+def test_cli_reports_ready_campaign_task(capsys):
+    root = _project()
+    try:
+        assert cmd_campaign_status(
+            Namespace(project=str(root), campaign="demo", max_attempts=3)
+        ) == 0
+        report = json.loads(capsys.readouterr().out)
+        assert report["tasks"][0]["state"] == "ready"
+    finally:
+        shutil.rmtree(root)
+
+
+def test_cli_validates_and_plans_frozen_cohort(capsys):
+    root = Path(__file__).parents[1] / "dogfood" / "framework-self-study"
+    common = {
+        "project": str(root),
+        "experiment": "framework-onboarding",
+        "campaign": "framework-self-evaluation",
+        "cohort": "cohort-v1.yaml",
+    }
+    assert cmd_cohort_validate(Namespace(**common)) == 0
+    capsys.readouterr()
+    assert cmd_cohort_plan(
+        Namespace(
+            **common,
+            sessions=[f"subject-{index}" for index in range(1, 6)],
+            copy_mechanism="git-worktree",
+        )
+    ) == 0
+    ledger = json.loads(capsys.readouterr().out)
+    assert len(ledger["assignments"]) == 5

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import asdict
 import json
 import shutil
 import sys
@@ -9,11 +10,14 @@ from pathlib import Path
 
 from .io import dump_json, dump_yaml, load_yaml
 from .campaign import validate_campaign
+from .cohort import generate_preassignment, load_cohort, validate_cohort, validate_preassignment
 from .handoff import load_handoff, validate_handoff
 from .models import ID_RE
 from .review import review_run
 from .runner import run_experiment
+from .scheduler import RetryPolicy, schedule_campaign
 from .task_runtime import LeaseConflict, TaskRuntime
+from .workspace import WorkspaceError, WorkspaceManager
 from .validate import validate_repository
 
 
@@ -223,6 +227,85 @@ def cmd_handoff_validate(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_campaign_status(args: argparse.Namespace) -> int:
+    root = selected_project(args)
+    _, campaign = _campaign(root, args.campaign)
+    runtime = _task_runtime(root, args.campaign)
+    snapshots = {
+        task["id"]: runtime.inspect(task["id"])
+        for task in campaign.get("tasks", [])
+        if isinstance(task, dict) and isinstance(task.get("id"), str)
+    }
+    decision = schedule_campaign(
+        campaign, snapshots, retry_policy=RetryPolicy(max_attempts=args.max_attempts)
+    )
+    print(json.dumps({"campaign_id": args.campaign, "tasks": [asdict(item) for item in decision.tasks]}, indent=2))
+    return 0
+
+
+def _cohort_paths(root: Path, experiment_id: str, cohort_name: str, campaign_id: str):
+    experiment = root / "experiments" / experiment_id
+    return (
+        experiment / cohort_name,
+        root / "campaigns" / campaign_id / "campaign.yaml",
+        root / "science-project.yaml",
+    )
+
+
+def cmd_cohort_validate(args: argparse.Namespace) -> int:
+    root = selected_project(args)
+    cohort_path, campaign_path, project_path = _cohort_paths(
+        root, args.experiment, args.cohort, args.campaign
+    )
+    errors = validate_cohort(cohort_path, campaign_path=campaign_path, project_path=project_path)
+    if errors:
+        print("Cohort validation failed:")
+        for error in errors:
+            print(f"- {error}")
+        return 1
+    print(f"Cohort validation passed: {cohort_path.relative_to(root)}")
+    return 0
+
+
+def cmd_cohort_plan(args: argparse.Namespace) -> int:
+    root = selected_project(args)
+    cohort_path, campaign_path, project_path = _cohort_paths(
+        root, args.experiment, args.cohort, args.campaign
+    )
+    errors = validate_cohort(cohort_path, campaign_path=campaign_path, project_path=project_path)
+    if errors:
+        raise SystemExit("cohort must validate before assignment: " + "; ".join(errors))
+    cohort = load_cohort(cohort_path)
+    ledger = generate_preassignment(cohort, args.sessions, copy_mechanism=args.copy_mechanism)
+    ledger_errors = validate_preassignment(cohort, ledger)
+    if ledger_errors:
+        raise SystemExit("generated cohort ledger is invalid: " + "; ".join(ledger_errors))
+    print(json.dumps(ledger, indent=2))
+    return 0
+
+
+def cmd_workspace_create(args: argparse.Namespace) -> int:
+    manager = WorkspaceManager(Path(args.repository), Path(args.sessions_root))
+    try:
+        record = manager.create(args.session, args.revision)
+    except WorkspaceError as error:
+        print(str(error), file=sys.stderr)
+        return 2
+    print(json.dumps(asdict(record), indent=2))
+    return 0
+
+
+def cmd_workspace_remove(args: argparse.Namespace) -> int:
+    manager = WorkspaceManager(Path(args.repository), Path(args.sessions_root))
+    try:
+        record = manager.remove(args.session, force=args.force)
+    except WorkspaceError as error:
+        print(str(error), file=sys.stderr)
+        return 2
+    print(json.dumps(asdict(record), indent=2))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="science", description="Auditable experiment workbench")
     parser.add_argument("--project", help="project path; otherwise discover from current directory")
@@ -274,6 +357,34 @@ def build_parser() -> argparse.ArgumentParser:
     handoff.add_argument("campaign")
     handoff.add_argument("handoff")
     handoff.set_defaults(func=cmd_handoff_validate)
+    status = sub.add_parser("campaign-status", help="compute ready and blocked campaign tasks")
+    status.add_argument("campaign")
+    status.add_argument("--max-attempts", type=int, default=3)
+    status.set_defaults(func=cmd_campaign_status)
+    cohort_validate = sub.add_parser("cohort-validate", help="validate a frozen experiment cohort")
+    cohort_validate.add_argument("experiment")
+    cohort_validate.add_argument("--campaign", required=True)
+    cohort_validate.add_argument("--cohort", default="cohort-v1.yaml")
+    cohort_validate.set_defaults(func=cmd_cohort_validate)
+    cohort_plan = sub.add_parser("cohort-plan", help="generate an outcome-blind assignment ledger")
+    cohort_plan.add_argument("experiment")
+    cohort_plan.add_argument("sessions", nargs="+")
+    cohort_plan.add_argument("--campaign", required=True)
+    cohort_plan.add_argument("--cohort", default="cohort-v1.yaml")
+    cohort_plan.add_argument("--copy-mechanism", default="git-worktree")
+    cohort_plan.set_defaults(func=cmd_cohort_plan)
+    workspace_create = sub.add_parser("workspace-create", help="create an audited detached worktree")
+    workspace_create.add_argument("session")
+    workspace_create.add_argument("revision")
+    workspace_create.add_argument("--repository", required=True)
+    workspace_create.add_argument("--sessions-root", required=True)
+    workspace_create.set_defaults(func=cmd_workspace_create)
+    workspace_remove = sub.add_parser("workspace-remove", help="remove an audited detached worktree")
+    workspace_remove.add_argument("session")
+    workspace_remove.add_argument("--repository", required=True)
+    workspace_remove.add_argument("--sessions-root", required=True)
+    workspace_remove.add_argument("--force", action="store_true")
+    workspace_remove.set_defaults(func=cmd_workspace_remove)
     return parser
 
 

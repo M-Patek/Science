@@ -6,6 +6,13 @@ last_validated: 2026-07-10
 
 # Changelog
 
+## 2026-07-11 — Deterministic self-research dispatch (T4)
+
+- Added pure DAG scheduling with lease awareness, dependency-failure propagation, and bounded retries.
+- Added frozen-cohort integrity validation and deterministic, outcome-blind assignment ledgers.
+- Added audited detached-worktree creation with revision verification and boundary-checked Git cleanup.
+- Exposed campaign status, cohort validation/planning, and workspace lifecycle commands through the CLI.
+
 ## 2026-07-11 — Local multi-agent coordination baseline (T4)
 
 - Added atomic local task claiming, expiring capability leases, heartbeat, release, retry attempts, and

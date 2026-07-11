@@ -20,6 +20,11 @@ science --project ../my-research task-claim campaign-id task-id --worker agent-1
 science --project ../my-research task-heartbeat campaign-id task-id --worker agent-1 --token TOKEN
 science --project ../my-research task-release campaign-id task-id --worker agent-1 --token TOKEN --outcome completed
 science --project ../my-research handoff-validate campaign-id path/to/handoff.json
+science --project ../my-research campaign-status campaign-id --max-attempts 3
+science --project ../my-research cohort-validate experiment-id --campaign campaign-id
+science --project ../my-research cohort-plan experiment-id subject-1 subject-2 subject-3 subject-4 subject-5 --campaign campaign-id
+science workspace-create subject-1 COMMIT --repository D:\repo --sessions-root D:\science-sessions
+science workspace-remove subject-1 --repository D:\repo --sessions-root D:\science-sessions
 python scripts/check_docs.py
 pytest
 ```
@@ -29,3 +34,6 @@ provenance record.
 
 Treat task lease tokens as ephemeral coordinator capabilities. Do not commit them or place them in a
 handoff. Campaign runtime directories are operational state, not scientific evidence.
+
+Create cohort assignment ledgers before inspecting outcomes. `workspace-remove` delegates to Git and
+does not recursively delete session directories; use `--force` only after reviewing uncommitted work.

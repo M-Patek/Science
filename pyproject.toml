@@ -24,6 +24,7 @@ science_repo = ["assets/**/*"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-p no:cacheprovider"
+norecursedirs = ["pytest-*", ".*"]
 
 [tool.ruff]
 line-length = 100
