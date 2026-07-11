@@ -8,22 +8,33 @@ recorded in the cohort manifest. A coordinator must verify that revision before 
 SHA-256 hashes of this protocol, the cohort manifest, and rubric in the cohort provenance ledger before
 the first subject starts. That ledger is observation data and is deliberately not created here.
 
+The 2026-07-11 independent preregistration review found design and analysis blockers before any subject
+started. Cohort v1 was therefore amended before observation; details are in
+`preregistration-review.md`. The manifest remains non-executable until its fixture hash and one exact
+model/runtime configuration are registered and the analysis contract is made consistent.
+
 After the first subject starts, changing the revision, prompt bytes, rubric, allowed context, model,
 tool policy, or runner configuration creates a new cohort. Corrections must not overwrite cohort v1.
 
 ## Experimental unit and sample
 
 An experimental unit is one fresh agent session assigned exactly one of the five registered tasks.
-Collect at least five independent sessions, with every task assigned at least once. Sessions must not
+Collect exactly fifteen valid planned sessions, three per task, plus replacements only for censored
+setup/infrastructure sessions. Sessions must not
 share conversation history, memory, writable directories, or messages. A model/provider change is a
 different cohort; nondeterministic repetitions using an identical frozen configuration are permitted.
+These repetitions are operationally isolated but share a model and configuration; they must not be
+presented as independent draws from a population of agents or models.
 
 ## Isolation and setup
 
 1. Create a clean, independently writable Git worktree or full clone at the frozen commit for each
    session. Never use the framework maintainer's working tree or another subject's copy.
-2. Generate or restore the same fixture project declared by `fixture_id` in `cohort-v1.yaml`. Record its
-   content hash. Do not expose earlier subjects' changes or scores.
+2. Generate or restore the same fixture project declared by `fixture_id` in `cohort-v1.yaml`. Before any
+   session, register its canonical tree hash and an immutable construction manifest containing exact
+   commands, inputs, prepared defects, smoke-experiment contents, and tool versions. The subject copy
+   must exclude this experiment's hypothesis, protocol, rubric, cohort manifest, answer keys, prior
+   transcripts, and scores. Do not expose earlier subjects' changes or scores.
 3. Start a new agent context. Its initial message is the selected prompt exactly as stored in the cohort
    manifest. Repository instructions may route the agent; the coordinator supplies no extra hints.
 4. Allow only the tools and network policy declared in the manifest. Each subject may write only inside
@@ -53,15 +64,24 @@ word-count guess. A session passes the token criterion only when the measured/es
 ## Scoring
 
 Two scorers who did not act as subjects apply `rubric.md` to the preserved transcript, filesystem diff,
-and command log. They score each registered criterion `pass`, `fail`, or `not_evaluable` without knowing
-aggregate results. Resolve disagreement by documented adjudication. No partial credit is used.
+and command log. Subject sessions must never be able to read the rubric or review materials. Scorers
+independently score each registered criterion `pass`, `fail`, or `not_evaluable` before receiving the
+other scorer's decisions or any aggregate result. Resolve disagreement by documented adjudication. No
+partial credit is used. Record both initial decisions as well as the adjudicated decision.
 
 `task_success` is 1 only when every required criterion for that task passes and no critical violation
-occurred; otherwise it is 0. `task_success_rate` is successful, uncensored sessions divided by all
-uncensored sessions. Report criterion-level outcomes and the assignment count for every task. The
-hypothesis is supported only if there are at least five uncensored sessions, every task is represented,
-success rate is at least 0.80, critical violations equal zero, and every included measurable session is
-within 3000 onboarding tokens. Missing token measurements make the token claim inconclusive.
+occurred; otherwise it is 0. The primary success metric is the unweighted mean of the five task-specific
+success proportions across the fifteen planned uncensored sessions. The pooled rate is equivalent only
+under the registered balanced allocation. Report criterion-level outcomes and each task stratum. The
+hypothesis is supported only if there are exactly three planned uncensored sessions per task, the primary
+rate is at least 0.80, critical violations equal zero, and every included measurable session is within
+3000 onboarding tokens. Missing token measurements make the token claim inconclusive.
+
+The pre-observation `src/run.py` and `observations-v2.csv` implement immutable session rows, task strata,
+censoring/deviation fields, independent and adjudicated scorer decisions, token missingness, and exact
+balance checks. `observations-v1.csv` is retained as superseded raw-data history and is not an authorized
+analysis input. This resolves the analysis-contract blocker identified by independent review; fixture
+and runtime registration remain separate blockers to observation.
 
 ## Deviations, censoring, and exclusions
 
@@ -84,8 +104,9 @@ using cost-bearing/external resources without authorization.
 
 ## Stopping and reporting
 
-The planned minimum is five uncensored sessions. Replace censored setup/infrastructure sessions until the
-minimum and task coverage are met, while retaining them in the flow report. Do not add sessions because
+The planned sample is fifteen uncensored sessions, exactly three per task. Replace a censored
+setup/infrastructure session within its assigned task stratum until the planned cell is filled, while
+retaining every censored attempt in the flow report. Do not add sessions because
 interim results are unfavorable or stop early because they are favorable. Before analysis, freeze the
 observation file and hashes. Report the complete flow, metadata missingness, deviations, censored cases,
 all failures, scorer disagreements, and observed results separately from interpretation.

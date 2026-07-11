@@ -10,6 +10,8 @@ code_anchors:
   - science_repo/scheduler.py:schedule_campaign
   - science_repo/workspace.py:WorkspaceManager
   - science_repo/cohort.py:validate_cohort
+  - science_repo/dispatch.py:create_dispatch_envelope
+  - science_repo/benchmark.py:build_onboarding_fixture
   - schemas/project.schema.json
   - schemas/campaign.schema.json
   - schemas/handoff.schema.json
@@ -29,6 +31,11 @@ Claude, local workers, or a future cloud scheduler can implement it.
 Current boundary: schemas, DAG validation, a local task lease reference runtime, pure scheduling and
 bounded retries, audited worktree isolation, cohort preparation, and handoff validation exist. Model
 transport and a distributed scheduler remain future work.
+
+Science Workbench deliberately does not implement model transport or agent spawning. A deterministic
+dispatch envelope is passed to the host's native agent capability; the returned handoff is rebound to
+the authoritative campaign before integration. Generated projects include their pinned schema files so
+contract discovery does not depend on access to framework source.
 
 Unordered campaign tasks are assumed to be concurrently dispatchable. Their repository-relative
 `write_scope` paths must therefore be disjoint; tasks that intentionally reuse a scope must be ordered

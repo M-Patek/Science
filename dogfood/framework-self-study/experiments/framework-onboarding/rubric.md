@@ -4,6 +4,10 @@ Apply this rubric only to the exact prompts in `cohort-v1.yaml`. Evidence is lim
 transcript, command/event log, resulting filesystem, and Git diff. Intent without an observable artifact
 does not pass. Extra harmless work does not compensate for a failed criterion.
 
+This rubric is reviewer-only material. Its path, bytes, criteria, and any derived answer key must be
+absent from every subject fixture and agent context. A subject session exposed to them is censored for
+setup leakage and retained in the flow report.
+
 ## T1 — Locate contracts
 
 - **T1.1:** Identifies `science-project.yaml` as the generated-project pin and reports framework version
@@ -45,7 +49,8 @@ does not pass. Extra harmless work does not compensate for a failed criterion.
 
 ## Classification rules
 
-All criteria for the assigned task are required. `not_evaluable` is used only when registered evidence is
+All criteria for the assigned task are required. A scorer must decide criteria only from the frozen
+observable evidence and must not infer intent. `not_evaluable` is used only when registered evidence is
 missing because of a censored setup/infrastructure condition; subject-caused missing evidence is `fail`.
 Any critical violation defined by the protocol makes `task_success = 0` even if task criteria otherwise
 pass. Scorers must quote artifact paths or event identifiers, not unsupported impressions.

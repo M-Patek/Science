@@ -10,7 +10,9 @@ from pathlib import Path
 
 from .io import dump_json, dump_yaml, load_yaml
 from .campaign import validate_campaign
+from .benchmark import build_onboarding_fixture
 from .cohort import generate_preassignment, load_cohort, validate_cohort, validate_preassignment
+from .dispatch import audit_dispatch_handoff, create_dispatch_envelope
 from .handoff import load_handoff, validate_handoff
 from .models import ID_RE
 from .review import review_run
@@ -276,7 +278,10 @@ def cmd_cohort_plan(args: argparse.Namespace) -> int:
     if errors:
         raise SystemExit("cohort must validate before assignment: " + "; ".join(errors))
     cohort = load_cohort(cohort_path)
-    ledger = generate_preassignment(cohort, args.sessions, copy_mechanism=args.copy_mechanism)
+    try:
+        ledger = generate_preassignment(cohort, args.sessions, copy_mechanism=args.copy_mechanism)
+    except ValueError as error:
+        raise SystemExit(f"cohort is not ready for assignment: {error}") from error
     ledger_errors = validate_preassignment(cohort, ledger)
     if ledger_errors:
         raise SystemExit("generated cohort ledger is invalid: " + "; ".join(ledger_errors))
@@ -303,6 +308,35 @@ def cmd_workspace_remove(args: argparse.Namespace) -> int:
         print(str(error), file=sys.stderr)
         return 2
     print(json.dumps(asdict(record), indent=2))
+    return 0
+
+
+def cmd_benchmark_build(args: argparse.Namespace) -> int:
+    target = Path(args.target)
+    tree_hash = build_onboarding_fixture(target)
+    print(json.dumps({"target": str(target.resolve()), "fixture_tree_sha256": tree_hash}, indent=2))
+    return 0
+
+
+def cmd_dispatch_envelope(args: argparse.Namespace) -> int:
+    root = selected_project(args)
+    _, campaign = _campaign(root, args.campaign)
+    print(json.dumps(create_dispatch_envelope(campaign, args.task), indent=2))
+    return 0
+
+
+def cmd_dispatch_audit(args: argparse.Namespace) -> int:
+    root = selected_project(args)
+    _, campaign = _campaign(root, args.campaign)
+    envelope = load_handoff(Path(args.envelope))
+    handoff = load_handoff(Path(args.handoff))
+    errors = audit_dispatch_handoff(envelope, handoff, campaign)
+    if errors:
+        print("Dispatch handoff audit failed:")
+        for error in errors:
+            print(f"- {error}")
+        return 1
+    print(f"Dispatch handoff audit passed: {args.handoff}")
     return 0
 
 
@@ -385,6 +419,18 @@ def build_parser() -> argparse.ArgumentParser:
     workspace_remove.add_argument("--sessions-root", required=True)
     workspace_remove.add_argument("--force", action="store_true")
     workspace_remove.set_defaults(func=cmd_workspace_remove)
+    benchmark = sub.add_parser("benchmark-build", help="build the deterministic onboarding fixture")
+    benchmark.add_argument("target")
+    benchmark.set_defaults(func=cmd_benchmark_build)
+    dispatch = sub.add_parser("dispatch-envelope", help="render a campaign task for native delegation")
+    dispatch.add_argument("campaign")
+    dispatch.add_argument("task")
+    dispatch.set_defaults(func=cmd_dispatch_envelope)
+    dispatch_audit = sub.add_parser("dispatch-audit", help="audit a native agent handoff")
+    dispatch_audit.add_argument("campaign")
+    dispatch_audit.add_argument("envelope")
+    dispatch_audit.add_argument("handoff")
+    dispatch_audit.set_defaults(func=cmd_dispatch_audit)
     return parser
 
 

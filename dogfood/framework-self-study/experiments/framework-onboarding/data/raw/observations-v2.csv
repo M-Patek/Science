@@ -1,0 +1,1 @@
+session_id,task_id,censor_status,censor_reason,protocol_deviation,deviation_reason,scorer_1_decision,scorer_2_decision,adjudicated_decision,critical_protocol_violations,onboarding_tokens_status,onboarding_tokens,notes

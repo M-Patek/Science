@@ -102,6 +102,13 @@ def generate_preassignment(
     Caller-provided session IDs are stable opaque identities. Copy and context IDs are
     derived separately and are therefore mechanically checkable for independence.
     """
+    if cohort.get("registration_status") != "frozen-before-observation":
+        raise ValueError("cohort registration is not frozen and ready for observation")
+    fixture_hash = cohort.get("fixture", {}).get("fixture_tree_sha256")
+    if not isinstance(fixture_hash, str) or len(fixture_hash) != 64:
+        raise ValueError("fixture tree hash must be frozen before assignment")
+    if cohort.get("runtime_registration", {}).get("status") != "frozen-before-observation":
+        raise ValueError("exact runtime must be frozen before assignment")
     minimum = cohort["minimum_uncensored_sessions"]
     tasks = cohort["tasks"]
     if len(session_ids) < minimum:

@@ -19,9 +19,28 @@ def test_frozen_cohort_is_ready():
     assert validate_cohort(COHORT, campaign_path=CAMPAIGN, project_path=PROJECT / "science-project.yaml") == []
 
 
-def test_preassignment_is_deterministic_and_independent():
+def test_blocked_registration_cannot_generate_preassignment():
     cohort = load_cohort(COHORT)
-    ids = [f"subject-{number}" for number in range(1, 6)]
+    ids = [f"subject-{number}" for number in range(1, 16)]
+    try:
+        generate_preassignment(cohort, ids)
+    except ValueError as error:
+        assert "not frozen" in str(error)
+    else:
+        raise AssertionError("expected amended blocked cohort to reject assignment")
+
+
+def _ready_cohort():
+    cohort = load_cohort(COHORT)
+    cohort["registration_status"] = "frozen-before-observation"
+    cohort["fixture"]["fixture_tree_sha256"] = "a" * 64
+    cohort["runtime_registration"]["status"] = "frozen-before-observation"
+    return cohort
+
+
+def test_preassignment_is_deterministic_and_independent():
+    cohort = _ready_cohort()
+    ids = [f"subject-{number}" for number in range(1, 16)]
     first = generate_preassignment(cohort, ids)
     assert first == generate_preassignment(cohort, ids)
     assert validate_preassignment(cohort, first) == []
@@ -29,8 +48,8 @@ def test_preassignment_is_deterministic_and_independent():
 
 
 def test_preassignment_rejects_shared_copy_and_tampering():
-    cohort = load_cohort(COHORT)
-    ledger = generate_preassignment(cohort, [f"s{i}" for i in range(5)])
+    cohort = _ready_cohort()
+    ledger = generate_preassignment(cohort, [f"s{i}" for i in range(15)])
     broken = deepcopy(ledger)
     broken["assignments"][1]["copy_id"] = broken["assignments"][0]["copy_id"]
     errors = validate_preassignment(cohort, broken)
@@ -39,10 +58,10 @@ def test_preassignment_rejects_shared_copy_and_tampering():
 
 
 def test_preassignment_requires_registered_minimum():
-    cohort = load_cohort(COHORT)
+    cohort = _ready_cohort()
     try:
         generate_preassignment(cohort, ["s1"])
     except ValueError as error:
-        assert "at least 5" in str(error)
+        assert "at least 15" in str(error)
     else:
         raise AssertionError("expected undersized cohort to fail")

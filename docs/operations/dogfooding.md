@@ -1,7 +1,7 @@
 ---
 id: dogfooding
 status: stable
-last_validated: 2026-07-10
+last_validated: 2026-07-11
 ---
 
 # Framework Self-Research Development Loop
@@ -30,3 +30,8 @@ The main agent owns campaign design, integration, and the final framework change
 used as independent experimental subjects or bounded specialists only after the protocol and write scopes
 are frozen. Review agents must not participate in the run they review.
 
+Science Workbench does not replace the host platform's native `spawn_agent` (or equivalent) capability.
+It supplies a reproducible contract around that capability: the main agent checks `campaign-status`,
+persists a `dispatch-envelope`, passes it through native delegation, requires a structured handoff, and
+runs `dispatch-audit` before integration. Agent lifecycle, transport, and model selection remain native
+platform responsibilities. Use the repository `run-campaign` skill for the complete operating sequence.

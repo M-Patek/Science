@@ -1,10 +1,15 @@
 # Hypothesis — Agent onboarding with bounded context
 
-## Claim
+## Claim and estimand
 
-A fresh general-purpose coding agent that reads only `AGENTS.md`, `docs/INDEX.md`, and routed documents
-will correctly complete at least 80% of the benchmark tasks, commit zero critical protocol violations,
-and consume no more than 3000 estimated tokens before beginning task-specific source inspection.
+For the **single frozen model/provider/harness configuration** registered for cohort v1, fresh sessions
+assigned in equal numbers to the five registered prompts will have a descriptive, session-level success
+rate of at least 80%, commit zero critical protocol violations, and consume no more than 3000 onboarding
+tokens before beginning task-specific source inspection.
+
+The primary estimand is the mean of the five task-specific success proportions (equivalently the pooled
+session proportion only because allocation is balanced). It describes this prompt mixture and runtime;
+it is not an estimate for all coding agents, all Science Workbench tasks, or a population of models.
 
 ## Rationale and prior evidence
 
@@ -13,6 +18,8 @@ claim awaiting empirical testing; it is not yet an observed result.
 
 ## Falsification criteria
 
-Reject or revise the claim if success is below 80%, any critical violation occurs, or onboarding context
-exceeds 3000 estimated tokens. Report every failed task; do not exclude confusing cases post hoc.
+Reject or revise the claim if the predeclared descriptive success estimate is below 80%, any critical
+violation occurs, or any uncensored measurable session exceeds 3000 onboarding tokens. A missing token
+measurement makes the token component inconclusive, not passed. Report task strata and every failed
+session; do not exclude confusing cases post hoc. No frequentist population-inference claim is planned.
 

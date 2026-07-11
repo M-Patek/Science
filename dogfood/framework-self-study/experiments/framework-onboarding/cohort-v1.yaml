@@ -1,7 +1,8 @@
 schema_version: 1
 cohort_id: framework-onboarding-v1
 protocol_id: framework-onboarding-v1
-registration_status: frozen-before-observation
+registration_status: amended-before-observation-blocked
+registration_note: "Independent review on 2026-07-11 occurred with zero observation rows. The session-level analysis contract is now conforming; execution remains blocked pending a frozen fixture hash and exact runtime registration."
 framework:
   git_commit: d62e38c65ceba9e25583e32d55ef49b64c69e646
   version: 0.2.0.dev0
@@ -10,23 +11,26 @@ contracts:
   campaign: 1
   handoff: 1
 frozen_materials:
-  protocol_sha256: 356d7460551bac461cab6a517c133f904483956654a20f7e552df795ede57d8b
-  rubric_sha256: ac072106d5acfd53e26a2d467f26daa08a5cd36ce76e56b90beede19e591f6d1
+  protocol_sha256: 869d612b90abe34bc255dc6fa6dbee6efcb09edde207b990072ed2528cb4a531
+  rubric_sha256: c78160b01efa1f06595e854fed66e1fbb688acc9aa422844180865ded6fa0268
   document_hash_canonicalization: "UTF-8 bytes after normalizing CRLF and CR line endings to LF."
   prompt_set_sha256: b32745e70b3ddf246d84f9e80e4481ee6d5404ea1fd1fce4a86ee37c2641ca2d
   prompt_hash_canonicalization: "UTF-8 SHA-256 of each task id, LF, prompt, joined by LF in listed order; parsed YAML scalar values are used."
 fixture:
   fixture_id: generated-project-onboarding-v1
-  construction: "Create an identical generated project using the frozen revision; coordinator records the resulting tree SHA-256 before dispatch."
+  construction: "Use a pre-observation immutable construction manifest with exact commands, inputs, seeded defects, smoke experiment, and tool versions; register its canonical tree hash before dispatch. Reviewer-only registration materials must be absent from subject copies."
+  fixture_tree_sha256: pending-before-observation
+  subject_excludes: [framework-onboarding-registration, scoring-rubric, answer-keys, prior-transcripts, prior-scores]
 isolation:
   writable_copy_per_session: true
   accepted_copy_mechanisms: [git-worktree, full-clone]
   fresh_agent_context: true
   cross_session_messages: forbidden
-minimum_uncensored_sessions: 5
+minimum_uncensored_sessions: 15
 assignment:
-  each_task_minimum: 1
-  rule: "Assign tasks before any outcomes are inspected; retain the assignment ledger."
+  each_task_minimum: 3
+  each_task_planned: 3
+  rule: "Assign exactly three planned sessions per task before any outcomes are inspected; replacements inherit the censored session's task stratum; retain the assignment ledger."
 limits:
   onboarding_tokens_per_session: 3000
   wall_clock_minutes: 30
@@ -47,6 +51,9 @@ required_model_metadata:
   - sampling_parameters
   - context_window_limit
   - reported_input_output_cached_tokens_or_unavailable_reason
+runtime_registration:
+  status: pending-before-observation
+  rule: "Register one exact provider, model/version, inference runtime, harness, tool policy, sampling configuration, and context limit before producing the assignment ledger."
 tasks:
   - id: T1-locate-contracts
     prompt: |-
@@ -66,7 +73,7 @@ tasks:
 scoring:
   rubric: rubric.md
   task_success: "1 iff every criterion for the assigned task passes and no critical violation occurs; otherwise 0."
-  primary_rate: "sum(task_success) / count(uncensored sessions)"
+  primary_rate: "unweighted mean of the five task-specific success proportions, with exactly three planned uncensored sessions per task"
   hypothesis_threshold: 0.80
   critical_violations_threshold: 0
 censoring:

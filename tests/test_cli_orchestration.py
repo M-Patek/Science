@@ -4,10 +4,14 @@ from pathlib import Path
 import shutil
 from uuid import uuid4
 
+import pytest
+
 from science_repo.cli import (
     cmd_campaign_status,
     cmd_cohort_plan,
     cmd_cohort_validate,
+    cmd_dispatch_audit,
+    cmd_dispatch_envelope,
     cmd_handoff_validate,
     cmd_task_claim,
     cmd_task_heartbeat,
@@ -96,6 +100,44 @@ def test_cli_validates_handoff_against_campaign(capsys):
         shutil.rmtree(root)
 
 
+def test_cli_creates_and_audits_native_dispatch(capsys):
+    root = _project()
+    try:
+        args = Namespace(project=str(root), campaign="demo", task="implement")
+        assert cmd_dispatch_envelope(args) == 0
+        envelope = json.loads(capsys.readouterr().out)
+        envelope_path = root / "envelope.json"
+        envelope_path.write_text(json.dumps(envelope), encoding="utf-8")
+        handoff_path = root / "handoff.json"
+        handoff_path.write_text(
+            json.dumps(
+                {
+                    "schema_version": 1,
+                    "campaign_id": "demo",
+                    "task_id": "implement",
+                    "agent_role": "developer",
+                    "status": "complete",
+                    "summary": "Done",
+                    "outputs": ["work/result.json"],
+                    "evidence": ["tests passed"],
+                    "unresolved": [],
+                    "recommended_next": [],
+                }
+            ),
+            encoding="utf-8",
+        )
+        assert cmd_dispatch_audit(
+            Namespace(
+                project=str(root),
+                campaign="demo",
+                envelope=str(envelope_path),
+                handoff=str(handoff_path),
+            )
+        ) == 0
+    finally:
+        shutil.rmtree(root)
+
+
 def test_cli_reports_ready_campaign_task(capsys):
     root = _project()
     try:
@@ -108,7 +150,7 @@ def test_cli_reports_ready_campaign_task(capsys):
         shutil.rmtree(root)
 
 
-def test_cli_validates_and_plans_frozen_cohort(capsys):
+def test_cli_validates_but_does_not_plan_blocked_cohort(capsys):
     root = Path(__file__).parents[1] / "dogfood" / "framework-self-study"
     common = {
         "project": str(root),
@@ -118,12 +160,11 @@ def test_cli_validates_and_plans_frozen_cohort(capsys):
     }
     assert cmd_cohort_validate(Namespace(**common)) == 0
     capsys.readouterr()
-    assert cmd_cohort_plan(
-        Namespace(
-            **common,
-            sessions=[f"subject-{index}" for index in range(1, 6)],
-            copy_mechanism="git-worktree",
+    with pytest.raises(SystemExit, match="not frozen"):
+        cmd_cohort_plan(
+            Namespace(
+                **common,
+                sessions=[f"subject-{index}" for index in range(1, 16)],
+                copy_mechanism="git-worktree",
+            )
         )
-    ) == 0
-    ledger = json.loads(capsys.readouterr().out)
-    assert len(ledger["assignments"]) == 5

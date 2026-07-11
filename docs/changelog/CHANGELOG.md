@@ -6,6 +6,18 @@ last_validated: 2026-07-10
 
 # Changelog
 
+## 2026-07-11 — Native delegation boundary and benchmark repair (T4)
+
+- Defined dispatch envelopes and handoff audits around platform-native subagent capabilities instead of
+  implementing another agent transport.
+- Added the `run-campaign` Agent skill and documented the Main Agent integration boundary.
+- Added a deterministic onboarding fixture with prepared validation and run/review tasks, leakage checks,
+  and packaged schemas for isolated contract discovery.
+- Independently reviewed and amended the onboarding preregistration before observations: 15 balanced
+  sessions, task-stratified estimand, censoring/deviation rules, double scoring, and token missingness.
+- Added immutable empty observations v2 and a conforming analysis implementation; execution remains
+  blocked pending committed fixture/revision and exact runtime registration.
+
 ## 2026-07-11 — Deterministic self-research dispatch (T4)
 
 - Added pure DAG scheduling with lease awareness, dependency-failure propagation, and bounded retries.
