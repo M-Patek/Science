@@ -6,6 +6,17 @@ last_validated: 2026-07-10
 
 # Changelog
 
+## 2026-07-13 — Continuous self-bootstrap execution loop (T4)
+
+- Connected dispatch audit to recoverable Campaign acceptance without implementing agent transport.
+- Added automatic run lineage and made pinned lineage integrity a mechanical review gate.
+- Added bounded, non-secret container/GPU/CI/HPC environment capture and reproduction comparison.
+- Integrated trusted review plugins with minimal frozen evidence and fail-closed advisory policy.
+- Added explicit migration apply with confirmation, backups, locking, WAL recovery, and rollback.
+- Added an unattested-by-default external execution adapter with request-bound authorization verification.
+- Added offline release manifests, fresh-wheel CLI coverage, and a planned cross-platform capability matrix.
+- Preregistered the design-only self-bootstrap effectiveness study; no observations were recorded.
+
 ## 2026-07-12 — Self-bootstrap integrity and reproducibility (T4)
 
 - Added pinned, path-safe data/run/code lineage validation and deterministic lineage digests.

@@ -16,24 +16,79 @@ import sys
 import venv
 import zipfile
 
-
+# The verifier is invoked as a script, so make the source checkout explicit
+# rather than depending on the caller's PYTHONPATH or an installed copy.
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from science_repo.release import (
+    generate_release_manifest,
+    manifest_json,
+    verify_release_manifest,
+)
+
 EXPECTED_ASSETS = {
     "science_repo/assets/project/schemas/experiment.schema.json",
     "science_repo/assets/project/schemas/campaign.schema.json",
     "science_repo/assets/project/schemas/handoff.schema.json",
     "science_repo/assets/project/schemas/project.schema.json",
     "science_repo/assets/project/schemas/run.schema.json",
+    "science_repo/assets/project/schemas/lineage.schema.json",
     "science_repo/assets/project/.agents/skills/run-experiment/SKILL.md",
     "science_repo/assets/experiment/experiment.yaml",
     "science_repo/assets/experiment/src/run.py",
 }
 
+PACKAGED_SCHEMAS = tuple(sorted(
+    name for name in EXPECTED_ASSETS if name.endswith(".schema.json")
+))
 
-def run(*args: str | Path, cwd: Path, env: dict[str, str] | None = None) -> str:
+
+def create_release_manifest(work_root: Path, wheel: Path) -> Path:
+    """Extract declared schema evidence and bind it to the built wheel offline."""
+    evidence = work_root / "release-evidence"
+    evidence.mkdir()
+    schema_files: list[Path] = []
+    with zipfile.ZipFile(wheel) as archive:
+        names = set(archive.namelist())
+        missing = sorted(set(PACKAGED_SCHEMAS) - names)
+        if missing:
+            raise RuntimeError(f"wheel is missing packaged schemas: {missing}")
+        for member in PACKAGED_SCHEMAS:
+            destination = evidence / member
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_bytes(archive.read(member))
+            schema_files.append(destination)
+
+    relative_wheel = Path("dist") / wheel.name
+    relative_schemas = [path.relative_to(work_root) for path in schema_files]
+    manifest = generate_release_manifest(
+        work_root,
+        [relative_wheel, *relative_schemas],
+        packaged_schemas=relative_schemas,
+        include_dependencies=True,
+    )
+    inventory = manifest["dependency_inventory"]
+    limitations = inventory.get("limitations", "")
+    for boundary in ("vulnerability scan", "signature", "attestation"):
+        if boundary not in limitations:
+            raise RuntimeError(f"dependency inventory does not disclaim {boundary}")
+    manifest_path = work_root / "release-manifest.json"
+    manifest_path.write_text(manifest_json(manifest), encoding="utf-8")
+    if mismatches := verify_release_manifest(work_root, manifest):
+        raise RuntimeError(f"release manifest failed verification: {mismatches}")
+    return manifest_path
+
+
+def run(
+    *args: str | Path,
+    cwd: Path,
+    env: dict[str, str] | None = None,
+    accepted_codes: tuple[int, ...] = (0,),
+) -> str:
     command = [str(arg) for arg in args]
     result = subprocess.run(command, cwd=cwd, env=env, text=True, capture_output=True)
-    if result.returncode:
+    if result.returncode not in accepted_codes:
         raise RuntimeError(
             f"command failed ({result.returncode}): {' '.join(command)}\n"
             f"stdout:\n{result.stdout}\nstderr:\n{result.stderr}"
@@ -72,6 +127,7 @@ def verify(work_root: Path) -> dict[str, str]:
         ).decode()
         if "science = science_repo.cli:main" not in entry_points:
             raise RuntimeError("wheel does not expose the science console script")
+    release_manifest = create_release_manifest(work_root, wheel)
 
     environment = work_root / "venv"
     venv.EnvBuilder(with_pip=True, system_site_packages=True).create(environment)
@@ -105,6 +161,25 @@ def verify(work_root: Path) -> dict[str, str]:
         raise RuntimeError("generated project's framework version is not pinned to wheel version")
 
     run(science, "--project", project, "validate", cwd=work_root, env=clean_env)
+    run(science, "--project", project, "doctor", cwd=work_root, env=clean_env)
+    environment_snapshot = project / "environment-smoke.json"
+    environment_snapshot.write_text(
+        json.dumps({"python": "distribution-smoke", "packages": []}), encoding="utf-8"
+    )
+    run(
+        science, "--project", project, "reproduce-assess", environment_snapshot,
+        environment_snapshot, cwd=work_root, env=clean_env,
+    )
+    lineage = project / "lineage-smoke.json"
+    lineage.write_text(
+        json.dumps({"schema_version": 1, "entities": [], "relations": []}), encoding="utf-8"
+    )
+    run(science, "--project", project, "lineage-validate", lineage, cwd=work_root, env=clean_env)
+    run(
+        science, "--project", project, "migration-plan",
+        "--target", "experiment=1", "--target", "campaign=1", "--target", "handoff=1",
+        cwd=work_root, env=clean_env, accepted_codes=(0, 2),
+    )
     run(science, "--project", project, "new", "smoke-exp", "--title", "Smoke", cwd=work_root, env=clean_env)
     (project / "experiments" / "smoke-exp" / "data" / "raw" / "input.csv").write_text(
         "value\n1\n", encoding="utf-8"
@@ -131,7 +206,12 @@ def verify(work_root: Path) -> dict[str, str]:
         encoding="utf-8",
     )
     run(science, "--project", project, "campaign-validate", "smoke-campaign", cwd=work_root, env=clean_env)
-    return {"wheel": wheel.name, "science_repo": imported, "project": str(project)}
+    return {
+        "wheel": wheel.name,
+        "release_manifest": str(release_manifest),
+        "science_repo": imported,
+        "project": str(project),
+    }
 
 
 def main() -> int:

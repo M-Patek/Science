@@ -1,0 +1,7 @@
+schema_version: 1
+status: pending-not-frozen
+dispatch_allowed: false
+required_fixture_count: 12
+allocation_seed: null
+fixtures: []
+note: Populate all twelve fixture IDs, strata, difficulty, prompt and tree hashes, acceptance tests, and seeded allocation before dispatch. No observations exist.

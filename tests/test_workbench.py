@@ -33,6 +33,14 @@ def test_demo_run_and_review():
     # append-only evidence. Always remove the generated test record afterward.
     isolated = ROOT / "tests" / "fixtures" / "runner-repo"
     target = isolated / "experiments" / "linear-demo"
+    schemas = isolated / "schemas"
+    schemas.mkdir(exist_ok=True)
+    shutil.copy2(ROOT / "schemas" / "lineage.schema.json", schemas)
+    shutil.copy2(ROOT / "schemas" / "run.schema.json", schemas)
+    project_manifest = isolated / "science-project.yaml"
+    project_manifest.write_text(
+        "contracts:\n  experiment: 1\n  campaign: 1\n  handoff: 1\n", encoding="utf-8"
+    )
     code, run_dir = run_experiment(isolated, "linear-demo")
     try:
         assert code == 0
@@ -48,3 +56,5 @@ def test_demo_run_and_review():
         )
     finally:
         shutil.rmtree(run_dir)
+        shutil.rmtree(schemas)
+        project_manifest.unlink()

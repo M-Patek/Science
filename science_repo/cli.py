@@ -12,6 +12,7 @@ from .io import dump_json, dump_yaml, load_yaml
 from .campaign import validate_campaign
 from .benchmark import build_onboarding_fixture
 from .cohort import generate_preassignment, load_cohort, validate_cohort, validate_preassignment
+from .closure import ClosureError, accept_dispatch_handoff
 from .dispatch import audit_dispatch_handoff, create_dispatch_envelope
 from .handoff import load_handoff, validate_handoff
 from .lifecycle import LifecycleError, transition_stage
@@ -381,6 +382,30 @@ def cmd_dispatch_audit(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_campaign_accept(args: argparse.Namespace) -> int:
+    root = selected_project(args)
+    _, campaign = _campaign(root, args.campaign)
+    envelope_path, handoff_path = Path(args.envelope), Path(args.handoff)
+    try:
+        result = accept_dispatch_handoff(
+            root / ".science" / "campaigns" / args.campaign,
+            campaign,
+            load_handoff(envelope_path),
+            load_handoff(handoff_path),
+            auditor=args.auditor,
+            audited_at=args.audited_at,
+            schema_path=_schema_path(root, "handoff"),
+            instance_path=handoff_path,
+            project_manifest=root / "science-project.yaml",
+            retry_policy=RetryPolicy(max_attempts=args.max_attempts),
+        )
+    except (ClosureError, ValueError, OSError) as error:
+        print(f"Campaign acceptance failed: {error}", file=sys.stderr)
+        return 2
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+    return 0
+
+
 def cmd_transition(args: argparse.Namespace) -> int:
     root = selected_project(args)
     experiment = root / "experiments" / args.id
@@ -531,6 +556,14 @@ def build_parser() -> argparse.ArgumentParser:
     dispatch_audit.add_argument("envelope")
     dispatch_audit.add_argument("handoff")
     dispatch_audit.set_defaults(func=cmd_dispatch_audit)
+    campaign_accept = sub.add_parser("campaign-accept", help="audit and record a native-agent handoff")
+    campaign_accept.add_argument("campaign")
+    campaign_accept.add_argument("envelope")
+    campaign_accept.add_argument("handoff")
+    campaign_accept.add_argument("--auditor", required=True)
+    campaign_accept.add_argument("--audited-at", required=True)
+    campaign_accept.add_argument("--max-attempts", type=int, default=3)
+    campaign_accept.set_defaults(func=cmd_campaign_accept)
     transition = sub.add_parser("transition", help="apply an audited experiment stage transition")
     transition.add_argument("id")
     transition.add_argument("--to", required=True)

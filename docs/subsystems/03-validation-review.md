@@ -22,6 +22,10 @@ This critic intentionally makes no claim about causal inference, statistics, cit
 interpretation, research ethics, or domain correctness. Those require explicit specialist and human
 review gates in later versions.
 
+Explicitly registered trusted in-process plugins receive a minimal frozen evidence view. Advisory
+`unknown`, plugin failure, and malformed output fail closed. Plugins cannot create human approval or
+establish scientific validity. Lineage integrity is a mechanical review gate for new lineage-bearing runs.
+
 ## Review extensions
 
 Trusted, explicitly registered in-process plugins may add deterministic mechanical or scientific-advisory checks. They cannot claim human review, fail closed on malformed output, and are not an isolation or timeout boundary. Human approval remains separate.

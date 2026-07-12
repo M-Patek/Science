@@ -11,6 +11,10 @@ code_anchors:
   - science_repo/workspace.py:WorkspaceManager
   - science_repo/cohort.py:validate_cohort
   - science_repo/dispatch.py:create_dispatch_envelope
+  - science_repo/closure.py:accept_dispatch_handoff
+  - science_repo/coordinator.py:CampaignCoordinator
+  - science_repo/migration_apply.py:apply_contract_migration
+  - science_repo/execution_adapter.py:submit_execution
   - science_repo/benchmark.py:build_onboarding_fixture
   - schemas/project.schema.json
   - schemas/campaign.schema.json
@@ -55,3 +59,9 @@ worktree operation.
 ## Audited closure and upgrades
 
 The coordinator accepts only audit receipts bound to canonical handoffs, writes an event-first recovery log, and then materializes task state. Review and human gates fail closed. Contract migration is a deterministic read-only plan; `science doctor` is diagnostic only. Neither command silently upgrades projects.
+
+Campaign closure now joins authoritative dispatch audit to recoverable coordinator state. Caller-provided
+approval flags are unattested and cannot open a human gate. Explicit contract migration apply uses a
+confirmation digest, backups, WAL recovery, locking, and caller-supplied schema bytes. The execution
+adapter is transport-neutral: dry-run never executes, while real submission requires a trusted verifier
+and a receipt bound to the complete request, resources, cost ceiling, scope, approver, and expiry.

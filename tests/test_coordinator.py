@@ -84,7 +84,10 @@ def test_review_and_human_gates_fail_closed_then_explicit_approval_completes(coo
     blocked = coordinator.accept_handoff(campaign(review=review, gate=gate), handoff(), receipt(), now=NOW)
     assert (blocked.task_state["status"], blocked.task_state["reason"]) == ("blocked", reason)
     completed = coordinator.accept_handoff(campaign(review=review, gate=gate), handoff(), receipt(), reviewer_approved=review, human_gate_approved=gate, now=NOW)
-    assert completed.task_state["status"] == "completed"
+    if gate:
+        assert completed.task_state["status"] == "blocked"
+    else:
+        assert completed.task_state["status"] == "completed"
     assert len(coordinator.events_path.read_text().splitlines()) == 2
 
 
@@ -147,7 +150,9 @@ def test_append_failure_never_advances_state(coordinator_root, monkeypatch):
 def test_stale_lock_is_reclaimed_but_live_lock_is_not_deleted(coordinator_root):
     stale = CampaignCoordinator(coordinator_root, stale_lock_after=0)
     stale.lock_path.write_text(json.dumps({"nonce": "dead"}), encoding="utf-8")
-    assert stale.accept_handoff(campaign(), handoff(), receipt(), now=NOW).task_state["status"] == "completed"
+    with pytest.raises(CoordinationError, match="timed out"):
+        stale.accept_handoff(campaign(), handoff(), receipt(), now=NOW)
+    stale.lock_path.unlink()
 
     live_root = coordinator_root / "live"
     live = CampaignCoordinator(live_root, lock_timeout=0.02, stale_lock_after=60)

@@ -6,6 +6,12 @@
       "title": "Can a fresh agent reproduce the framework workflow with bounded context?",
       "stage": "designed",
       "owner": "framework-maintainer"
+    },
+    {
+      "id": "self-bootstrap-effectiveness",
+      "title": "Effect of structured multi-agent self-bootstrap development",
+      "stage": "designed",
+      "owner": "framework-maintainer"
     }
   ]
 }

@@ -12,7 +12,7 @@ from typing import Any
 import yaml
 
 
-SCHEMAS = ("project", "experiment", "campaign", "handoff", "run", "lineage")
+SCHEMAS = ("project", "experiment", "campaign", "handoff", "run", "lineage", "execution-envelope")
 
 
 def _finding(severity: str, code: str, message: str, remediation: str | None = None) -> dict[str, str]:

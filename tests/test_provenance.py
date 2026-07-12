@@ -25,6 +25,13 @@ def provenance_root():
 
 def _experiment(tmp_path: Path, command: list[str], *, outputs: list[str] | None = None,
                 inputs: list[str] | None = None, timeout: float | None = None) -> Path:
+    schemas = tmp_path / "schemas"
+    schemas.mkdir(exist_ok=True)
+    shutil.copy2(Path(__file__).parents[1] / "schemas" / "lineage.schema.json", schemas)
+    shutil.copy2(Path(__file__).parents[1] / "schemas" / "run.schema.json", schemas)
+    (tmp_path / "science-project.yaml").write_text(
+        "contracts:\n  experiment: 1\n  campaign: 1\n  handoff: 1\n", encoding="utf-8"
+    )
     root = tmp_path / "experiments" / "provenance-test"
     (root / "records").mkdir(parents=True)
     execution = {"command": command, "outputs": outputs or []}

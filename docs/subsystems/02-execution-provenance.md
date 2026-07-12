@@ -4,6 +4,9 @@ status: experimental
 last_validated: 2026-07-10
 code_anchors:
   - science_repo/runner.py:run_experiment
+  - science_repo/environment.py:capture_environment
+  - science_repo/lineage.py:validate_lineage
+  - science_repo/reproduce.py:assess_reproduction
   - schemas/run.schema.json
 ---
 
@@ -30,3 +33,8 @@ process-tree termination uses platform facilities and records parent-only fallba
 ## Self-bootstrap integrity services
 
 Lineage manifests bind hashed dataset, artifact, run, and code entities through validated acyclic relations and project-relative paths. Environment reproduction assessment compares captured snapshots without probing a host; missing dimensions remain unknown and arbitrary identifiers are stable fingerprints rather than disclosed values.
+
+New runs emit `lineage.json` and bind its canonical digest from `run.json`. Mechanical review validates
+the pinned lineage schema, DAG, digest, and canonical run observation. The code claim is deliberately
+limited to the manifest and declared command files; it is not complete dependency or container provenance.
+Environment probes are bounded local capability observations and never record selected environment values.

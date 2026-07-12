@@ -1,0 +1,42 @@
+schema_version: 1
+cohort_id: self-bootstrap-effectiveness-v1
+protocol_id: self-bootstrap-effectiveness-v1
+registration_status: design-only-blocked-before-observation
+registration_note: Full implementation revision, all 12 fixtures, seeded allocation, hashes, assignments, and exact runtime/model identity must be frozen before dispatch.
+design_baseline_revision: aa398ebdc13d5cb8d44cc83c5e097faade766da3
+implementation_revision:
+  status: pending-explicit-pre-dispatch-update
+  git_commit: null
+contracts: {experiment: 1, campaign: 1, handoff: 1}
+design:
+  task_blocks: 12
+  arms: [solo-main-agent-control, structured-multi-wave-treatment]
+  strata: [contract-schema, runtime-provenance, orchestration, documentation-agent-dx]
+  blocks_per_stratum: 3
+  primary_analysis: intention-to-treat over the first authorized attempt in every block-arm cell
+  maximum_attempts_per_cell: 2
+  replacement_rule: A second attempt is allowed only after a predeclared setup censoring event; retain both and never replace an outcome failure.
+  assignment_seed: pending-human-recorded-before-freeze
+  replacement_order: frozen seeded block-arm ledger
+fixtures:
+  expected_count: 12
+  status: pending-not-frozen
+  manifest: task-fixtures-v1.yaml
+  dispatch_rule: Dispatch forbidden until every fixture and the allocation ledger are frozen and independently checked.
+runtime_registration:
+  status: pending-before-observation
+  mandatory: [provider, model_name, exact_model_or_version_id, inference_runtime_and_version, agent_harness_and_version]
+  missing_rule: censor as identity-missing, retain attempt, never infer
+scoring:
+  scorers_per_attempt: 2
+  label_blinded: true
+  independent_before_adjudication: true
+  adjudicator_must_be_distinct: true
+  scorer_blind_guess_required: true
+human_authorization:
+  required_for: [external-compute, private-data, instruments, cost-bearing-resources, publication]
+  current_authorizations: []
+execution_status: not-started
+observations_created: false
+reporting:
+  mandatory: [intention_to_treat_results, per_protocol_sensitivity, censoring_rate_by_arm, replacement_flow, critical_violations]

@@ -18,6 +18,23 @@
     "manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
     "environment_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
     "inputs": {"type": "array", "items": {"type": "object", "required": ["path", "exists", "sha256", "bytes"]}},
-    "artifacts": {"type": "array", "items": {"type": "object", "required": ["path", "exists", "sha256", "bytes"]}}
+    "artifacts": {"type": "array", "items": {"type": "object", "required": ["path", "exists", "sha256", "bytes"]}},
+    "lineage": {
+      "type": "object",
+      "required": ["path", "sha256", "validation"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "validation": {
+          "type": "object",
+          "required": ["status", "schema"],
+          "properties": {
+            "status": {"enum": ["valid", "invalid", "not_validated_no_pinned_schema"]},
+            "schema": {"type": ["string", "null"]},
+            "errors": {"type": "array", "items": {"type": "string"}}
+          }
+        }
+      }
+    }
   }
 }

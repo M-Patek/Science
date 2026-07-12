@@ -24,6 +24,11 @@ science --project ../my-research handoff-validate campaign-id path/to/handoff.js
 science --project ../my-research campaign-status campaign-id --max-attempts 3
 science --project ../my-research dispatch-envelope campaign-id task-id > dispatch.json
 science --project ../my-research dispatch-audit campaign-id dispatch.json handoff.json
+science --project ../my-research campaign-accept campaign-id dispatch.json handoff.json --auditor reviewer-id --audited-at 2026-07-13T00:00:00Z
+science --project ../my-research doctor
+science --project ../my-research lineage-validate path/to/lineage.json
+science --project ../my-research reproduce-assess reference-environment.json current-environment.json
+science --project ../my-research migration-plan --target experiment=1 --target campaign=1 --target handoff=1
 science --project ../my-research cohort-validate experiment-id --campaign campaign-id
 science --project ../my-research cohort-plan experiment-id subject-1 subject-2 subject-3 subject-4 subject-5 --campaign campaign-id
 science workspace-create subject-1 COMMIT --repository D:\repo --sessions-root D:\science-sessions
@@ -41,6 +46,9 @@ handoff. Campaign runtime directories are operational state, not scientific evid
 `dispatch-envelope` prepares a contract for the main agent to pass to the platform's native subagent
 primitive; it does not spawn an agent. Require a structured handoff and pass `dispatch-audit` before
 integration. A review agent must be independent of the work it reviews.
+
+`campaign-accept` records an audited handoff but cannot turn a caller-provided Boolean into human
+approval. Human-gated work remains blocked until a trusted host verifies a request-bound approval receipt.
 
 Create cohort assignment ledgers before inspecting outcomes. `workspace-remove` delegates to Git and
 does not recursively delete session directories; use `--force` only after reviewing uncommitted work.
