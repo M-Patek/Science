@@ -19,3 +19,5 @@ campaigns/*/runtime/
 # Keep source data policy explicit; large/private datasets should live outside git.
 experiments/*/data/derived/*
 !experiments/*/data/derived/.gitkeep
+
+tests/fixtures/doctor-temp-new*/
