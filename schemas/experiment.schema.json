@@ -18,7 +18,8 @@
       "required": ["command", "outputs"],
       "properties": {
         "command": {"type": "array", "minItems": 1, "items": {"type": "string"}},
-        "outputs": {"type": "array", "items": {"type": "string"}}
+        "outputs": {"type": "array", "items": {"type": "string"}},
+        "timeout_seconds": {"type": "number", "exclusiveMinimum": 0}
       },
       "additionalProperties": false
     },
@@ -27,4 +28,3 @@
   },
   "additionalProperties": true
 }
-

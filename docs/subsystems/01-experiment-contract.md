@@ -16,3 +16,8 @@ detail belongs in `hypothesis.md` and `protocol.md`; do not duplicate implementa
 
 Allowed stages: `idea`, `designed`, `running`, `analyzed`, `reviewed`, `published`, `abandoned`.
 Stage is epistemic state, not a task-progress percentage.
+
+Generated projects carry their pinned JSON Schemas. Validation applies those local contracts and checks
+that declared contract versions match each schema's `schema_version` constant. Framework source schemas
+must remain byte-identical to the packaged project schemas. `execution.timeout_seconds`, when present,
+must be a positive number.

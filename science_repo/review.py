@@ -5,8 +5,9 @@ import operator
 from pathlib import Path
 from typing import Any
 
-from .io import dump_json, sha256_file
+from .io import dump_json, sha256_text
 from .io import load_yaml
+from .runner import _evidence_item
 
 
 OPERATORS = {
@@ -22,19 +23,23 @@ def review_run(run_dir: Path) -> tuple[bool, Path]:
     record = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
     experiment_root = run_dir.parent.parent
     checks: list[dict[str, Any]] = []
-    checks.append({"name": "process_succeeded", "passed": record["exit_code"] == 0})
+    checks.append({"name": "process_succeeded", "passed": record["exit_code"] == 0 and record.get("status") == "succeeded"})
+    manifest_text = (run_dir / "manifest.yaml").read_text(encoding="utf-8")
+    checks.append({"name": "manifest_snapshot_integrity", "passed": sha256_text(manifest_text) == record.get("manifest_sha256")})
+    environment = json.loads((run_dir / "environment.json").read_text(encoding="utf-8"))
+    checks.append({"name": "environment_snapshot_integrity", "passed": sha256_text(json.dumps(environment, sort_keys=True)) == record.get("environment_sha256")})
     for source in record.get("inputs", []):
-        path = experiment_root / source["path"]
+        current = _evidence_item(experiment_root, source["path"])
         checks.append(
             {
                 "name": f"input_integrity:{source['path']}",
-                "passed": path.is_file() and sha256_file(path) == source.get("sha256"),
+                "passed": current["exists"] and current["sha256"] == source.get("sha256") and current.get("kind") == source.get("kind", "file"),
             }
         )
     for artifact in record.get("artifacts", []):
-        path = experiment_root / artifact["path"]
-        exists = path.is_file()
-        digest_matches = exists and sha256_file(path) == artifact.get("sha256")
+        current = _evidence_item(experiment_root, artifact["path"])
+        exists = current["exists"]
+        digest_matches = exists and current["sha256"] == artifact.get("sha256") and current.get("kind") == artifact.get("kind", "file")
         checks.append(
             {
                 "name": f"artifact_integrity:{artifact['path']}",

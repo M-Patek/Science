@@ -86,7 +86,8 @@ def test_prepared_defect_is_unique_and_smallest_correction_validates(fixture_roo
     build_onboarding_fixture(project)
     errors = validate_repository(project)
     assert len(errors) == 1
-    assert "prepared-invalid: stage must be one of" in errors[0]
+    assert "schema violation at stage" in errors[0]
+    assert "'ready' is not one of" in errors[0]
     manifest_path = project / "experiments" / "prepared-invalid" / "experiment.yaml"
     manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
     manifest["stage"] = "designed"

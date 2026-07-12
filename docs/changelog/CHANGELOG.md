@@ -6,6 +6,14 @@ last_validated: 2026-07-10
 
 # Changelog
 
+## 2026-07-12 — Contract, provenance, and distribution integrity (T4)
+
+- Enforced project-local JSON Schemas and source/package schema parity with contextual diagnostics.
+- Added positive experiment timeouts, deterministic directory evidence hashes, and symlink rejection.
+- Preserved complete failed run records for startup errors and timeouts; strengthened snapshot review.
+- Added offline fresh-wheel verification of the complete independent-project CLI lifecycle.
+- Packaged generated-project Agent skills and otherwise-empty contract directories explicitly.
+
 ## 2026-07-11 — Native delegation boundary and benchmark repair (T4)
 
 - Defined dispatch envelopes and handoff audits around platform-native subagent capabilities instead of

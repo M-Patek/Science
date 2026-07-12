@@ -10,9 +10,10 @@ code_anchors:
 # 03 — Validation and Review
 
 Repository validation detects missing experiment files, malformed manifests, path escape attempts, and
-registry drift. Mechanical review re-hashes artifacts and verifies successful execution.
+registry drift. It executes project-local pinned JSON Schemas and, in framework source, detects packaged
+schema drift. Mechanical review verifies execution status, frozen manifest and environment snapshots,
+and the type and content hashes of declared inputs and artifacts.
 
 This critic intentionally makes no claim about causal inference, statistics, citation fidelity, image
 interpretation, research ethics, or domain correctness. Those require explicit specialist and human
 review gates in later versions.
-

@@ -16,6 +16,7 @@ last_validated: 2026-07-10
 | experiment lifecycle | `docs/operations/experiment-workflow.md` |
 | framework self-research / local development | `docs/operations/dogfooding.md` |
 | commands | `docs/operations/cheatsheet.md` |
+| wheel / release verification | `docs/operations/distribution-verification.md` |
 | rationale | `docs/adr/0001-repository-as-scientific-record.md`, `docs/adr/0002-separate-framework-from-research-projects.md` |
 | recent work | `docs/changelog/CHANGELOG.md` |
 

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import platform
@@ -16,16 +17,22 @@ from .models import Experiment
 
 
 def _git_revision(repo: Path) -> str | None:
-    result = subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=repo, text=True, capture_output=True, check=False
-    )
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=repo, text=True, capture_output=True, check=False
+        )
+    except OSError:
+        return None
     return result.stdout.strip() if result.returncode == 0 else None
 
 
 def _environment_snapshot() -> dict[str, Any]:
-    packages = subprocess.run(
-        [sys.executable, "-m", "pip", "freeze"], text=True, capture_output=True, check=False
-    ).stdout.splitlines()
+    try:
+        packages = subprocess.run(
+            [sys.executable, "-m", "pip", "freeze"], text=True, capture_output=True, check=False
+        ).stdout.splitlines()
+    except OSError:
+        packages = []
     return {
         "python": sys.version,
         "platform": platform.platform(),
@@ -39,64 +46,114 @@ def _environment_snapshot() -> dict[str, Any]:
     }
 
 
+def _safe_declared_path(root: Path, relative: str) -> Path | None:
+    candidate = root / relative
+    try:
+        candidate.relative_to(root)
+        resolved = candidate.resolve(strict=False)
+        resolved.relative_to(root.resolve())
+    except (OSError, ValueError):
+        return None
+    # Declared evidence must not acquire content through a symlink, including a
+    # symlinked parent directory. This avoids both path escape and mutable aliasing.
+    current = candidate
+    while current != root:
+        if current.is_symlink():
+            return None
+        current = current.parent
+    return candidate
+
+
+def _path_digest(path: Path) -> tuple[str, int, str] | None:
+    if path.is_file():
+        return sha256_file(path), path.stat().st_size, "file"
+    if not path.is_dir():
+        return None
+    digest = hashlib.sha256()
+    total = 0
+    for child in sorted(path.rglob("*"), key=lambda item: item.relative_to(path).as_posix()):
+        if child.is_symlink():
+            return None
+        relative = child.relative_to(path).as_posix()
+        kind = "dir" if child.is_dir() else "file" if child.is_file() else "other"
+        digest.update(f"{kind}\0{relative}\0".encode())
+        if kind == "file":
+            size = child.stat().st_size
+            total += size
+            digest.update(sha256_file(child).encode())
+        elif kind == "other":
+            return None
+        digest.update(b"\0")
+    return digest.hexdigest(), total, "directory"
+
+
+def _evidence_item(root: Path, relative: str) -> dict[str, Any]:
+    path = _safe_declared_path(root, relative)
+    value = _path_digest(path) if path is not None else None
+    return {
+        "path": relative,
+        "exists": value is not None,
+        "sha256": value[0] if value else None,
+        "bytes": value[1] if value else None,
+        "kind": value[2] if value else None,
+    }
+
+
 def run_experiment(repo: Path, experiment_id: str) -> tuple[int, Path]:
     exp = Experiment.load(repo / "experiments" / experiment_id)
     run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid.uuid4().hex[:8]
     run_dir = exp.root / "records" / run_id
     run_dir.mkdir(parents=True, exist_ok=False)
-    shutil_manifest = (exp.root / "experiment.yaml").read_text(encoding="utf-8")
-    (run_dir / "manifest.yaml").write_text(shutil_manifest, encoding="utf-8")
+    manifest_text = (exp.root / "experiment.yaml").read_text(encoding="utf-8")
+    (run_dir / "manifest.yaml").write_text(manifest_text, encoding="utf-8")
     environment = _environment_snapshot()
+    dump_json(run_dir / "environment.json", environment)
     command = [sys.executable if part == "{python}" else part for part in exp.command]
+    # Inputs describe what the process was given, so freeze them before the
+    # command gets an opportunity to mutate them.
+    inputs = [_evidence_item(exp.root, relative) for relative in exp.inputs]
     started = datetime.now(timezone.utc)
     start_clock = time.monotonic()
-    result = subprocess.run(command, cwd=exp.root, text=True, capture_output=True, check=False)
+    stdout = ""
+    stderr = ""
+    exit_code = -1
+    execution_error: dict[str, str] | None = None
+    timeout = exp.manifest.get("execution", {}).get("timeout_seconds")
+    try:
+        result = subprocess.run(
+            command, cwd=exp.root, text=True, capture_output=True, check=False,
+            timeout=float(timeout) if timeout is not None else None,
+        )
+        stdout, stderr, exit_code = result.stdout, result.stderr, result.returncode
+    except subprocess.TimeoutExpired as error:
+        stdout = error.stdout or ""
+        stderr = error.stderr or ""
+        if isinstance(stdout, bytes): stdout = stdout.decode(errors="replace")
+        if isinstance(stderr, bytes): stderr = stderr.decode(errors="replace")
+        stderr += f"\nscience runner: command timed out after {timeout} seconds\n"
+        exit_code = 124
+        execution_error = {"type": "timeout", "message": str(error)}
+    except OSError as error:
+        stderr = f"science runner: failed to start command: {error}\n"
+        exit_code = 127
+        execution_error = {"type": "startup_error", "message": str(error)}
     ended = datetime.now(timezone.utc)
-    (run_dir / "stdout.log").write_text(result.stdout, encoding="utf-8")
-    (run_dir / "stderr.log").write_text(result.stderr, encoding="utf-8")
-    artifacts = []
-    for relative in exp.outputs:
-        path = exp.root / relative
-        artifacts.append(
-            {
-                "path": relative,
-                "exists": path.is_file(),
-                "sha256": sha256_file(path) if path.is_file() else None,
-                "bytes": path.stat().st_size if path.is_file() else None,
-            }
-        )
-    inputs = []
-    for relative in exp.inputs:
-        path = exp.root / relative
-        inputs.append(
-            {
-                "path": relative,
-                "exists": path.is_file(),
-                "sha256": sha256_file(path) if path.is_file() else None,
-                "bytes": path.stat().st_size if path.is_file() else None,
-            }
-        )
+    (run_dir / "stdout.log").write_text(stdout, encoding="utf-8")
+    (run_dir / "stderr.log").write_text(stderr, encoding="utf-8")
+    artifacts = [_evidence_item(exp.root, relative) for relative in exp.outputs]
     record = {
         "schema_version": 1,
         "run_id": run_id,
         "experiment_id": experiment_id,
-        "status": "succeeded"
-        if result.returncode == 0
-        and all(item["exists"] for item in inputs)
-        and all(item["exists"] for item in artifacts)
-        else "failed",
-        "started_at": started.isoformat(),
-        "ended_at": ended.isoformat(),
+        "status": "succeeded" if exit_code == 0 and all(x["exists"] for x in inputs + artifacts) else "failed",
+        "started_at": started.isoformat(), "ended_at": ended.isoformat(),
         "duration_seconds": round(time.monotonic() - start_clock, 6),
-        "command": command,
-        "exit_code": result.returncode,
-        "git_revision": _git_revision(repo),
-        "manifest_sha256": sha256_file(exp.root / "experiment.yaml"),
+        "command": command, "exit_code": exit_code, "git_revision": _git_revision(repo),
+        "manifest_sha256": sha256_text(manifest_text),
         "environment_sha256": sha256_text(json.dumps(environment, sort_keys=True)),
-        "inputs": inputs,
-        "artifacts": artifacts,
+        "inputs": inputs, "artifacts": artifacts,
     }
-    dump_json(run_dir / "environment.json", environment)
+    if execution_error:
+        record["execution_error"] = execution_error
     dump_json(run_dir / "run.json", record)
-    exit_code = 0 if record["status"] == "succeeded" else (result.returncode or 1)
-    return exit_code, run_dir
+    return (0 if record["status"] == "succeeded" else (exit_code or 1)), run_dir
