@@ -21,3 +21,7 @@ review report; corrupt evidence must not crash the reviewer.
 This critic intentionally makes no claim about causal inference, statistics, citation fidelity, image
 interpretation, research ethics, or domain correctness. Those require explicit specialist and human
 review gates in later versions.
+
+## Review extensions
+
+Trusted, explicitly registered in-process plugins may add deterministic mechanical or scientific-advisory checks. They cannot claim human review, fail closed on malformed output, and are not an isolation or timeout boundary. Human approval remains separate.

@@ -51,3 +51,7 @@ Scheduling is an outcome-free decision over the manifest and lease snapshots. Co
 generated before observations and checked for unique session, copy, and context identities. Session
 workspaces pin and verify a full Git commit and can only be removed through a boundary-checked Git
 worktree operation.
+
+## Audited closure and upgrades
+
+The coordinator accepts only audit receipts bound to canonical handoffs, writes an event-first recovery log, and then materializes task state. Review and human gates fail closed. Contract migration is a deterministic read-only plan; `science doctor` is diagnostic only. Neither command silently upgrades projects.

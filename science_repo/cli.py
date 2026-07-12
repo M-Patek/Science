@@ -15,6 +15,10 @@ from .cohort import generate_preassignment, load_cohort, validate_cohort, valida
 from .dispatch import audit_dispatch_handoff, create_dispatch_envelope
 from .handoff import load_handoff, validate_handoff
 from .lifecycle import LifecycleError, transition_stage
+from .lineage import lineage_digest, load_lineage, validate_lineage
+from .doctor import diagnose
+from .migration import KNOWN_CONTRACTS, plan_contract_migration
+from .reproduce import assess_environment_files
 from .models import ID_RE
 from .review import review_run
 from .runner import run_experiment
@@ -394,6 +398,48 @@ def cmd_transition(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_doctor(args: argparse.Namespace) -> int:
+    report = diagnose(selected_project(args))
+    print(json.dumps(report, ensure_ascii=False, indent=2))
+    return 1 if report["summary"].get("error", 0) else 0
+
+
+def cmd_reproduce_assess(args: argparse.Namespace) -> int:
+    report = assess_environment_files(Path(args.reference), Path(args.current))
+    print(json.dumps(report, ensure_ascii=False, indent=2))
+    return 1 if report["overall_status"] == "mismatch" else 0
+
+
+def cmd_lineage_validate(args: argparse.Namespace) -> int:
+    root = selected_project(args)
+    path = Path(args.manifest)
+    manifest = load_lineage(path)
+    errors = validate_lineage(manifest, path, root, schema_path=_schema_path(root, "lineage"))
+    if errors:
+        print("Lineage validation failed:")
+        for error in errors:
+            print(f"- {error}")
+        return 1
+    print(json.dumps({"manifest": str(path), "sha256": lineage_digest(manifest)}, indent=2))
+    return 0
+
+
+def cmd_migration_plan(args: argparse.Namespace) -> int:
+    root = selected_project(args)
+    target = dict(item.split("=", 1) for item in args.target)
+    try:
+        target_versions = {name: int(value) for name, value in target.items()}
+    except ValueError as error:
+        raise SystemExit(f"target versions must be integers: {error}") from error
+    unknown = sorted(set(target_versions) - set(KNOWN_CONTRACTS))
+    if unknown:
+        raise SystemExit(f"unknown contracts: {', '.join(unknown)}")
+    schemas = ASSETS / "project" / "schemas"
+    plan = plan_contract_migration(root, target_versions, schemas)
+    print(json.dumps(plan.to_dict(), ensure_ascii=False, indent=2))
+    return 0 if plan.status == "compatible" else 2
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="science", description="Auditable experiment workbench")
     parser.add_argument("--project", help="project path; otherwise discover from current directory")
@@ -491,6 +537,18 @@ def build_parser() -> argparse.ArgumentParser:
     transition.add_argument("--reason", required=True)
     transition.add_argument("--actor", required=True)
     transition.set_defaults(func=cmd_transition)
+    doctor = sub.add_parser("doctor", help="diagnose a Science repository without modifying it")
+    doctor.set_defaults(func=cmd_doctor)
+    reproduce = sub.add_parser("reproduce-assess", help="compare two captured environment snapshots")
+    reproduce.add_argument("reference")
+    reproduce.add_argument("current")
+    reproduce.set_defaults(func=cmd_reproduce_assess)
+    lineage = sub.add_parser("lineage-validate", help="validate a pinned lineage manifest")
+    lineage.add_argument("manifest")
+    lineage.set_defaults(func=cmd_lineage_validate)
+    migration = sub.add_parser("migration-plan", help="plan an explicit contract migration without applying it")
+    migration.add_argument("--target", action="append", required=True, metavar="NAME=VERSION")
+    migration.set_defaults(func=cmd_migration_plan)
     return parser
 
 

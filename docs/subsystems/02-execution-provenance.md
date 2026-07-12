@@ -26,3 +26,7 @@ process-tree timeout cleanup, or OS-enforced WORM records.
 Each run creates `run.in-progress.json` before launching the command. The marker is removed only after the
 final `run.json` is atomically replaced. A remaining marker is evidence of incomplete finalization. Timeout
 process-tree termination uses platform facilities and records parent-only fallback; it remains best effort.
+
+## Self-bootstrap integrity services
+
+Lineage manifests bind hashed dataset, artifact, run, and code entities through validated acyclic relations and project-relative paths. Environment reproduction assessment compares captured snapshots without probing a host; missing dimensions remain unknown and arbitrary identifiers are stable fingerprints rather than disclosed values.

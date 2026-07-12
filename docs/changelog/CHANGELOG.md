@@ -6,6 +6,14 @@ last_validated: 2026-07-10
 
 # Changelog
 
+## 2026-07-12 — Self-bootstrap integrity and reproducibility (T4)
+
+- Added pinned, path-safe data/run/code lineage validation and deterministic lineage digests.
+- Added non-secret environment reproduction assessment with explicit unknown and unavailable states.
+- Closed audited handoffs with hash-bound receipts, recoverable event-first state, gates, and retries.
+- Added bounded review plugins that cannot manufacture human approval.
+- Added read-only migration planning, repository diagnostics, and offline release manifests.
+
 ## 2026-07-12 — Complete contracts and resilient lifecycle records (T4)
 
 - Applied pinned schemas to campaign, handoff, and run-record validation paths.

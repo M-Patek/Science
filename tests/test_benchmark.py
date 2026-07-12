@@ -31,8 +31,9 @@ def test_fixture_is_deterministic_and_contains_registered_tasks(fixture_root: Pa
     assert {path.name for path in (first / "schemas").glob("*.schema.json")} == {
         "campaign.schema.json",
         "experiment.schema.json",
-        "handoff.schema.json",
-        "project.schema.json",
+            "handoff.schema.json",
+            "lineage.schema.json",
+            "project.schema.json",
         "run.schema.json",
     }
     assert {path.name for path in (first / "experiments").iterdir() if path.is_dir()} == {

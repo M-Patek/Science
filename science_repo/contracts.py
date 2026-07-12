@@ -8,7 +8,7 @@ from typing import Any
 import yaml
 
 
-SCHEMA_NAMES = ("project", "experiment", "campaign", "handoff", "run")
+SCHEMA_NAMES = ("project", "experiment", "campaign", "handoff", "run", "lineage")
 
 
 def schema_errors(
