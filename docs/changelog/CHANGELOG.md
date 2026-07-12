@@ -6,6 +6,15 @@ last_validated: 2026-07-10
 
 # Changelog
 
+## 2026-07-13 - Formal self-research cohort preparation
+
+- Added a fail-closed cohort freeze contract for twelve fixtures and twenty-four paired block-arm
+  cells, with material hashes, a human-seed commitment, and externally supplied runtime identity.
+- Added the first twelve four-stratum Science self-bootstrap fixtures without creating observations
+  or execution authorization.
+- Hardened the preregistered study design around immutable attempt evidence, blinded scoring, and
+  explicit human and trusted-host gates.
+
 ## 2026-07-13 — Continuous self-bootstrap execution loop (T4)
 
 - Connected dispatch audit to recoverable Campaign acceptance without implementing agent transport.

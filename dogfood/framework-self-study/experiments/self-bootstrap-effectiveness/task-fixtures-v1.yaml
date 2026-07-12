@@ -1,7 +1,241 @@
 schema_version: 1
-status: pending-not-frozen
+status: fixtures-frozen-allocation-pending
 dispatch_allowed: false
 required_fixture_count: 12
+fixture_count: 12
+baseline:
+  git_commit: 91d97f120fb0f92f8636f1fce1f0c2a20f5b7271
+  git_tree: 4eac537072dd5543126ce179943d1a9a0eb1d1d3
+  verification: git rev-parse HEAD and git rev-parse HEAD^{tree} must exactly match before task receipt
+hashes:
+  algorithm: sha256
+  byte_rule: Decode UTF-8, normalize CRLF and CR to LF, then hash the resulting UTF-8 bytes; no other normalization.
 allocation_seed: null
-fixtures: []
-note: Populate all twelve fixture IDs, strata, difficulty, prompt and tree hashes, acceptance tests, and seeded allocation before dispatch. No observations exist.
+allocation_status: pending-human-recorded-seed-and-ledger
+fixtures:
+- id: cs-01-experiment-metadata
+  block: 1
+  stratum: contract-schema
+  difficulty: medium
+  prompt_path: fixtures/cs-01-experiment-metadata/prompt.txt
+  prompt_sha256: 456ea42fb2a974a4e8f09aca6acb6844b710d9d0e2fecd5d0b0b3a9a90e93a7f
+  source_tree_git_hash: 4eac537072dd5543126ce179943d1a9a0eb1d1d3
+  limits:
+    elapsed_minutes: 90
+    network: forbidden
+    external_compute: forbidden
+    paid_resources: forbidden
+    alternate_arm_visibility: forbidden
+  write_scope:
+  - schemas/experiment.schema.json
+  - science_repo/assets/project/schemas/experiment.schema.json
+  - science_repo/models.py
+  - tests/test_contracts.py
+  acceptance: '`pytest tests/test_contracts.py` and `python -m science_repo.cli validate` pass; tests cover omission, valid tags, duplicates, uppercase, and empty strings; both schema copies are byte-identical.'
+- id: cs-02-campaign-effort
+  block: 2
+  stratum: contract-schema
+  difficulty: medium
+  prompt_path: fixtures/cs-02-campaign-effort/prompt.txt
+  prompt_sha256: 9d1255dec03fd82e17e474798065892cc1209581976425a02a06f161c6082960
+  source_tree_git_hash: 4eac537072dd5543126ce179943d1a9a0eb1d1d3
+  limits:
+    elapsed_minutes: 90
+    network: forbidden
+    external_compute: forbidden
+    paid_resources: forbidden
+    alternate_arm_visibility: forbidden
+  write_scope:
+  - schemas/campaign.schema.json
+  - science_repo/assets/project/schemas/campaign.schema.json
+  - science_repo/campaign.py
+  - tests/test_campaign.py
+  acceptance: '`pytest tests/test_campaign.py` and repository validation pass; boundary tests cover 1, 1440, 0, 1441, non-integer, and omission; schema copies remain byte-identical.'
+- id: cs-03-run-stop-reason
+  block: 3
+  stratum: contract-schema
+  difficulty: hard
+  prompt_path: fixtures/cs-03-run-stop-reason/prompt.txt
+  prompt_sha256: b354c65e7d66bf194cf3cbe5218761ef91122c4b72ffd593e6143de39868e12b
+  source_tree_git_hash: 4eac537072dd5543126ce179943d1a9a0eb1d1d3
+  limits:
+    elapsed_minutes: 90
+    network: forbidden
+    external_compute: forbidden
+    paid_resources: forbidden
+    alternate_arm_visibility: forbidden
+  write_scope:
+  - schemas/run.schema.json
+  - science_repo/assets/project/schemas/run.schema.json
+  - science_repo/runner.py
+  - tests/test_record_resilience.py
+  - tests/test_provenance.py
+  acceptance: both focused test files and repository validation pass; tests exercise success, nonzero exit, timeout, startup failure, and missing declared evidence; old records without the field remain valid.
+- id: rp-01-lineage-disconnected
+  block: 4
+  stratum: runtime-provenance
+  difficulty: medium
+  prompt_path: fixtures/rp-01-lineage-disconnected/prompt.txt
+  prompt_sha256: 9ebeccf5958ceae5ab621364934162009ca269900edcb3415936f7c958cc0abf
+  source_tree_git_hash: 4eac537072dd5543126ce179943d1a9a0eb1d1d3
+  limits:
+    elapsed_minutes: 90
+    network: forbidden
+    external_compute: forbidden
+    paid_resources: forbidden
+    alternate_arm_visibility: forbidden
+  write_scope:
+  - science_repo/lineage.py
+  - tests/test_lineage.py
+  acceptance: '`pytest tests/test_lineage.py tests/test_lineage_review.py` passes; tests cover disconnected dataset, disconnected artifact, connected entities, diagnostic ordering, and no regression of cycle/path/hash checks.'
+- id: rp-02-environment-size-cap
+  block: 5
+  stratum: runtime-provenance
+  difficulty: hard
+  prompt_path: fixtures/rp-02-environment-size-cap/prompt.txt
+  prompt_sha256: 4ebf7ef3db50e90464c76eb165641ab74a5599563094beedd430e43cfeccefc8
+  source_tree_git_hash: 4eac537072dd5543126ce179943d1a9a0eb1d1d3
+  limits:
+    elapsed_minutes: 90
+    network: forbidden
+    external_compute: forbidden
+    paid_resources: forbidden
+    alternate_arm_visibility: forbidden
+  write_scope:
+  - science_repo/environment.py
+  - science_repo/reproduce.py
+  - tests/test_environment.py
+  - tests/test_reproduce.py
+  acceptance: both focused test files pass; tests cover 0, 500, and 501 packages, stable ordering, omitted count, and legacy comparison.
+- id: rp-03-review-record-binding
+  block: 6
+  stratum: runtime-provenance
+  difficulty: medium
+  prompt_path: fixtures/rp-03-review-record-binding/prompt.txt
+  prompt_sha256: e0da3011d9c7883e207a7b2ddc814ad82d1dadea053900766618eb52ad49fc94
+  source_tree_git_hash: 4eac537072dd5543126ce179943d1a9a0eb1d1d3
+  limits:
+    elapsed_minutes: 90
+    network: forbidden
+    external_compute: forbidden
+    paid_resources: forbidden
+    alternate_arm_visibility: forbidden
+  write_scope:
+  - science_repo/review.py
+  - tests/test_review_integration.py
+  - tests/test_record_resilience.py
+  acceptance: both focused test files pass; tests cover both mismatches, malformed/missing identifiers, valid binding, deterministic check names, and report creation on failure.
+- id: or-01-scheduler-capacity
+  block: 7
+  stratum: orchestration
+  difficulty: medium
+  prompt_path: fixtures/or-01-scheduler-capacity/prompt.txt
+  prompt_sha256: cfcc94d649b36f4887054436516d01e369c6fb825137e6827eef646af314e552
+  source_tree_git_hash: 4eac537072dd5543126ce179943d1a9a0eb1d1d3
+  limits:
+    elapsed_minutes: 90
+    network: forbidden
+    external_compute: forbidden
+    paid_resources: forbidden
+    alternate_arm_visibility: forbidden
+  write_scope:
+  - science_repo/scheduler.py
+  - tests/test_scheduler.py
+  acceptance: '`pytest tests/test_scheduler.py` passes; tests cover unlimited compatibility, caps of 1 and 2, invalid values, blocked dependencies, and stable ordering.'
+- id: or-02-handoff-output-uniqueness
+  block: 8
+  stratum: orchestration
+  difficulty: medium
+  prompt_path: fixtures/or-02-handoff-output-uniqueness/prompt.txt
+  prompt_sha256: f423779b64e5537faff42eb8f594da72167eeb32fab93692ec00ddfb5b67fb3d
+  source_tree_git_hash: 4eac537072dd5543126ce179943d1a9a0eb1d1d3
+  limits:
+    elapsed_minutes: 90
+    network: forbidden
+    external_compute: forbidden
+    paid_resources: forbidden
+    alternate_arm_visibility: forbidden
+  write_scope:
+  - science_repo/handoff.py
+  - tests/test_handoff.py
+  acceptance: '`pytest tests/test_handoff.py` passes; tests cover exact duplicates, slash-equivalent duplicates, distinct outputs, traversal, and unchanged scope enforcement.'
+- id: or-03-coordinator-event-sequence
+  block: 9
+  stratum: orchestration
+  difficulty: hard
+  prompt_path: fixtures/or-03-coordinator-event-sequence/prompt.txt
+  prompt_sha256: 7f3af0254be039f1a4fd93f7abaaf6ff40dfc1d5296a50198e4cbb37adbe36a0
+  source_tree_git_hash: 4eac537072dd5543126ce179943d1a9a0eb1d1d3
+  limits:
+    elapsed_minutes: 90
+    network: forbidden
+    external_compute: forbidden
+    paid_resources: forbidden
+    alternate_arm_visibility: forbidden
+  write_scope:
+  - science_repo/coordinator.py
+  - tests/test_coordinator.py
+  - tests/test_coordinator_hardening.py
+  acceptance: both focused test files pass; tests cover gap, duplicate, regression, non-integer, valid replay, and torn final line.
+- id: dx-01-validation-json
+  block: 10
+  stratum: documentation-agent-dx
+  difficulty: medium
+  prompt_path: fixtures/dx-01-validation-json/prompt.txt
+  prompt_sha256: f8e7cd758011c13de93ceefba015ad151744a37748affe668f14423aa8c6fa53
+  source_tree_git_hash: 4eac537072dd5543126ce179943d1a9a0eb1d1d3
+  limits:
+    elapsed_minutes: 90
+    network: forbidden
+    external_compute: forbidden
+    paid_resources: forbidden
+    alternate_arm_visibility: forbidden
+  write_scope:
+  - science_repo/cli.py
+  - science_repo/validate.py
+  - tests/test_workbench.py
+  acceptance: '`pytest tests/test_workbench.py` passes; CLI tests cover valid/invalid projects, default output compatibility, deterministic ordering, relative-path privacy, and exit codes.'
+- id: dx-02-campaign-explain
+  block: 11
+  stratum: documentation-agent-dx
+  difficulty: hard
+  prompt_path: fixtures/dx-02-campaign-explain/prompt.txt
+  prompt_sha256: c0aefb7f3764f0b199071f470303393105d0b94c14f34f88765d3e8e77fd2fe0
+  source_tree_git_hash: 4eac537072dd5543126ce179943d1a9a0eb1d1d3
+  limits:
+    elapsed_minutes: 90
+    network: forbidden
+    external_compute: forbidden
+    paid_resources: forbidden
+    alternate_arm_visibility: forbidden
+  write_scope:
+  - science_repo/cli.py
+  - science_repo/scheduler.py
+  - tests/test_cli_orchestration.py
+  - tests/test_scheduler.py
+  acceptance: both focused test files pass; tests cover each reason, multiple sorted reasons, ready tasks, legacy output, and proof that state files are unchanged.
+- id: dx-03-doctor-remediation
+  block: 12
+  stratum: documentation-agent-dx
+  difficulty: medium
+  prompt_path: fixtures/dx-03-doctor-remediation/prompt.txt
+  prompt_sha256: ee105190b21f11e1a5f2b0aea2422359dc18c62dcf6545bdcdf04de94e2877e9
+  source_tree_git_hash: 4eac537072dd5543126ce179943d1a9a0eb1d1d3
+  limits:
+    elapsed_minutes: 90
+    network: forbidden
+    external_compute: forbidden
+    paid_resources: forbidden
+    alternate_arm_visibility: forbidden
+  write_scope:
+  - science_repo/doctor.py
+  - science_repo/cli.py
+  - tests/test_doctor.py
+  - docs/operations/cheatsheet.md
+  acceptance: '`pytest tests/test_doctor.py` and `python scripts/check_docs.py` pass; tests cover pass/fail/unknown, code stability, JSON output, and no leakage of environment values.'
+freeze_rule: Changing a prompt, source tree, scope, limit, difficulty, or acceptance condition requires a new manifest version; never edit this file after dispatch.
+dispatch_blockers:
+- seeded allocation ledger is not frozen
+- exact runtime/model identity is not registered
+- independent fixture/hash check is not recorded
+note: These are design artifacts only. No task attempt, score, measurement, approval, or observation is asserted.

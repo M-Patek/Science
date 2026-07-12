@@ -1,46 +1,64 @@
 schema_version: 1
 id: self-bootstrap-v2
-title: Execute preregistered framework self-bootstrap effectiveness study
-objective: Prepare, execute, independently score, analyze, and review a controlled comparison without fabricating observations or bypassing human gates.
+title: Prepare preregistered framework self-bootstrap effectiveness study
+objective: Prepare a 24-cell study and keep subject dispatch blocked until trusted identity, authorization, per-cell scheduling, isolation, and blinding verification exist.
 status: draft
 owner: framework-maintainer
-framework_revision_under_test: aa398ebdc13d5cb8d44cc83c5e097faade766da3
+framework_revision_under_test: 91d97f120fb0f92f8636f1fce1f0c2a20f5b7271
 human_gates:
-  - {id: gate-authorize-execution, trigger: Before subject dispatch or candidate observation creation, approver: project-owner}
+  - {id: gate-authorize-execution, trigger: Before subject dispatch or attempt-bundle creation, approver: project-owner}
   - {id: gate-publish, trigger: Before any publication, approver: independent-human-reviewer}
 tasks:
   - id: register-executable-cohort
     role: research-designer
     status: pending
     depends_on: []
-    inputs: [experiments/self-bootstrap-effectiveness/protocol.md, experiments/self-bootstrap-effectiveness/cohort-v1.yaml, experiments/self-bootstrap-effectiveness/task-fixtures-v1.yaml]
-    outputs: [experiments/self-bootstrap-effectiveness/registration/cohort-freeze.json]
+    inputs: [experiments/self-bootstrap-effectiveness/protocol.md, experiments/self-bootstrap-effectiveness/cohort-v1.yaml, experiments/self-bootstrap-effectiveness/task-fixtures-v1.yaml, experiments/self-bootstrap-effectiveness/rubric.md, experiments/self-bootstrap-effectiveness/schemas/attempt-bundle-v1.schema.json, experiments/self-bootstrap-effectiveness/schemas/blinded-scoring-packet-v1.schema.json]
+    outputs: [experiments/self-bootstrap-effectiveness/registration/cohort-freeze.json, experiments/self-bootstrap-effectiveness/registration/allocation-ledger.json]
     write_scope: [experiments/self-bootstrap-effectiveness/registration/]
     review_required: true
     human_gate: false
-  - id: authorize-and-stage
-    role: experiment-operator
+  - id: prepare-sanitized-subject-packets
+    role: blinded-packet-preparer
     status: pending
     depends_on: [register-executable-cohort]
-    inputs: [experiments/self-bootstrap-effectiveness/registration/cohort-freeze.json]
-    outputs: [experiments/self-bootstrap-effectiveness/staging/observations-v2.candidate.csv]
-    write_scope: [experiments/self-bootstrap-effectiveness/staging/]
+    inputs: [experiments/self-bootstrap-effectiveness/registration/cohort-freeze.json, experiments/self-bootstrap-effectiveness/registration/allocation-ledger.json, experiments/self-bootstrap-effectiveness/templates/subject-packet-v1.yaml]
+    outputs: [experiments/self-bootstrap-effectiveness/staging/subject-packets/packet-manifest.json]
+    write_scope: [experiments/self-bootstrap-effectiveness/staging/subject-packets/]
+    review_required: true
+    human_gate: false
+  - id: authorize-dispatch-and-capture
+    role: experiment-operator
+    status: pending
+    depends_on: [prepare-sanitized-subject-packets]
+    inputs: [experiments/self-bootstrap-effectiveness/staging/subject-packets/packet-manifest.json, experiments/self-bootstrap-effectiveness/schemas/attempt-bundle-v1.schema.json]
+    outputs: [experiments/self-bootstrap-effectiveness/staging/attempt-bundles/bundle-manifest.json]
+    write_scope: [experiments/self-bootstrap-effectiveness/staging/attempt-bundles/]
     review_required: true
     human_gate: true
   - id: ingest-raw-exclusive
     role: controlled-ingestion-operator
     status: pending
-    depends_on: [authorize-and-stage]
-    inputs: [experiments/self-bootstrap-effectiveness/staging/observations-v2.candidate.csv]
+    depends_on: [authorize-dispatch-and-capture]
+    inputs: [experiments/self-bootstrap-effectiveness/staging/attempt-bundles/bundle-manifest.json, experiments/self-bootstrap-effectiveness/registration/cohort-freeze.json]
     outputs: [experiments/self-bootstrap-effectiveness/data/raw/observations-v2.csv, experiments/self-bootstrap-effectiveness/registration/observations-v2.digest.json]
     write_scope: [experiments/self-bootstrap-effectiveness/data/raw/, experiments/self-bootstrap-effectiveness/registration/]
+    review_required: true
+    human_gate: false
+  - id: prepare-opaque-blinded-scoring-packets
+    role: blinding-operator
+    status: pending
+    depends_on: [ingest-raw-exclusive]
+    inputs: [experiments/self-bootstrap-effectiveness/data/raw/observations-v2.csv, experiments/self-bootstrap-effectiveness/staging/attempt-bundles/bundle-manifest.json, experiments/self-bootstrap-effectiveness/schemas/blinded-scoring-packet-v1.schema.json]
+    outputs: [experiments/self-bootstrap-effectiveness/scoring/packets/packet-manifest.json, experiments/self-bootstrap-effectiveness/registration/opaque-attempt-map.json]
+    write_scope: [experiments/self-bootstrap-effectiveness/scoring/packets/, experiments/self-bootstrap-effectiveness/registration/]
     review_required: true
     human_gate: false
   - id: scorer-a
     role: independent-scorer-a
     status: pending
-    depends_on: [ingest-raw-exclusive]
-    inputs: [experiments/self-bootstrap-effectiveness/data/raw/observations-v2.csv, experiments/self-bootstrap-effectiveness/rubric.md]
+    depends_on: [prepare-opaque-blinded-scoring-packets]
+    inputs: [experiments/self-bootstrap-effectiveness/scoring/packets/packet-manifest.json, experiments/self-bootstrap-effectiveness/rubric.md, experiments/self-bootstrap-effectiveness/templates/score-v1.csv]
     outputs: [experiments/self-bootstrap-effectiveness/scoring/scorer-a/scores-v1.csv]
     write_scope: [experiments/self-bootstrap-effectiveness/scoring/scorer-a/]
     review_required: true
@@ -48,17 +66,17 @@ tasks:
   - id: scorer-b
     role: independent-scorer-b
     status: pending
-    depends_on: [ingest-raw-exclusive]
-    inputs: [experiments/self-bootstrap-effectiveness/data/raw/observations-v2.csv, experiments/self-bootstrap-effectiveness/rubric.md]
+    depends_on: [prepare-opaque-blinded-scoring-packets]
+    inputs: [experiments/self-bootstrap-effectiveness/scoring/packets/packet-manifest.json, experiments/self-bootstrap-effectiveness/rubric.md, experiments/self-bootstrap-effectiveness/templates/score-v1.csv]
     outputs: [experiments/self-bootstrap-effectiveness/scoring/scorer-b/scores-v1.csv]
     write_scope: [experiments/self-bootstrap-effectiveness/scoring/scorer-b/]
     review_required: true
     human_gate: false
-  - id: adjudicate-scores
+  - id: adjudicate-and-unblind
     role: independent-adjudicator
     status: pending
     depends_on: [scorer-a, scorer-b]
-    inputs: [experiments/self-bootstrap-effectiveness/scoring/scorer-a/scores-v1.csv, experiments/self-bootstrap-effectiveness/scoring/scorer-b/scores-v1.csv]
+    inputs: [experiments/self-bootstrap-effectiveness/scoring/scorer-a/scores-v1.csv, experiments/self-bootstrap-effectiveness/scoring/scorer-b/scores-v1.csv, experiments/self-bootstrap-effectiveness/registration/opaque-attempt-map.json]
     outputs: [experiments/self-bootstrap-effectiveness/data/derived/adjudicated-v1.csv]
     write_scope: [experiments/self-bootstrap-effectiveness/data/derived/]
     review_required: true
@@ -66,10 +84,10 @@ tasks:
   - id: analyze-study
     role: analysis-agent
     status: pending
-    depends_on: [adjudicate-scores]
-    inputs: [experiments/self-bootstrap-effectiveness/data/derived/adjudicated-v1.csv]
-    outputs: [experiments/self-bootstrap-effectiveness/artifacts/results-v1.json, experiments/self-bootstrap-effectiveness/records/]
-    write_scope: [experiments/self-bootstrap-effectiveness/artifacts/, experiments/self-bootstrap-effectiveness/records/]
+    depends_on: [adjudicate-and-unblind]
+    inputs: [experiments/self-bootstrap-effectiveness/data/derived/adjudicated-v1.csv, experiments/self-bootstrap-effectiveness/src/analyze.py]
+    outputs: [experiments/self-bootstrap-effectiveness/artifacts/results-v1.json]
+    write_scope: [experiments/self-bootstrap-effectiveness/artifacts/]
     review_required: true
     human_gate: false
   - id: independent-agent-review

@@ -10,6 +10,7 @@ code_anchors:
   - science_repo/scheduler.py:schedule_campaign
   - science_repo/workspace.py:WorkspaceManager
   - science_repo/cohort.py:validate_cohort
+  - science_repo/cohort_freeze.py:build_cohort_freeze
   - science_repo/dispatch.py:create_dispatch_envelope
   - science_repo/closure.py:accept_dispatch_handoff
   - science_repo/coordinator.py:CampaignCoordinator
@@ -55,6 +56,12 @@ Scheduling is an outcome-free decision over the manifest and lease snapshots. Co
 generated before observations and checked for unique session, copy, and context identities. Session
 workspaces pin and verify a full Git commit and can only be removed through a boundary-checked Git
 worktree operation.
+
+Self-research cohorts can now freeze exactly twelve fixture materials into twenty-four paired
+block-arm cells. The freeze binds fixture and baseline bytes, commits to a human-supplied seed,
+records an externally supplied runtime-identity receipt, and explicitly carries neither execution
+authorization nor observations. Because the receipt is only structurally and content-bound checked,
+the artifact remains explicitly dispatch-blocked until a trusted host verifier attests it.
 
 ## Audited closure and upgrades
 

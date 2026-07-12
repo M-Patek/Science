@@ -9,7 +9,8 @@ import yaml
 
 
 SCHEMA_NAMES = (
-    "project", "experiment", "campaign", "handoff", "run", "lineage", "execution-envelope"
+    "project", "experiment", "campaign", "handoff", "run", "lineage", "execution-envelope",
+    "cohort-freeze",
 )
 
 

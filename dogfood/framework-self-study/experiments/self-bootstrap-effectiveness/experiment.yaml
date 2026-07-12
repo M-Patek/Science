@@ -7,18 +7,24 @@ question: Does a Main Agent using a preregistered, multi-wave Science campaign i
 hypothesis: Structured multi-agent campaigns will improve independently scored change quality by at least 0.5 rubric points without increasing median total elapsed task time by more than 25%, provided neither arm has a critical violation.
 created_at: 2026-07-12
 inputs:
-  - path: data/raw/observations-v2.csv
-    role: controlled-ingestion immutable observations; absent until authorized execution
+  - path: data/derived/adjudicated-v1.csv
+    role: adjudicated blinded scores joined to immutable controlled-ingestion attempt observations; absent until authorized execution
 execution:
   command: ['{python}', src/analyze.py]
-  outputs: [artifacts/results.json]
+  outputs: [artifacts/results-v1.json]
 acceptance:
+  - metric: evaluable_itt_pairs
+    operator: '>='
+    threshold: 12
   - metric: mean_quality_difference
     operator: '>='
     threshold: 0.5
   - metric: median_total_elapsed_time_ratio
     operator: '<='
     threshold: 1.25
+  - metric: critical_violation_count
+    operator: '<='
+    threshold: 0
 ethics:
   human_subjects: false
   sensitive_data: false
