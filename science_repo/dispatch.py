@@ -9,6 +9,7 @@ then binds the returned handoff to that packet.
 from __future__ import annotations
 
 from copy import deepcopy
+from pathlib import Path
 from typing import Any
 
 from .campaign import validate_campaign
@@ -72,7 +73,13 @@ def create_dispatch_envelope(campaign: dict[str, Any], task_id: str) -> dict[str
 
 
 def audit_dispatch_handoff(
-    envelope: dict[str, Any], handoff: dict[str, Any], campaign: dict[str, Any]
+    envelope: dict[str, Any],
+    handoff: dict[str, Any],
+    campaign: dict[str, Any],
+    *,
+    schema_path: Path | None = None,
+    instance_path: Path | None = None,
+    project_manifest: Path | None = None,
 ) -> list[str]:
     """Audit a worker handoff against both its dispatch packet and campaign."""
     errors: list[str] = []
@@ -84,5 +91,13 @@ def audit_dispatch_handoff(
 
     # Also re-bind to the authoritative campaign.  The packet is convenient, not
     # an authority boundary, and may have crossed an untrusted transport.
-    errors.extend(validate_handoff(handoff, campaign))
+    errors.extend(
+        validate_handoff(
+            handoff,
+            campaign,
+            schema_path=schema_path,
+            instance_path=instance_path,
+            project_manifest=project_manifest,
+        )
+    )
     return list(dict.fromkeys(errors))

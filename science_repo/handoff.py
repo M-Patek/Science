@@ -41,13 +41,32 @@ def _inside_scope(path: str, scopes: list[str]) -> bool:
     return any(parts[: len(PurePosixPath(scope).parts)] == PurePosixPath(scope).parts for scope in scopes)
 
 
-def validate_handoff(data: dict[str, Any], campaign: dict[str, Any]) -> list[str]:
+def validate_handoff(
+    data: dict[str, Any],
+    campaign: dict[str, Any],
+    schema_path: Path | None = None,
+    instance_path: Path | None = None,
+    project_manifest: Path | None = None,
+) -> list[str]:
     """Validate the handoff contract and bind it to one campaign task.
 
     This deliberately returns errors instead of raising so schedulers can reject an
     untrusted worker response without losing the rest of a campaign validation report.
     """
     errors: list[str] = []
+    if schema_path is not None:
+        from .contracts import pinned_contract_errors
+
+        structural = pinned_contract_errors(
+            data,
+            schema_path,
+            instance_path or Path("handoff.yaml"),
+            "handoff",
+            project_manifest,
+        )
+        errors.extend(structural)
+        if structural:
+            return errors
     for field in REQUIRED_FIELDS:
         if field not in data:
             errors.append(f"missing required field: {field}")

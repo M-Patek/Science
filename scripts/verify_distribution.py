@@ -109,6 +109,13 @@ def verify(work_root: Path) -> dict[str, str]:
     (project / "experiments" / "smoke-exp" / "data" / "raw" / "input.csv").write_text(
         "value\n1\n", encoding="utf-8"
     )
+    run(
+        science, "--project", project, "transition", "smoke-exp", "--to", "designed",
+        "--reason", "Distribution smoke protocol prepared", "--actor", "distribution-verifier",
+        cwd=work_root, env=clean_env,
+    )
+    if not (project / "experiments" / "smoke-exp" / "stage-history.jsonl").is_file():
+        raise RuntimeError("stage transition did not create an audit history")
     run(science, "--project", project, "validate", cwd=work_root, env=clean_env)
     run(science, "--project", project, "run", "smoke-exp", cwd=work_root, env=clean_env)
     run(science, "--project", project, "review", "smoke-exp", cwd=work_root, env=clean_env)
@@ -118,7 +125,7 @@ def verify(work_root: Path) -> dict[str, str]:
     (campaign / "campaign.yaml").write_text(
         "schema_version: 1\nid: smoke-campaign\ntitle: Smoke\n"
         "objective: Verify the packaged campaign contract.\nstatus: approved\nowner: verifier\n"
-        "tasks:\n  - id: smoke-task\n    role: operator\n    depends_on: []\n"
+        "tasks:\n  - id: smoke-task\n    role: operator\n    status: pending\n    depends_on: []\n"
         "    inputs: []\n    outputs: [evidence/smoke.json]\n"
         "    write_scope: [evidence]\n    review_required: false\n    human_gate: false\n",
         encoding="utf-8",

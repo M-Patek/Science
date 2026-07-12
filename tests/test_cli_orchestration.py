@@ -16,6 +16,7 @@ from science_repo.cli import (
     cmd_task_claim,
     cmd_task_heartbeat,
     cmd_task_release,
+    cmd_transition,
 )
 from science_repo.io import dump_yaml
 
@@ -146,6 +147,32 @@ def test_cli_reports_ready_campaign_task(capsys):
         ) == 0
         report = json.loads(capsys.readouterr().out)
         assert report["tasks"][0]["state"] == "ready"
+    finally:
+        shutil.rmtree(root)
+
+
+def test_cli_applies_audited_stage_transition(capsys):
+    root = _project()
+    try:
+        experiment = root / "experiments" / "demo-exp"
+        experiment.mkdir(parents=True)
+        (root / "docs" / "_machine").mkdir(parents=True)
+        dump_yaml(
+            experiment / "experiment.yaml",
+            {"schema_version": 1, "id": "demo-exp", "title": "Demo", "stage": "idea"},
+        )
+        assert cmd_transition(
+            Namespace(
+                project=str(root), id="demo-exp", to="designed",
+                reason="Protocol is ready", actor="test-agent",
+            )
+        ) == 0
+        event = json.loads(capsys.readouterr().out)
+        assert event["from_stage"] == "idea"
+        assert event["to_stage"] == "designed"
+        assert (experiment / "stage-history.jsonl").is_file()
+        registry = json.loads((root / "docs" / "_machine" / "experiments.json").read_text())
+        assert registry["experiments"][0]["stage"] == "designed"
     finally:
         shutil.rmtree(root)
 

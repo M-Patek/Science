@@ -14,6 +14,10 @@ registry drift. It executes project-local pinned JSON Schemas and, in framework 
 schema drift. Mechanical review verifies execution status, frozen manifest and environment snapshots,
 and the type and content hashes of declared inputs and artifacts.
 
+Campaigns, handoffs, and run records are also checked against project-local pinned schemas. Review treats
+missing or malformed records, snapshots, results, and evidence shapes as failed checks and still writes a
+review report; corrupt evidence must not crash the reviewer.
+
 This critic intentionally makes no claim about causal inference, statistics, citation fidelity, image
 interpretation, research ethics, or domain correctness. Those require explicit specialist and human
 review gates in later versions.

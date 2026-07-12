@@ -21,3 +21,8 @@ Generated projects carry their pinned JSON Schemas. Validation applies those loc
 that declared contract versions match each schema's `schema_version` constant. Framework source schemas
 must remain byte-identical to the packaged project schemas. `execution.timeout_seconds`, when present,
 must be a positive number.
+
+Use `science transition` rather than editing `stage` directly. Allowed progress is
+`idea → designed → running → analyzed → reviewed → published`; any pre-publication stage may instead become
+`abandoned`. Published and abandoned are terminal. Each transition records actor, reason, timestamp, and
+from/to stages in append-only `stage-history.jsonl`. Legacy experiments begin history at their current stage.

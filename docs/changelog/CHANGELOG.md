@@ -6,6 +6,15 @@ last_validated: 2026-07-10
 
 # Changelog
 
+## 2026-07-12 — Complete contracts and resilient lifecycle records (T4)
+
+- Applied pinned schemas to campaign, handoff, and run-record validation paths.
+- Added atomic metadata/log/review writes and explicit in-progress run markers.
+- Made review fail closed without crashing on missing, malformed, or incomplete evidence.
+- Added best-effort cross-platform timeout process-tree cleanup with recorded termination scope.
+- Added controlled experiment stage transitions with actor, reason, timestamp, and append-only history.
+- Treated Windows lock-file sharing violations as contention so concurrent task claims retry deterministically.
+
 ## 2026-07-12 — Contract, provenance, and distribution integrity (T4)
 
 - Enforced project-local JSON Schemas and source/package schema parity with contextual diagnostics.

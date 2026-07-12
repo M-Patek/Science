@@ -3,7 +3,7 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 .venv/
-.test-tmp/
+.test-tmp*/
 pytest-cache-files-*/
 .pytest-*/
 tests/fixtures/pytest-*/

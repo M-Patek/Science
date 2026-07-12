@@ -162,15 +162,19 @@ class TaskRuntime:
                 os.write(descriptor, json.dumps({"pid": os.getpid(), "created_at": _iso(_utcnow())}).encode())
                 os.close(descriptor)
                 break
-            except FileExistsError:
+            except (FileExistsError, PermissionError) as lock_error:
                 try:
                     if time.time() - path.stat().st_mtime > self.stale_lock_after:
                         path.unlink()
                         continue
                 except FileNotFoundError:
                     continue
+                except PermissionError:
+                    # Windows may report sharing violations as PermissionError
+                    # while another thread/process owns the exclusive lock.
+                    pass
                 if time.monotonic() >= deadline:
-                    raise LockTimeout(f"timed out acquiring lock for {task_id!r}")
+                    raise LockTimeout(f"timed out acquiring lock for {task_id!r}") from lock_error
                 time.sleep(0.01)
         try:
             yield

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from pathlib import PurePosixPath
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 
@@ -30,8 +30,26 @@ def _scopes_overlap(left: str, right: str) -> bool:
     return left_parts[:common] == right_parts[:common]
 
 
-def validate_campaign(data: dict[str, Any]) -> list[str]:
+def validate_campaign(
+    data: dict[str, Any],
+    schema_path: Path | None = None,
+    instance_path: Path | None = None,
+    project_manifest: Path | None = None,
+) -> list[str]:
     errors: list[str] = []
+    if schema_path is not None:
+        from .contracts import pinned_contract_errors
+
+        structural = pinned_contract_errors(
+            data,
+            schema_path,
+            instance_path or Path("campaign.yaml"),
+            "campaign",
+            project_manifest,
+        )
+        errors.extend(structural)
+        if structural:
+            return errors
     for field in ("schema_version", "id", "title", "objective", "status", "owner", "tasks"):
         if field not in data:
             errors.append(f"missing required field: {field}")

@@ -1,7 +1,7 @@
 ---
 id: cheatsheet
 status: stable
-last_validated: 2026-07-11
+last_validated: 2026-07-12
 ---
 
 # Cheatsheet
@@ -15,6 +15,7 @@ python scripts/refresh_registry.py
 python -m science_repo.cli validate
 python -m science_repo.cli run exp-id
 python -m science_repo.cli review exp-id
+science --project ../my-research transition exp-id --to designed --reason "Protocol preregistered" --actor agent-id
 science --project ../my-research campaign-validate campaign-id
 science --project ../my-research task-claim campaign-id task-id --worker agent-1
 science --project ../my-research task-heartbeat campaign-id task-id --worker agent-1 --token TOKEN

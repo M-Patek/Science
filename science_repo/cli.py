@@ -14,6 +14,7 @@ from .benchmark import build_onboarding_fixture
 from .cohort import generate_preassignment, load_cohort, validate_cohort, validate_preassignment
 from .dispatch import audit_dispatch_handoff, create_dispatch_envelope
 from .handoff import load_handoff, validate_handoff
+from .lifecycle import LifecycleError, transition_stage
 from .models import ID_RE
 from .review import review_run
 from .runner import run_experiment
@@ -38,6 +39,11 @@ def repo_root(start: Path | None = None) -> Path:
 
 def selected_project(args: argparse.Namespace) -> Path:
     return repo_root(Path(args.project)) if getattr(args, "project", None) else repo_root()
+
+
+def _schema_path(root: Path, name: str) -> Path | None:
+    path = root / "schemas" / f"{name}.schema.json"
+    return path if path.is_file() else None
 
 
 def refresh_registry(root: Path) -> None:
@@ -140,7 +146,12 @@ def cmd_campaign_validate(args: argparse.Namespace) -> int:
     if not path.is_file():
         raise SystemExit(f"campaign not found: {path}")
     data = load_yaml(path)
-    errors = validate_campaign(data)
+    errors = validate_campaign(
+        data,
+        _schema_path(root, "campaign"),
+        path,
+        root / "science-project.yaml",
+    )
     if errors:
         print("Campaign validation failed:")
         for error in errors:
@@ -160,7 +171,12 @@ def _campaign(root: Path, campaign_id: str) -> tuple[Path, dict]:
 
 def _task_runtime(root: Path, campaign_id: str) -> TaskRuntime:
     directory, campaign = _campaign(root, campaign_id)
-    errors = validate_campaign(campaign)
+    errors = validate_campaign(
+        campaign,
+        _schema_path(root, "campaign"),
+        directory / "campaign.yaml",
+        root / "science-project.yaml",
+    )
     if errors:
         raise SystemExit("campaign must validate before task dispatch: " + "; ".join(errors))
     return TaskRuntime(directory / "runtime")
@@ -219,7 +235,13 @@ def cmd_handoff_validate(args: argparse.Namespace) -> int:
     root = selected_project(args)
     _, campaign = _campaign(root, args.campaign)
     handoff = load_handoff(Path(args.handoff))
-    errors = validate_handoff(handoff, campaign)
+    errors = validate_handoff(
+        handoff,
+        campaign,
+        _schema_path(root, "handoff"),
+        Path(args.handoff),
+        root / "science-project.yaml",
+    )
     if errors:
         print("Handoff validation failed:")
         for error in errors:
@@ -320,7 +342,15 @@ def cmd_benchmark_build(args: argparse.Namespace) -> int:
 
 def cmd_dispatch_envelope(args: argparse.Namespace) -> int:
     root = selected_project(args)
-    _, campaign = _campaign(root, args.campaign)
+    directory, campaign = _campaign(root, args.campaign)
+    errors = validate_campaign(
+        campaign,
+        _schema_path(root, "campaign"),
+        directory / "campaign.yaml",
+        root / "science-project.yaml",
+    )
+    if errors:
+        raise SystemExit("campaign must validate before dispatch: " + "; ".join(errors))
     print(json.dumps(create_dispatch_envelope(campaign, args.task), indent=2))
     return 0
 
@@ -330,13 +360,37 @@ def cmd_dispatch_audit(args: argparse.Namespace) -> int:
     _, campaign = _campaign(root, args.campaign)
     envelope = load_handoff(Path(args.envelope))
     handoff = load_handoff(Path(args.handoff))
-    errors = audit_dispatch_handoff(envelope, handoff, campaign)
+    errors = audit_dispatch_handoff(
+        envelope,
+        handoff,
+        campaign,
+        schema_path=_schema_path(root, "handoff"),
+        instance_path=Path(args.handoff),
+        project_manifest=root / "science-project.yaml",
+    )
     if errors:
         print("Dispatch handoff audit failed:")
         for error in errors:
             print(f"- {error}")
         return 1
     print(f"Dispatch handoff audit passed: {args.handoff}")
+    return 0
+
+
+def cmd_transition(args: argparse.Namespace) -> int:
+    root = selected_project(args)
+    experiment = root / "experiments" / args.id
+    if not experiment.is_dir():
+        raise SystemExit(f"experiment not found: {experiment}")
+    try:
+        event = transition_stage(
+            experiment, args.to, reason=args.reason, actor=args.actor
+        )
+    except LifecycleError as error:
+        print(str(error), file=sys.stderr)
+        return 2
+    refresh_registry(root)
+    print(json.dumps(event, indent=2))
     return 0
 
 
@@ -431,6 +485,12 @@ def build_parser() -> argparse.ArgumentParser:
     dispatch_audit.add_argument("envelope")
     dispatch_audit.add_argument("handoff")
     dispatch_audit.set_defaults(func=cmd_dispatch_audit)
+    transition = sub.add_parser("transition", help="apply an audited experiment stage transition")
+    transition.add_argument("id")
+    transition.add_argument("--to", required=True)
+    transition.add_argument("--reason", required=True)
+    transition.add_argument("--actor", required=True)
+    transition.set_defaults(func=cmd_transition)
     return parser
 
 

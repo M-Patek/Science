@@ -6,6 +6,7 @@ from pathlib import Path
 from .io import load_yaml
 from .models import Experiment, validate_manifest
 from .contracts import contract_pin_errors, schema_errors, schema_parity_errors
+from .lifecycle import LifecycleError, read_stage_history
 
 
 REQUIRED_FILES = ("experiment.yaml", "hypothesis.md", "protocol.md", "README.md")
@@ -32,6 +33,13 @@ def validate_experiment(path: Path, schema_path: Path | None = None) -> list[str
             output_path = (path / output).resolve()
             if path.resolve() not in output_path.parents:
                 errors.append(f"{path.name}: output escapes experiment directory: {output}")
+        try:
+            history = read_stage_history(path)
+            stage = exp.manifest.get("stage")
+            if history and history[-1]["to_stage"] != stage:
+                errors.append(f"{path.name}: stage history does not match manifest stage {stage!r}")
+        except LifecycleError as error:
+            errors.append(f"{path.name}: invalid stage history: {error}")
     except Exception as exc:
         errors.append(f"{path.name}: invalid manifest: {exc}")
     return errors

@@ -22,3 +22,7 @@ the process returns zero.
 Known boundary: package capture is Python-oriented and does not yet capture containers, GPU drivers,
 HPC scheduler metadata beyond selected environment variables, atomic directory snapshots, descendant
 process-tree timeout cleanup, or OS-enforced WORM records.
+
+Each run creates `run.in-progress.json` before launching the command. The marker is removed only after the
+final `run.json` is atomically replaced. A remaining marker is evidence of incomplete finalization. Timeout
+process-tree termination uses platform facilities and records parent-only fallback; it remains best effort.
