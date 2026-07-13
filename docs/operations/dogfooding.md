@@ -1,7 +1,7 @@
 ---
 id: dogfooding
 status: stable
-last_validated: 2026-07-11
+last_validated: 2026-07-13
 ---
 
 # Framework Self-Research Development Loop
@@ -35,3 +35,11 @@ It supplies a reproducible contract around that capability: the main agent check
 persists a `dispatch-envelope`, passes it through native delegation, requires a structured handoff, and
 runs `dispatch-audit` before integration. Agent lifecycle, transport, and model selection remain native
 platform responsibilities. Use the repository `run-campaign` skill for the complete operating sequence.
+
+For a study that explicitly selects the local unsigned trust track, use two native phases. First spawn
+a bootstrap-only child that must not execute the fixture; preserve its process-environment receipt plus
+the native-agent ID, actual worktree path, and HEAD observed by the main agent. Then create and verify a
+short-lived `local-dispatch-acceptance` bound to that exact cell and attempt before sending a follow-up
+that begins the formal task. Planned logical session IDs and observed harness session IDs are different
+identifiers. This policy is limited to local, no-network, non-private, non-cost-bearing work and does not
+prove provider identity, prompt identity, host enforcement, or absolute isolation.

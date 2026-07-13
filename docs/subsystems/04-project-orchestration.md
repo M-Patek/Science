@@ -1,7 +1,7 @@
 ---
 id: 04-project-orchestration
 status: experimental
-last_validated: 2026-07-10
+last_validated: 2026-07-13
 code_anchors:
   - science_repo/cli.py:cmd_init
   - science_repo/campaign.py:validate_campaign
@@ -13,6 +13,7 @@ code_anchors:
   - science_repo/cohort_freeze.py:build_cohort_freeze
   - science_repo/trusted_attestation.py:verify_attestation
   - science_repo/harness_receipt.py:generate_receipt
+  - science_repo/local_dispatch_acceptance.py:build_local_dispatch_acceptance
   - science_repo/subject_packets.py:build_subject_packet_set
   - science_repo/study_verification.py:verify_attempt_manifest
   - science_repo/study_verification.py:verify_blinded_scoring
@@ -80,6 +81,19 @@ iterations before this boundary was accepted. These checks still do not authoriz
 For local diagnostics, `science harness-receipt` captures a `host-observed-unsigned` declaration from
 the harness process environment and refuses to overwrite an existing output. It does not claim an
 immutable provider build, prove context/worktree isolation, or open a dispatch gate.
+
+Cohort freezes distinguish subject-visible `baseline_materials` from `registration_materials` such as
+hypotheses, protocols, rubrics, analysis code and independent reviews. Both are byte-bound, but packet
+construction excludes registration materials so complete preregistration does not leak arm comparisons
+or scoring criteria to experimental subjects (ADR 0016).
+
+An explicit second trust track can accept that weak evidence for local-only self-research without
+weakening trusted attestation. A committed `local-host-observed-unsigned` policy excludes network,
+private data, external compute, cost, instruments, and publication. After a bootstrap-only native child
+reports its receipt, `science local-dispatch-accept` creates a non-overwriting, expiring per-cell overlay
+bound to the frozen packet, logical IDs, distinct native/harness IDs, observed workspace, and pinned
+HEAD. The overlay does not mutate `dispatch_allowed: false`, claim provider identity or isolation, or
+substitute for human authorization. Formal execution requires a later native follow-up.
 
 ## Audited closure and upgrades
 

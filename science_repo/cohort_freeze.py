@@ -93,6 +93,7 @@ def build_cohort_freeze(
     registration_root: Path,
     fixtures: Sequence[tuple[str, Path]],
     baseline_materials: Sequence[Path],
+    registration_materials: Sequence[Path] = (),
     human_supplied_seed: str,
     runtime_identity: Mapping[str, Any],
     runtime_identity_receipt: Mapping[str, Any],
@@ -121,6 +122,10 @@ def build_cohort_freeze(
         baselines.append({"path": _relative(path, root), "tree_sha256": digest, "files": entries})
     if not baselines:
         raise CohortFreezeError("at least one baseline material is required")
+    registrations = []
+    for path in sorted(registration_materials, key=lambda item: item.as_posix()):
+        digest, entries = _material_digest(path, root)
+        registrations.append({"path": _relative(path, root), "tree_sha256": digest, "files": entries})
 
     seed_commitment = _sha256(human_supplied_seed.encode("utf-8"))
     cells = [(fixture_id, arm) for fixture_id in fixture_ids for arm in arms]
@@ -139,6 +144,7 @@ def build_cohort_freeze(
         "fixture_count": 12,
         "fixtures": frozen_fixtures,
         "baseline_materials": baselines,
+        "registration_materials": registrations,
         "randomization": {"method": "sha256-ranked-cells-v1", "seed_sha256": seed_commitment, "arms": list(arms)},
         "assignment_ledger": assignments,
         "runtime_identity": _runtime_identity(runtime_identity, runtime_identity_receipt),

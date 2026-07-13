@@ -18,6 +18,12 @@
       "title": "Effect of structured multi-agent self-bootstrap development",
       "stage": "designed",
       "owner": "framework-maintainer"
+    },
+    {
+      "id": "self-bootstrap-effectiveness-v2",
+      "title": "Local host-observed self-bootstrap effectiveness cohort v2",
+      "stage": "designed",
+      "owner": "framework-maintainer"
     }
   ]
 }

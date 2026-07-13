@@ -227,7 +227,7 @@ class TestGenerateReceipt:
         assert receipt.exact_model_or_version_id is None
         assert receipt.agent_harness_and_version == "test-agent"
         assert receipt.effort_setting == "medium"
-        assert receipt.provider == "anthropic"
+        assert receipt.provider is None
         assert receipt.evidence_level == "host-observed-unsigned"
         assert receipt.receipt_sha256 != ""
 
@@ -345,7 +345,8 @@ class TestCohortRuntimeRegistration:
         assert reg["cohort_id"] == "test-cohort"
         assert reg["status"] == "declarative-observed-dispatch-blocked"
         assert reg["evidence_level"] == "host-observed-unsigned"
-        assert reg["provider"] == "anthropic"
+        assert reg["provider"].startswith("unavailable:")
+        assert "provider identity" in reg["provider"]
         assert reg["model_name"] == "claude-test-model"
         assert reg["exact_model_or_version_id"].startswith("unavailable:")
         assert reg["agent_harness_and_version"] == "test-agent"

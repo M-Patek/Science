@@ -1,0 +1,63 @@
+schema_version: 1
+cohort_id: self-bootstrap-effectiveness-v2
+artifact_kind: outcome-free-cohort-design-not-a-frozen-cohort-contract
+protocol_id: self-bootstrap-effectiveness-v2
+registration_status: design-complete-pending-independent-review-and-freeze
+freeze_output: registration/cohort-freeze.json
+validation_note: This design input is not passed to cohort-validate; the freeze task must produce a cohort-freeze.schema.json artifact and validate that immutable output.
+evidence_classification: prospective-for-v2-outcomes-outcome-informed-by-onboarding-pilots
+supersedes_designs: [framework-onboarding-v1, self-bootstrap-effectiveness-v1]
+inheritance_note: Older pilots and designs contribute methods only; they contribute zero v2 observations.
+implementation_revision:
+  status: pinned-design-baseline-pending-negative-audit
+  git_commit: 722cceed959e8ac9c45cdfd519a4c387e614c58f
+  git_tree: f28c8500c7f4f5223234e87d1b0d2376fbb9539a
+contracts: {experiment: 1, campaign: 1, handoff: 1}
+design:
+  task_blocks: 12
+  cells: 24
+  arms: [solo-main-agent-control, structured-multi-agent-treatment]
+  strata: [contract-schema, runtime-provenance, orchestration, documentation-agent-dx]
+  blocks_per_stratum: 3
+  maximum_attempts_per_cell: 1
+  replacement_policy: no-implicit-replacement-censor-cell
+  primary_analysis: paired intention-to-treat over all ordinal-1 cells
+fixtures:
+  expected_count: 12
+  manifest: task-fixtures-v2.yaml
+  status: copied-and-rehashed-for-v2-pending-independent-baseline-negative-audit
+  dispatch_rule: Dispatch is forbidden until all fixture hashes and baseline-negative checks are independently reviewed and frozen.
+randomization:
+  method: sha256-ranked-cells-v1
+  seed_status: pending-human-supplied-before-freeze
+  seed_sha256: null
+  allocation_ledger_status: pending
+runtime_policy:
+  id: local-host-observed-unsigned-v1
+  status: pending-policy-freeze-and-per-cell-acceptance
+  evidence_level: host-observed-unsigned
+  limitations: Does not prove provider identity, immutable model build, prompts, tools, network or permission enforcement, context isolation, or absolute worktree isolation.
+isolation:
+  unique_logical_session_worktree_context_ids: required
+  dedicated_git_worktree_and_head_verification: required
+  cross_cell_messaging: forbidden
+scoring:
+  scorers_per_attempt: 2
+  label_blinded: true
+  independent_before_adjudication: true
+  adjudicator_must_be_distinct: true
+  scorer_blind_guess_required: true
+decision:
+  evaluable_itt_pairs: 12
+  minimum_mean_quality_difference: 0.5
+  maximum_median_elapsed_ratio: 1.25
+  maximum_critical_violations: 0
+  missing_pair_or_critical: inconclusive
+  complete_and_violation_free_threshold_failure: falsified
+  all_thresholds_pass: supported-for-frozen-fixtures
+authorization:
+  local_repository_execution: pending-explicit-human-gate
+  forbidden_without_separate_authorization: [network, external-compute, private-data, instruments, cost-bearing-resources, publication]
+execution_status: not-started
+observations_created: false
+dispatch_allowed: false

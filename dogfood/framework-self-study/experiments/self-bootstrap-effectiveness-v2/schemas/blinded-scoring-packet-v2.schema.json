@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Opaque blinded scoring packet v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "opaque_packet_id", "source_attempt_sha256", "acceptance_evidence", "diff_evidence", "test_evidence", "provenance_evidence", "limitations", "blinding_check"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "opaque_packet_id": {"type": "string", "pattern": "^packet-[0-9a-f]{16,64}$"},
+    "source_attempt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "acceptance_evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+    "diff_evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+    "test_evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+    "provenance_evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "blinding_check": {"type": "object", "additionalProperties": false, "required": ["arm_labels_removed", "identity_removed", "allocation_removed", "indirect_disclosure_reviewed"], "properties": {"arm_labels_removed": {"const": true}, "identity_removed": {"const": true}, "allocation_removed": {"const": true}, "indirect_disclosure_reviewed": {"const": true}}}
+  },
+  "$defs": {"evidence": {"type": "object", "additionalProperties": false, "required": ["name", "sha256", "content"], "properties": {"name": {"type": "string", "minLength": 1}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "content": {"type": "string"}}}}
+}

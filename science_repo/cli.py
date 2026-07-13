@@ -17,6 +17,9 @@ from .closure import ClosureError, accept_dispatch_handoff
 from .dispatch import audit_dispatch_handoff, create_dispatch_envelope
 from .handoff import load_handoff, validate_handoff
 from .harness_receipt import generate_cohort_runtime_registration, generate_receipt
+from .local_dispatch_acceptance import (
+    LocalDispatchAcceptanceError, build_local_dispatch_acceptance,
+)
 from .lifecycle import LifecycleError, transition_stage
 from .lineage import lineage_digest, load_lineage, validate_lineage
 from .doctor import diagnose
@@ -387,6 +390,45 @@ def cmd_subject_packets_build(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_local_dispatch_accept(args: argparse.Namespace) -> int:
+    """Create a cell-bound local unsigned overlay after bootstrap observation."""
+    root = selected_project(args)
+    try:
+        names = (args.policy, args.freeze, args.packet_set, args.receipt, args.output)
+        paths = [Path(name) for name in names]
+        if any(path.is_absolute() or ".." in path.parts for path in paths):
+            raise LocalDispatchAcceptanceError("artifact paths must be normalized project-relative paths")
+        policy_path, freeze_path, packet_set_path, receipt_path, output = (root / path for path in paths)
+        for path in (policy_path, freeze_path, packet_set_path, receipt_path):
+            _assert_no_link_boundary(path, root)
+        _assert_no_link_boundary(output, root, missing_leaf_ok=True)
+        if output.exists():
+            raise LocalDispatchAcceptanceError(f"refusing to overwrite existing acceptance: {output}")
+        policy = json.loads(policy_path.read_text(encoding="utf-8"))
+        if policy.get("policy_sha256") != args.confirm_policy_sha256:
+            raise LocalDispatchAcceptanceError("confirmed policy digest does not match policy_sha256")
+        result = build_local_dispatch_acceptance(
+            policy=policy,
+            freeze=json.loads(freeze_path.read_text(encoding="utf-8")),
+            packet_set=json.loads(packet_set_path.read_text(encoding="utf-8")),
+            cell_id=args.cell,
+            harness_receipt=json.loads(receipt_path.read_text(encoding="utf-8")),
+            native_agent_id=args.native_agent_id,
+            observed_cwd=args.observed_cwd,
+            observed_head_commit=args.observed_head,
+        )
+        payload = (json.dumps(result, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
+        output.parent.mkdir(parents=True, exist_ok=True)
+        descriptor = os.open(output, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+        with os.fdopen(descriptor, "wb") as stream:
+            stream.write(payload); stream.flush(); os.fsync(stream.fileno())
+    except (OSError, ValueError, LocalDispatchAcceptanceError) as error:
+        print(f"Local dispatch acceptance failed: {error}", file=sys.stderr)
+        return 2
+    print(f"Local dispatch acceptance created: {output.relative_to(root)}")
+    return 0
+
+
 def cmd_workspace_create(args: argparse.Namespace) -> int:
     manager = WorkspaceManager(Path(args.repository), Path(args.sessions_root))
     try:
@@ -614,6 +656,21 @@ def build_parser() -> argparse.ArgumentParser:
     packets.add_argument("--source-root", default=".", help="project-relative root containing frozen materials")
     packets.add_argument("--output", required=True, help="project-relative immutable output JSON")
     packets.set_defaults(func=cmd_subject_packets_build)
+    local_accept = sub.add_parser(
+        "local-dispatch-accept",
+        help="bind bootstrap observations under an explicit local unsigned policy",
+    )
+    local_accept.add_argument("--policy", required=True, help="project-relative policy JSON")
+    local_accept.add_argument("--freeze", required=True, help="project-relative cohort freeze JSON")
+    local_accept.add_argument("--packet-set", required=True, help="project-relative packet set JSON")
+    local_accept.add_argument("--receipt", required=True, help="project-relative child harness receipt JSON")
+    local_accept.add_argument("--cell", required=True)
+    local_accept.add_argument("--native-agent-id", required=True)
+    local_accept.add_argument("--observed-cwd", required=True)
+    local_accept.add_argument("--observed-head", required=True)
+    local_accept.add_argument("--confirm-policy-sha256", required=True)
+    local_accept.add_argument("--output", required=True, help="new project-relative JSON; never overwritten")
+    local_accept.set_defaults(func=cmd_local_dispatch_accept)
     workspace_create = sub.add_parser("workspace-create", help="create an audited detached worktree")
     workspace_create.add_argument("session")
     workspace_create.add_argument("revision")

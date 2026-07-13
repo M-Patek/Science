@@ -1,0 +1,20 @@
+schema_version: 1
+id: self-bootstrap-local-tools-v2
+scope: local-repository-only
+network: forbidden
+external_compute: forbidden
+paid_resources: forbidden
+private_data: forbidden
+instruments: forbidden
+publication: forbidden
+shell_and_repository_tools: allowed-within-cell-contract
+native_subagents:
+  solo-main-agent-control: forbidden
+  structured-multi-agent-treatment:
+    allowed: true
+    maximum_concurrent: 3
+    maximum_child_attempts: 4
+    disjoint_write_scopes_required: true
+    structured_handoff_required: true
+    independent_review_required: true
+token_policy: measurement-only-no-acceptance-threshold

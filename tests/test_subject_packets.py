@@ -23,11 +23,14 @@ def _freeze(root: Path):
         (path / "prompt.txt").write_text(f"task {index}\n", encoding="utf-8")
         fixtures.append((f"F{index}", path))
     baseline = root / "baseline.txt"; baseline.write_text("baseline\n", encoding="utf-8")
+    registration = root / "registration-private.txt"
+    registration.write_text("password=registration-only-not-for-subject\n", encoding="utf-8")
     identity = {key: f"known-{key}" for key in STATIC_RUNTIME_IDENTITY_FIELDS}
     encoded = (json.dumps(identity, sort_keys=True, separators=(",", ":")) + "\n").encode()
     receipt = {"receipt_id":"r", "authority_id":"a", "source":"host", "issued_at":"now", "identity_sha256":__import__("hashlib").sha256(encoded).hexdigest()}
     return build_cohort_freeze(cohort_id="C", registration_root=root, fixtures=fixtures,
-        baseline_materials=[baseline], human_supplied_seed="human", runtime_identity=identity,
+        baseline_materials=[baseline], registration_materials=[registration],
+        human_supplied_seed="human", runtime_identity=identity,
         runtime_identity_receipt=receipt)
 
 
@@ -41,6 +44,7 @@ def test_builds_24_unique_fail_closed_explicit_packets(tmp_path):
     assert len({p["context_id"] for p in packets}) == 24
     assert all(p["attempt_ordinal"] == 1 and p["replacement_policy"]["maximum_replacements"] == 0 for p in packets)
     assert all(p["workspace_contract"]["fork_context_required"] == "none" for p in packets)
+    assert all("registration-private.txt" not in json.dumps(p) for p in packets)
 
 
 def test_rejects_mutation_bad_freeze_and_unsafe_content(tmp_path):

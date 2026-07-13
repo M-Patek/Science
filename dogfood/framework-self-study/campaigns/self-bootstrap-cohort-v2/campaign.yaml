@@ -1,0 +1,1277 @@
+schema_version: 1
+id: self-bootstrap-cohort-v2
+title: Preregistered local-host framework self-study cohort v2
+objective: Run a frozen 24-session paired study with unsigned local-host evidence,
+  blinded scoring, independent final review, and no dispatch or publication without
+  explicit human authorization.
+status: draft
+owner: framework-maintainer
+framework_revision_under_test: 722cceed959e8ac9c45cdfd519a4c387e614c58f
+human_gates:
+- id: gate-record-allocation-seed
+  trigger: Before cohort freeze, record a human-supplied outcome-blind allocation
+    seed
+  approver: project-owner
+- id: gate-accept-local-host-policy
+  trigger: Before any formal subject session is dispatched under the host-observed-unsigned
+    evidence policy
+  approver: project-owner
+- id: gate-publish-results
+  trigger: Before any result or comparative performance claim is published externally
+  approver: independent-human-reviewer
+tasks:
+- id: prepare-v2-design
+  role: research-designer
+  status: pending
+  depends_on: []
+  inputs:
+  - experiments/self-bootstrap-effectiveness/protocol.md
+  - pilot-sessions/independent-review-20260713.md
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/hypothesis.md
+  - experiments/self-bootstrap-effectiveness-v2/protocol.md
+  - experiments/self-bootstrap-effectiveness-v2/rubric.md
+  - experiments/self-bootstrap-effectiveness-v2/cohort-design-v2.yaml
+  - experiments/self-bootstrap-effectiveness-v2/task-fixtures-v2.yaml
+  - experiments/self-bootstrap-effectiveness-v2/experiment.yaml
+  - experiments/self-bootstrap-effectiveness-v2/tool-policy-v2.yaml
+  - experiments/self-bootstrap-effectiveness-v2/post-pilot-amendments.md
+  - experiments/self-bootstrap-effectiveness-v2/src/analyze.py
+  - experiments/self-bootstrap-effectiveness-v2/schemas/attempt-bundle-v2.schema.json
+  - experiments/self-bootstrap-effectiveness-v2/schemas/blinded-scoring-packet-v2.schema.json
+  - experiments/self-bootstrap-effectiveness-v2/templates/subject-packet-v2.yaml
+  - experiments/self-bootstrap-effectiveness-v2/templates/score-v2.csv
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/cs-01-experiment-metadata/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/cs-02-campaign-effort/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/cs-03-run-stop-reason/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/rp-01-lineage-disconnected/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/rp-02-environment-size-cap/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/rp-03-review-record-binding/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/or-01-scheduler-capacity/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/or-02-handoff-output-uniqueness/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/or-03-coordinator-event-sequence/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/dx-01-validation-json/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/dx-02-campaign-explain/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/dx-03-doctor-remediation/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/src/freeze_v2.py
+  - experiments/self-bootstrap-effectiveness-v2/src/verify_attempts.py
+  - experiments/self-bootstrap-effectiveness-v2/tests/test_preparation_contracts.py
+  - experiments/self-bootstrap-effectiveness-v2/templates/baseline-v2.yaml
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/hypothesis.md
+  - experiments/self-bootstrap-effectiveness-v2/protocol.md
+  - experiments/self-bootstrap-effectiveness-v2/rubric.md
+  - experiments/self-bootstrap-effectiveness-v2/cohort-design-v2.yaml
+  - experiments/self-bootstrap-effectiveness-v2/task-fixtures-v2.yaml
+  - experiments/self-bootstrap-effectiveness-v2/experiment.yaml
+  - experiments/self-bootstrap-effectiveness-v2/tool-policy-v2.yaml
+  - experiments/self-bootstrap-effectiveness-v2/post-pilot-amendments.md
+  - experiments/self-bootstrap-effectiveness-v2/src/analyze.py
+  - experiments/self-bootstrap-effectiveness-v2/schemas/attempt-bundle-v2.schema.json
+  - experiments/self-bootstrap-effectiveness-v2/schemas/blinded-scoring-packet-v2.schema.json
+  - experiments/self-bootstrap-effectiveness-v2/templates/subject-packet-v2.yaml
+  - experiments/self-bootstrap-effectiveness-v2/templates/score-v2.csv
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/cs-01-experiment-metadata/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/cs-02-campaign-effort/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/cs-03-run-stop-reason/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/rp-01-lineage-disconnected/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/rp-02-environment-size-cap/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/rp-03-review-record-binding/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/or-01-scheduler-capacity/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/or-02-handoff-output-uniqueness/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/or-03-coordinator-event-sequence/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/dx-01-validation-json/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/dx-02-campaign-explain/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/dx-03-doctor-remediation/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/src/freeze_v2.py
+  - experiments/self-bootstrap-effectiveness-v2/src/verify_attempts.py
+  - experiments/self-bootstrap-effectiveness-v2/tests/test_preparation_contracts.py
+  - experiments/self-bootstrap-effectiveness-v2/templates/baseline-v2.yaml
+  review_required: true
+  human_gate: false
+- id: independent-baseline-negative-audit
+  role: independent-baseline-auditor
+  status: pending
+  depends_on:
+  - prepare-v2-design
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/task-fixtures-v2.yaml
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/cs-01-experiment-metadata/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/cs-02-campaign-effort/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/cs-03-run-stop-reason/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/rp-01-lineage-disconnected/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/rp-02-environment-size-cap/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/rp-03-review-record-binding/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/or-01-scheduler-capacity/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/or-02-handoff-output-uniqueness/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/or-03-coordinator-event-sequence/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/dx-01-validation-json/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/dx-02-campaign-explain/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/dx-03-doctor-remediation/prompt.txt
+  outputs:
+  - campaigns/self-bootstrap-cohort-v2/reviews/baseline-negative/audit.json
+  write_scope:
+  - campaigns/self-bootstrap-cohort-v2/reviews/baseline-negative/
+  review_required: false
+  human_gate: false
+- id: independent-design-review
+  role: independent-protocol-reviewer
+  status: pending
+  depends_on:
+  - prepare-v2-design
+  - independent-baseline-negative-audit
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/hypothesis.md
+  - experiments/self-bootstrap-effectiveness-v2/protocol.md
+  - experiments/self-bootstrap-effectiveness-v2/rubric.md
+  - experiments/self-bootstrap-effectiveness-v2/cohort-design-v2.yaml
+  - experiments/self-bootstrap-effectiveness-v2/task-fixtures-v2.yaml
+  - experiments/self-bootstrap-effectiveness-v2/experiment.yaml
+  - experiments/self-bootstrap-effectiveness-v2/tool-policy-v2.yaml
+  - experiments/self-bootstrap-effectiveness-v2/post-pilot-amendments.md
+  - experiments/self-bootstrap-effectiveness-v2/src/analyze.py
+  - experiments/self-bootstrap-effectiveness-v2/schemas/attempt-bundle-v2.schema.json
+  - experiments/self-bootstrap-effectiveness-v2/schemas/blinded-scoring-packet-v2.schema.json
+  - experiments/self-bootstrap-effectiveness-v2/templates/subject-packet-v2.yaml
+  - experiments/self-bootstrap-effectiveness-v2/templates/score-v2.csv
+  - campaigns/self-bootstrap-cohort-v2/reviews/baseline-negative/audit.json
+  - experiments/self-bootstrap-effectiveness-v2/src/freeze_v2.py
+  - experiments/self-bootstrap-effectiveness-v2/src/verify_attempts.py
+  - experiments/self-bootstrap-effectiveness-v2/tests/test_preparation_contracts.py
+  - experiments/self-bootstrap-effectiveness-v2/templates/baseline-v2.yaml
+  outputs:
+  - campaigns/self-bootstrap-cohort-v2/reviews/design/review.json
+  write_scope:
+  - campaigns/self-bootstrap-cohort-v2/reviews/design/
+  review_required: false
+  human_gate: false
+- id: prepare-runtime-registration
+  role: runtime-registration-operator
+  status: pending
+  depends_on:
+  - prepare-v2-design
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/tool-policy-v2.yaml
+  - schemas/harness-receipt.schema.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/static-identity.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/source-receipt.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/
+  review_required: true
+  human_gate: false
+- id: record-human-allocation-seed
+  role: project-owner
+  status: blocked
+  depends_on:
+  - independent-design-review
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/cohort-design-v2.yaml
+  - campaigns/self-bootstrap-cohort-v2/reviews/design/review.json
+  outputs:
+  - campaigns/self-bootstrap-cohort-v2/approvals/registration/allocation-seed.json
+  write_scope:
+  - campaigns/self-bootstrap-cohort-v2/approvals/registration/
+  review_required: false
+  human_gate: true
+- id: freeze-cohort-v2
+  role: registration-operator
+  status: pending
+  depends_on:
+  - independent-design-review
+  - prepare-runtime-registration
+  - record-human-allocation-seed
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/cohort-design-v2.yaml
+  - experiments/self-bootstrap-effectiveness-v2/task-fixtures-v2.yaml
+  - experiments/self-bootstrap-effectiveness-v2/protocol.md
+  - experiments/self-bootstrap-effectiveness-v2/rubric.md
+  - campaigns/self-bootstrap-cohort-v2/reviews/design/review.json
+  - experiments/self-bootstrap-effectiveness-v2/hypothesis.md
+  - experiments/self-bootstrap-effectiveness-v2/tool-policy-v2.yaml
+  - experiments/self-bootstrap-effectiveness-v2/post-pilot-amendments.md
+  - experiments/self-bootstrap-effectiveness-v2/src/analyze.py
+  - experiments/self-bootstrap-effectiveness-v2/schemas/attempt-bundle-v2.schema.json
+  - experiments/self-bootstrap-effectiveness-v2/schemas/blinded-scoring-packet-v2.schema.json
+  - experiments/self-bootstrap-effectiveness-v2/templates/subject-packet-v2.yaml
+  - experiments/self-bootstrap-effectiveness-v2/templates/score-v2.csv
+  - campaigns/self-bootstrap-cohort-v2/reviews/baseline-negative/audit.json
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/cs-01-experiment-metadata/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/cs-02-campaign-effort/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/cs-03-run-stop-reason/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/rp-01-lineage-disconnected/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/rp-02-environment-size-cap/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/rp-03-review-record-binding/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/or-01-scheduler-capacity/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/or-02-handoff-output-uniqueness/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/or-03-coordinator-event-sequence/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/dx-01-validation-json/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/dx-02-campaign-explain/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/fixtures/dx-03-doctor-remediation/prompt.txt
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/static-identity.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/source-receipt.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/registration/allocation-seed.json
+  - schemas/cohort-freeze.schema.json
+  - experiments/self-bootstrap-effectiveness-v2/experiment.yaml
+  - experiments/self-bootstrap-effectiveness-v2/src/freeze_v2.py
+  - experiments/self-bootstrap-effectiveness-v2/src/verify_attempts.py
+  - experiments/self-bootstrap-effectiveness-v2/tests/test_preparation_contracts.py
+  - experiments/self-bootstrap-effectiveness-v2/templates/baseline-v2.yaml
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/allocation-ledger.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/registration/
+  review_required: true
+  human_gate: false
+- id: build-subject-packets
+  role: blinded-packet-preparer
+  status: pending
+  depends_on:
+  - freeze-cohort-v2
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/allocation-ledger.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s01/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s02/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s03/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s04/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s05/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s06/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s07/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s08/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s09/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s10/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s11/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s12/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s13/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s14/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s15/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s16/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s17/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s18/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s19/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s20/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s21/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s22/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s23/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s24/packet.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/
+  review_required: true
+  human_gate: false
+- id: prepare-local-dispatch-policy
+  role: local-evidence-policy-preparer
+  status: pending
+  depends_on:
+  - build-subject-packets
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/tool-policy-v2.yaml
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - schemas/local-dispatch-policy.schema.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/
+  review_required: true
+  human_gate: false
+- id: authorize-local-host-policy
+  role: project-owner
+  status: blocked
+  depends_on:
+  - prepare-local-dispatch-policy
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  outputs:
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  write_scope:
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/
+  review_required: false
+  human_gate: true
+- id: subject-session-s01
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - authorize-local-host-policy
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s01/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s01/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s01/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s01/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s01/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s01/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s01/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s01/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s01/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s01/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s01/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s01/
+  review_required: true
+  human_gate: false
+- id: subject-session-s02
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - authorize-local-host-policy
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s02/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s02/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s02/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s02/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s02/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s02/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s02/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s02/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s02/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s02/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s02/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s02/
+  review_required: true
+  human_gate: false
+- id: subject-session-s03
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - authorize-local-host-policy
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s03/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s03/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s03/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s03/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s03/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s03/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s03/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s03/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s03/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s03/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s03/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s03/
+  review_required: true
+  human_gate: false
+- id: check-dispatch-wave-01
+  role: cohort-pause-rule-auditor
+  status: pending
+  depends_on:
+  - subject-session-s01
+  - subject-session-s02
+  - subject-session-s03
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s01/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s02/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s03/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/protocol.md
+  outputs:
+  - campaigns/self-bootstrap-cohort-v2/reviews/waves/wave-01/checkpoint.json
+  write_scope:
+  - campaigns/self-bootstrap-cohort-v2/reviews/waves/wave-01/
+  review_required: true
+  human_gate: false
+- id: subject-session-s04
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - check-dispatch-wave-01
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s04/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s04/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s04/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s04/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s04/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s04/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s04/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s04/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s04/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s04/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s04/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s04/
+  review_required: true
+  human_gate: false
+- id: subject-session-s05
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - check-dispatch-wave-01
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s05/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s05/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s05/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s05/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s05/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s05/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s05/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s05/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s05/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s05/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s05/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s05/
+  review_required: true
+  human_gate: false
+- id: subject-session-s06
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - check-dispatch-wave-01
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s06/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s06/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s06/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s06/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s06/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s06/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s06/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s06/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s06/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s06/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s06/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s06/
+  review_required: true
+  human_gate: false
+- id: check-dispatch-wave-02
+  role: cohort-pause-rule-auditor
+  status: pending
+  depends_on:
+  - subject-session-s04
+  - subject-session-s05
+  - subject-session-s06
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s04/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s05/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s06/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/protocol.md
+  outputs:
+  - campaigns/self-bootstrap-cohort-v2/reviews/waves/wave-02/checkpoint.json
+  write_scope:
+  - campaigns/self-bootstrap-cohort-v2/reviews/waves/wave-02/
+  review_required: true
+  human_gate: false
+- id: subject-session-s07
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - check-dispatch-wave-02
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s07/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s07/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s07/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s07/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s07/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s07/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s07/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s07/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s07/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s07/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s07/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s07/
+  review_required: true
+  human_gate: false
+- id: subject-session-s08
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - check-dispatch-wave-02
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s08/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s08/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s08/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s08/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s08/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s08/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s08/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s08/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s08/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s08/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s08/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s08/
+  review_required: true
+  human_gate: false
+- id: subject-session-s09
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - check-dispatch-wave-02
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s09/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s09/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s09/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s09/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s09/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s09/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s09/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s09/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s09/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s09/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s09/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s09/
+  review_required: true
+  human_gate: false
+- id: check-dispatch-wave-03
+  role: cohort-pause-rule-auditor
+  status: pending
+  depends_on:
+  - subject-session-s07
+  - subject-session-s08
+  - subject-session-s09
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s07/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s08/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s09/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/protocol.md
+  outputs:
+  - campaigns/self-bootstrap-cohort-v2/reviews/waves/wave-03/checkpoint.json
+  write_scope:
+  - campaigns/self-bootstrap-cohort-v2/reviews/waves/wave-03/
+  review_required: true
+  human_gate: false
+- id: subject-session-s10
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - check-dispatch-wave-03
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s10/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s10/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s10/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s10/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s10/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s10/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s10/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s10/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s10/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s10/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s10/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s10/
+  review_required: true
+  human_gate: false
+- id: subject-session-s11
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - check-dispatch-wave-03
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s11/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s11/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s11/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s11/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s11/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s11/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s11/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s11/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s11/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s11/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s11/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s11/
+  review_required: true
+  human_gate: false
+- id: subject-session-s12
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - check-dispatch-wave-03
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s12/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s12/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s12/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s12/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s12/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s12/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s12/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s12/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s12/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s12/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s12/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s12/
+  review_required: true
+  human_gate: false
+- id: check-dispatch-wave-04
+  role: cohort-pause-rule-auditor
+  status: pending
+  depends_on:
+  - subject-session-s10
+  - subject-session-s11
+  - subject-session-s12
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s10/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s11/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s12/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/protocol.md
+  outputs:
+  - campaigns/self-bootstrap-cohort-v2/reviews/waves/wave-04/checkpoint.json
+  write_scope:
+  - campaigns/self-bootstrap-cohort-v2/reviews/waves/wave-04/
+  review_required: true
+  human_gate: false
+- id: subject-session-s13
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - check-dispatch-wave-04
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s13/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s13/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s13/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s13/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s13/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s13/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s13/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s13/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s13/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s13/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s13/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s13/
+  review_required: true
+  human_gate: false
+- id: subject-session-s14
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - check-dispatch-wave-04
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s14/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s14/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s14/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s14/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s14/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s14/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s14/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s14/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s14/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s14/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s14/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s14/
+  review_required: true
+  human_gate: false
+- id: subject-session-s15
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - check-dispatch-wave-04
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s15/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s15/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s15/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s15/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s15/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s15/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s15/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s15/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s15/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s15/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s15/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s15/
+  review_required: true
+  human_gate: false
+- id: check-dispatch-wave-05
+  role: cohort-pause-rule-auditor
+  status: pending
+  depends_on:
+  - subject-session-s13
+  - subject-session-s14
+  - subject-session-s15
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s13/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s14/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s15/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/protocol.md
+  outputs:
+  - campaigns/self-bootstrap-cohort-v2/reviews/waves/wave-05/checkpoint.json
+  write_scope:
+  - campaigns/self-bootstrap-cohort-v2/reviews/waves/wave-05/
+  review_required: true
+  human_gate: false
+- id: subject-session-s16
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - check-dispatch-wave-05
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s16/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s16/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s16/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s16/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s16/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s16/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s16/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s16/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s16/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s16/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s16/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s16/
+  review_required: true
+  human_gate: false
+- id: subject-session-s17
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - check-dispatch-wave-05
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s17/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s17/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s17/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s17/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s17/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s17/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s17/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s17/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s17/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s17/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s17/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s17/
+  review_required: true
+  human_gate: false
+- id: subject-session-s18
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - check-dispatch-wave-05
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s18/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s18/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s18/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s18/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s18/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s18/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s18/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s18/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s18/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s18/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s18/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s18/
+  review_required: true
+  human_gate: false
+- id: check-dispatch-wave-06
+  role: cohort-pause-rule-auditor
+  status: pending
+  depends_on:
+  - subject-session-s16
+  - subject-session-s17
+  - subject-session-s18
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s16/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s17/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s18/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/protocol.md
+  outputs:
+  - campaigns/self-bootstrap-cohort-v2/reviews/waves/wave-06/checkpoint.json
+  write_scope:
+  - campaigns/self-bootstrap-cohort-v2/reviews/waves/wave-06/
+  review_required: true
+  human_gate: false
+- id: subject-session-s19
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - check-dispatch-wave-06
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s19/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s19/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s19/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s19/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s19/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s19/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s19/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s19/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s19/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s19/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s19/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s19/
+  review_required: true
+  human_gate: false
+- id: subject-session-s20
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - check-dispatch-wave-06
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s20/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s20/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s20/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s20/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s20/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s20/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s20/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s20/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s20/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s20/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s20/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s20/
+  review_required: true
+  human_gate: false
+- id: subject-session-s21
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - check-dispatch-wave-06
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s21/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s21/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s21/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s21/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s21/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s21/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s21/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s21/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s21/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s21/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s21/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s21/
+  review_required: true
+  human_gate: false
+- id: check-dispatch-wave-07
+  role: cohort-pause-rule-auditor
+  status: pending
+  depends_on:
+  - subject-session-s19
+  - subject-session-s20
+  - subject-session-s21
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s19/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s20/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s21/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/protocol.md
+  outputs:
+  - campaigns/self-bootstrap-cohort-v2/reviews/waves/wave-07/checkpoint.json
+  write_scope:
+  - campaigns/self-bootstrap-cohort-v2/reviews/waves/wave-07/
+  review_required: true
+  human_gate: false
+- id: subject-session-s22
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - check-dispatch-wave-07
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s22/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s22/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s22/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s22/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s22/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s22/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s22/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s22/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s22/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s22/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s22/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s22/
+  review_required: true
+  human_gate: false
+- id: subject-session-s23
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - check-dispatch-wave-07
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s23/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s23/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s23/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s23/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s23/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s23/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s23/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s23/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s23/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s23/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s23/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s23/
+  review_required: true
+  human_gate: false
+- id: subject-session-s24
+  role: fresh-experimental-subject-two-stage-native-dispatch
+  status: pending
+  depends_on:
+  - check-dispatch-wave-07
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/s24/packet.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/runtime/local-dispatch-policy.json
+  - campaigns/self-bootstrap-cohort-v2/approvals/execution/local-host-policy-authorization.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s24/bootstrap/harness-receipt.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s24/bootstrap/host-observation.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s24/local-dispatch-acceptance.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s24/events.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s24/commands.jsonl
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s24/patch.diff
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s24/tests.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s24/handoff.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s24/outputs.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s24/bundle.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s24/
+  review_required: true
+  human_gate: false
+- id: check-dispatch-wave-08
+  role: cohort-pause-rule-auditor
+  status: pending
+  depends_on:
+  - subject-session-s22
+  - subject-session-s23
+  - subject-session-s24
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s22/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s23/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s24/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/protocol.md
+  outputs:
+  - campaigns/self-bootstrap-cohort-v2/reviews/waves/wave-08/checkpoint.json
+  write_scope:
+  - campaigns/self-bootstrap-cohort-v2/reviews/waves/wave-08/
+  review_required: true
+  human_gate: false
+- id: assemble-attempt-manifest
+  role: evidence-ingestion-operator
+  status: pending
+  depends_on:
+  - subject-session-s01
+  - subject-session-s02
+  - subject-session-s03
+  - subject-session-s04
+  - subject-session-s05
+  - subject-session-s06
+  - subject-session-s07
+  - subject-session-s08
+  - subject-session-s09
+  - subject-session-s10
+  - subject-session-s11
+  - subject-session-s12
+  - subject-session-s13
+  - subject-session-s14
+  - subject-session-s15
+  - subject-session-s16
+  - subject-session-s17
+  - subject-session-s18
+  - subject-session-s19
+  - subject-session-s20
+  - subject-session-s21
+  - subject-session-s22
+  - subject-session-s23
+  - subject-session-s24
+  - check-dispatch-wave-08
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s01/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s02/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s03/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s04/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s05/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s06/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s07/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s08/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s09/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s10/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s11/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s12/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s13/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s14/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s15/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s16/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s17/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s18/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s19/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s20/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s21/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s22/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s23/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempts/s24/bundle.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  - experiments/self-bootstrap-effectiveness-v2/staging/subject-packets/packet-set.json
+  - experiments/self-bootstrap-effectiveness-v2/schemas/attempt-bundle-v2.schema.json
+  - experiments/self-bootstrap-effectiveness-v2/src/verify_attempts.py
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempt-manifest/bundle-manifest.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempt-manifest/
+  review_required: true
+  human_gate: false
+- id: ingest-observations-v2
+  role: controlled-ingestion-operator
+  status: pending
+  depends_on:
+  - assemble-attempt-manifest
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempt-manifest/bundle-manifest.json
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/data/raw/observations-v2.csv
+  - experiments/self-bootstrap-effectiveness-v2/data/provenance/observations-v2.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/data/raw/observations-v2.csv
+  - experiments/self-bootstrap-effectiveness-v2/data/provenance/observations-v2.json
+  review_required: true
+  human_gate: false
+- id: build-opaque-scoring-packets
+  role: blinding-operator
+  status: pending
+  depends_on:
+  - ingest-observations-v2
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/data/raw/observations-v2.csv
+  - experiments/self-bootstrap-effectiveness-v2/staging/attempt-manifest/bundle-manifest.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/scoring/packets/packet-manifest.json
+  - experiments/self-bootstrap-effectiveness-v2/scoring/opaque-map/attempt-map.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/scoring/packets/
+  - experiments/self-bootstrap-effectiveness-v2/scoring/opaque-map/
+  review_required: true
+  human_gate: false
+- id: blinded-scorer-a
+  role: independent-blinded-scorer-a
+  status: pending
+  depends_on:
+  - build-opaque-scoring-packets
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/scoring/packets/packet-manifest.json
+  - experiments/self-bootstrap-effectiveness-v2/rubric.md
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/scoring/scorer-a/scores-v1.csv
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/scoring/scorer-a/
+  review_required: true
+  human_gate: false
+- id: blinded-scorer-b
+  role: independent-blinded-scorer-b
+  status: pending
+  depends_on:
+  - build-opaque-scoring-packets
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/scoring/packets/packet-manifest.json
+  - experiments/self-bootstrap-effectiveness-v2/rubric.md
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/scoring/scorer-b/scores-v1.csv
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/scoring/scorer-b/
+  review_required: true
+  human_gate: false
+- id: adjudicate-and-unblind
+  role: independent-adjudicator
+  status: pending
+  depends_on:
+  - blinded-scorer-a
+  - blinded-scorer-b
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/scoring/scorer-a/scores-v1.csv
+  - experiments/self-bootstrap-effectiveness-v2/scoring/scorer-b/scores-v1.csv
+  - experiments/self-bootstrap-effectiveness-v2/scoring/opaque-map/attempt-map.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/data/derived/adjudicated-v1.csv
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/data/derived/
+  review_required: true
+  human_gate: false
+- id: analyze-preregistered
+  role: analysis-agent
+  status: pending
+  depends_on:
+  - adjudicate-and-unblind
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/data/derived/adjudicated-v1.csv
+  - experiments/self-bootstrap-effectiveness-v2/protocol.md
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/artifacts/results-v1.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/artifacts/results-v1.json
+  review_required: true
+  human_gate: false
+- id: independent-final-review-a
+  role: independent-final-reviewer-a
+  status: pending
+  depends_on:
+  - analyze-preregistered
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/artifacts/results-v1.json
+  - experiments/self-bootstrap-effectiveness-v2/protocol.md
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  outputs:
+  - campaigns/self-bootstrap-cohort-v2/reviews/final-a/review.json
+  write_scope:
+  - campaigns/self-bootstrap-cohort-v2/reviews/final-a/
+  review_required: false
+  human_gate: false
+- id: independent-final-review-b
+  role: independent-final-reviewer-b
+  status: pending
+  depends_on:
+  - analyze-preregistered
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/artifacts/results-v1.json
+  - experiments/self-bootstrap-effectiveness-v2/protocol.md
+  - experiments/self-bootstrap-effectiveness-v2/registration/cohort-freeze.json
+  outputs:
+  - campaigns/self-bootstrap-cohort-v2/reviews/final-b/review.json
+  write_scope:
+  - campaigns/self-bootstrap-cohort-v2/reviews/final-b/
+  review_required: false
+  human_gate: false
+- id: synthesize-reviewed-findings
+  role: synthesis-agent
+  status: pending
+  depends_on:
+  - independent-final-review-a
+  - independent-final-review-b
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/artifacts/results-v1.json
+  - campaigns/self-bootstrap-cohort-v2/reviews/final-a/review.json
+  - campaigns/self-bootstrap-cohort-v2/reviews/final-b/review.json
+  outputs:
+  - experiments/self-bootstrap-effectiveness-v2/artifacts/synthesis/findings.md
+  - experiments/self-bootstrap-effectiveness-v2/artifacts/synthesis/engineering-backlog.json
+  write_scope:
+  - experiments/self-bootstrap-effectiveness-v2/artifacts/synthesis/
+  review_required: true
+  human_gate: false
+- id: human-publication-decision
+  role: independent-human-reviewer
+  status: blocked
+  depends_on:
+  - synthesize-reviewed-findings
+  inputs:
+  - experiments/self-bootstrap-effectiveness-v2/artifacts/synthesis/findings.md
+  - campaigns/self-bootstrap-cohort-v2/reviews/final-a/review.json
+  - campaigns/self-bootstrap-cohort-v2/reviews/final-b/review.json
+  outputs:
+  - campaigns/self-bootstrap-cohort-v2/approvals/publication/decision.json
+  write_scope:
+  - campaigns/self-bootstrap-cohort-v2/approvals/publication/
+  review_required: false
+  human_gate: true

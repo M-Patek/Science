@@ -6,6 +6,31 @@ last_validated: 2026-07-10
 
 # Changelog
 
+## 2026-07-13 — Self-bootstrap cohort v2 pre-freeze baseline
+
+- Added a new outcome-free `self-bootstrap-effectiveness-v2` design rather than rewriting either v1,
+  explicitly classifying the design as prospective for v2 but informed by prior engineering pilots.
+- Added a validated 52-task campaign with 24 explicit paired subject sessions in eight fail-closed waves,
+  exact packet/attempt
+  dependencies, baseline-negative and design review steps, blinded scoring, synthesis, and human gates.
+- Preserved the header-only raw v1 file and planned any future controlled ingestion as raw v2; no v2
+  observation, allocation, approval, freeze, or dispatch is claimed.
+- Independent review rejected the first draft; the revision corrected output paths, ordinal/evidence
+  contracts, numeric validation, raw immutability, and freeze inputs. A fresh re-review remains required
+  before freeze, and the baseline-negative audit and human local-policy gate remain pending.
+- Separated frozen registration materials from subject-visible baseline materials, preventing protocol
+  and rubric leakage while retaining byte-complete preregistration provenance (ADR 0016).
+
+## 2026-07-13 — Explicit local unsigned dispatch acceptance (T4)
+
+- Added a second, deliberately weaker `local-host-observed-unsigned` trust track without changing the
+  trusted-attestation or human-authorization boundary.
+- Added two-phase, expiring per-cell acceptance bound to immutable preparation artifacts, logical and
+  observed agent/session identities, a child harness receipt, actual workspace, and pinned Git HEAD.
+- Kept cohort freezes and subject packets dispatch-blocked; local acceptance is a separate overlay and
+  explicitly disclaims provider identity, immutable builds, host enforcement, and absolute isolation.
+- Stopped inferring provider identity from a requested model environment alias and recorded ADR 0015.
+
 ## 2026-07-13 — Pilot evidence repair and explicit evidence roots (T4)
 
 - Preserved five privately executed engineering pilots and three smoke run records, while independently

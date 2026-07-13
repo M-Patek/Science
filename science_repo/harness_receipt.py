@@ -1,10 +1,11 @@
 """Host-observed harness receipt for self-study cohort runtime registration.
 
 This module generates and verifies receipts from the agent harness environment.
-Receipts are **declarative, not cryptographic**: they record what the harness
-reports about itself, but they do not prove that the report is true.  The
-framework accepts them at evidence level ``host-observed-unsigned``; a
-separate host-owned verifier is required before they can open a dispatch gate.
+Receipts are **declarative, not cryptographic**: they record values exposed to
+the current process under harness environment naming conventions, but they do
+not prove that the values are true.  The evidence label remains
+``host-observed-unsigned`` for contract compatibility; it does not mean that an
+OS, provider, or independent host authority observed or endorsed the values.
 
 Environment variables read (all optional; missing values are recorded as
 ``unavailable`` with a reason):
@@ -15,10 +16,11 @@ Environment variables read (all optional; missing values are recorded as
 - ``AI_AGENT`` – harness name and version (e.g. ``claude-code_2-1-195_agent``)
 - ``CLAUDE_EFFORT`` – effort/sampling setting (e.g. ``xhigh``)
 
-These variables are set by the Claude Code CLI and are **not** cryptographically
-signed.  A malicious or curious user can override them.  The receipt therefore
-remains ``dispatch-blocked`` until a trusted host verifier (for example, an OS
-key store or cloud attestation service) confirms the claims.
+These variables may be conventionally exposed by a harness and are **not**
+cryptographically signed.  A user or parent process can override them.  The
+receipt cannot open a dispatch gate by itself.  It may be referenced by an
+explicit local unsigned-acceptance policy, or verified through a stronger
+host-owned attestation path; those are separate trust tracks.
 """
 from __future__ import annotations
 
@@ -189,10 +191,9 @@ def generate_receipt(
     harness, harness_unavailable_reason = _read_env("AI_AGENT")
     effort, effort_unavailable_reason = _read_env("CLAUDE_EFFORT")
 
-    # Derive provider from model name when available
+    # A requested model alias does not establish provider identity.  Keep the
+    # provider unknown rather than upgrading an environment claim into a fact.
     provider = None
-    if model_name is not None:
-        provider = "anthropic"  # Claude Code only supports Anthropic models
 
     return HarnessReceipt(
         receipt_id=receipt_id,
@@ -319,7 +320,7 @@ def generate_cohort_runtime_registration(
         "attestation_policy": r["attestation_policy"],
 
         # Required model metadata (cohort-v1.yaml required_model_metadata)
-        "provider": _val("provider", "model_unavailable_reason"),
+        "provider": "unavailable: process environment does not attest provider identity",
         "model_name": _val("model_name", "model_unavailable_reason"),
         "exact_model_or_version_id": "unavailable: harness exposes a model identifier, not an immutable provider build",
         "inference_runtime_and_version": "unavailable: not exposed by Claude Code CLI",

@@ -1,0 +1,23 @@
+schema_version: 1
+id: self-bootstrap-effectiveness-v2
+title: Local host-observed self-bootstrap effectiveness cohort v2
+stage: designed
+owner: framework-maintainer
+question: Does a preregistered Science campaign with bounded native subagents improve independently scored engineering quality relative to solo Main Agent work on the same twelve frozen fixtures?
+hypothesis: Treatment will improve paired adjudicated quality by at least 0.5 points while the paired median elapsed-time ratio remains at most 1.25 and critical violations remain zero.
+created_at: 2026-07-13
+inputs:
+  - path: data/derived/adjudicated-v1.csv
+    role: adjudicated blinded scores; absent until authorized formal execution and controlled ingestion
+execution:
+  command: ['{python}', src/analyze.py]
+  outputs: [artifacts/results-v1.json]
+acceptance:
+  - {metric: evaluable_itt_pairs, operator: '>=', threshold: 12}
+  - {metric: mean_quality_difference, operator: '>=', threshold: 0.5}
+  - {metric: median_total_elapsed_time_ratio, operator: '<=', threshold: 1.25}
+  - {metric: critical_violation_count, operator: '<=', threshold: 0}
+ethics:
+  human_subjects: false
+  sensitive_data: false
+  notes: Local repository work only. Network, private data, external or paid compute, instruments, and publication are forbidden without separate explicit human authorization.

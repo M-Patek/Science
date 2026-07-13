@@ -17,6 +17,8 @@ def _inputs(tmp_path: Path):
         fixtures.append((f"F{number:02d}", path))
     baseline = tmp_path / "baseline.txt"
     baseline.write_text("base\n", encoding="utf-8")
+    registration = tmp_path / "protocol.txt"
+    registration.write_text("registered design\n", encoding="utf-8")
     runtime = {key: f"known-{key}" for key in STATIC_RUNTIME_IDENTITY_FIELDS}
     runtime["sampling_parameters"] = {"temperature": 0}
     runtime["tool_names_and_versions"] = ["science-test/1"]
@@ -25,7 +27,8 @@ def _inputs(tmp_path: Path):
     receipt = {"receipt_id": "host-receipt-1", "authority_id": "human-operator-1", "source": "host-runtime",
                "issued_at": "2026-07-13T00:00:00Z", "identity_sha256": hashlib.sha256(encoded).hexdigest()}
     return dict(cohort_id="self-study-1", registration_root=tmp_path, fixtures=fixtures,
-                baseline_materials=[baseline], human_supplied_seed="human-chosen-seed", runtime_identity=runtime,
+                baseline_materials=[baseline], registration_materials=[registration],
+                human_supplied_seed="human-chosen-seed", runtime_identity=runtime,
                 runtime_identity_receipt=receipt)
 
 
@@ -42,6 +45,7 @@ def test_build_is_deterministic_balanced_and_records_no_authority_or_observation
     assert first["authority"].startswith("none-")
     assert first["observations"] == "none-recorded"
     assert first["registration_status"] == "materials-frozen-dispatch-blocked"
+    assert first["registration_materials"][0]["path"] == "protocol.txt"
     assert first["dispatch_allowed"] is False
     assert "human-chosen-seed" not in json.dumps(first)
 
