@@ -6,6 +6,13 @@ last_validated: 2026-07-10
 
 # Changelog
 
+## 2026-07-13
+
+- Added fail-closed trusted host attestation and explicit 24-cell subject packet construction for the
+  preregistered framework self-study.
+- Independent review rejected the first attempt/blinding verifier; it remains unshipped design work.
+- Recorded ADR 0012; these contracts do not claim host enforcement or authorize dispatch.
+
 ## 2026-07-13 - Formal self-research cohort preparation
 
 - Added a fail-closed cohort freeze contract for twelve fixtures and twenty-four paired block-arm

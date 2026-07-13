@@ -11,6 +11,8 @@ code_anchors:
   - science_repo/workspace.py:WorkspaceManager
   - science_repo/cohort.py:validate_cohort
   - science_repo/cohort_freeze.py:build_cohort_freeze
+  - science_repo/trusted_attestation.py:verify_attestation
+  - science_repo/subject_packets.py:build_subject_packet_set
   - science_repo/dispatch.py:create_dispatch_envelope
   - science_repo/closure.py:accept_dispatch_handoff
   - science_repo/coordinator.py:CampaignCoordinator
@@ -62,6 +64,13 @@ block-arm cells. The freeze binds fixture and baseline bytes, commits to a human
 records an externally supplied runtime-identity receipt, and explicitly carries neither execution
 authorization nor observations. Because the receipt is only structurally and content-bound checked,
 the artifact remains explicitly dispatch-blocked until a trusted host verifier attests it.
+
+The next self-study boundary has two fail-closed mechanical layers. Trusted-attestation verification
+requires a host verifier and exact cohort/request/scope/subject/expiry bindings. Subject-packet
+construction materializes all 24 cells with unique session, worktree, and context identities, audits
+source paths and content, and stays blocked until host isolation is evidenced. These contracts do not
+prove that the host enforced the underlying claims. Attempt-manifest and blinded-scoring verification
+remain blocked design work after independent review rejected self-reported authorization and blinding.
 
 ## Audited closure and upgrades
 

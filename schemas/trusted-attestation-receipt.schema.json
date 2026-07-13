@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://science-workbench.local/schemas/trusted-attestation-receipt.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "receipt_id", "kind", "authority_id", "issued_at", "expires_at", "cohort_id", "request_sha256", "scopes", "subject_sha256", "claims", "signature"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "receipt_id": {"type": "string", "minLength": 1},
+    "kind": {"enum": ["runtime_identity", "human_authorization"]},
+    "authority_id": {"type": "string", "minLength": 1},
+    "issued_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "cohort_id": {"type": "string", "minLength": 1},
+    "request_sha256": {"$ref": "#/$defs/hash"},
+    "scopes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "subject_sha256": {"$ref": "#/$defs/hash"},
+    "claims": {"type": "object", "minProperties": 1},
+    "signature": {
+      "type": "object", "additionalProperties": false,
+      "required": ["algorithm", "key_id", "value"],
+      "properties": {"algorithm": {"type": "string", "minLength": 1}, "key_id": {"type": "string", "minLength": 1}, "value": {"type": "string", "minLength": 1}}
+    }
+  },
+  "$defs": {"hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

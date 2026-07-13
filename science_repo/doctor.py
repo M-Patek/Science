@@ -14,7 +14,8 @@ import yaml
 
 SCHEMAS = (
     "project", "experiment", "campaign", "handoff", "run", "lineage", "execution-envelope",
-    "cohort-freeze",
+    "cohort-freeze", "trusted-attestation-receipt",
+    "subject-packet-set",
 )
 
 
