@@ -8,6 +8,10 @@ last_validated: 2026-07-10
 
 ## 2026-07-13
 
+- Added strict 24-cell attempt capture and blinded-scoring verification after two independent no-ship
+  reviews; authorization, scorer identity, time, packet coverage, and scoring context fail closed.
+- Added atomic `subject-packets-build` and scoped self-study campaign closure semantics; recorded ADR 0013.
+
 - Added fail-closed trusted host attestation and explicit 24-cell subject packet construction for the
   preregistered framework self-study.
 - Independent review rejected the first attempt/blinding verifier; it remains unshipped design work.

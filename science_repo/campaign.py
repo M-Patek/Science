@@ -1,6 +1,11 @@
 from __future__ import annotations
 
 from pathlib import Path, PurePosixPath
+import json
+import yaml
+
+from .contracts import schema_errors
+from .subject_packets import SubjectPacketError, build_subject_packet_set
 from typing import Any
 
 
@@ -131,3 +136,52 @@ def validate_campaign(
                     f"concurrent write_scope overlap: {left_id} and {right_id}: {', '.join(collisions)}"
                 )
     return errors
+
+
+def validate_generated_task_outputs(project_root: Path, campaign: dict[str, Any], task_id: str) -> list[str]:
+    """Apply pinned semantic checks to framework self-study generator tasks."""
+    # These validators implement a preregistered study contract, not global
+    # semantics for coincidentally identical task names in unrelated projects.
+    try:
+        project = yaml.safe_load((project_root / "science-project.yaml").read_text(encoding="utf-8"))
+    except (OSError, yaml.YAMLError):
+        project = None
+    if campaign.get("id") != "self-bootstrap-v2" or not isinstance(project, dict) or project.get("id") != "framework-self-study":
+        return []
+    tasks = {task.get("id"): task for task in campaign.get("tasks", []) if isinstance(task, dict)}
+    task = tasks.get(task_id)
+    if task is None or task_id not in {"register-executable-cohort", "prepare-sanitized-subject-packets"}:
+        return []
+    outputs = task.get("outputs", [])
+    if not isinstance(outputs, list):
+        return [f"{task_id}: outputs must be an array"]
+    if task_id == "register-executable-cohort":
+        candidates = [item for item in outputs if str(item).endswith("cohort-freeze.json")]
+        if len(candidates) != 1:
+            return [f"{task_id}: exactly one cohort-freeze.json output is required"]
+        path = project_root / candidates[0]
+        try:
+            freeze = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError) as error:
+            return [f"{task_id}: cohort freeze cannot be read: {error}"]
+        schema = project_root / "schemas" / "cohort-freeze.schema.json"
+        errors = schema_errors(freeze, schema, path, expected_version=1)
+        verification = freeze.get("runtime_identity", {}).get("receipt_verification")
+        if verification != "supplied-not-cryptographically-verified":
+            errors.append(f"{task_id}: unexpected runtime receipt verification state")
+        if freeze.get("dispatch_allowed") is not False:
+            errors.append(f"{task_id}: preparation freeze must remain dispatch-blocked")
+        if freeze.get("registration_status") != "materials-frozen-dispatch-blocked":
+            errors.append(f"{task_id}: unexpected registration status")
+        return errors
+    candidates = [item for item in outputs if str(item).endswith("packet-manifest.json")]
+    freeze_inputs = [item for item in task.get("inputs", []) if str(item).endswith("cohort-freeze.json")]
+    if len(candidates) != 1 or len(freeze_inputs) != 1:
+        return [f"{task_id}: one packet manifest and one cohort freeze are required"]
+    try:
+        freeze = json.loads((project_root / freeze_inputs[0]).read_text(encoding="utf-8"))
+        actual = json.loads((project_root / candidates[0]).read_text(encoding="utf-8"))
+        expected = build_subject_packet_set(freeze=freeze, source_root=project_root)
+    except (OSError, ValueError, SubjectPacketError, KeyError) as error:
+        return [f"{task_id}: generated packet validation failed: {error}"]
+    return [] if actual == expected else [f"{task_id}: packet manifest is not the deterministic builder output"]

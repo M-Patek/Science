@@ -11,6 +11,7 @@ import yaml
 SCHEMA_NAMES = (
     "project", "experiment", "campaign", "handoff", "run", "lineage", "execution-envelope",
     "cohort-freeze", "trusted-attestation-receipt", "subject-packet-set",
+    "attempt-manifest", "blinded-scoring-verification",
 )
 
 

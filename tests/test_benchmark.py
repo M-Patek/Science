@@ -32,6 +32,8 @@ def test_fixture_is_deterministic_and_contains_registered_tasks(fixture_root: Pa
         "campaign.schema.json",
         "cohort-freeze.schema.json",
         "subject-packet-set.schema.json",
+        "attempt-manifest.schema.json",
+        "blinded-scoring-verification.schema.json",
         "trusted-attestation-receipt.schema.json",
             "experiment.schema.json",
             "execution-envelope.schema.json",

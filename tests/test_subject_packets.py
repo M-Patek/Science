@@ -8,6 +8,13 @@ from science_repo.cohort_freeze import STATIC_RUNTIME_IDENTITY_FIELDS, build_coh
 from science_repo.subject_packets import SubjectPacketError, build_subject_packet_set
 
 
+def _rehash(freeze):
+    unsigned = dict(freeze); unsigned.pop("freeze_sha256", None)
+    freeze["freeze_sha256"] = __import__("hashlib").sha256(
+        (json.dumps(unsigned, sort_keys=True, separators=(",", ":")) + "\n").encode()
+    ).hexdigest()
+
+
 def _freeze(root: Path):
     fixtures = []
     for index in range(12):
@@ -54,8 +61,39 @@ def test_negative_content_audit_rejects_absolute_paths_and_secrets(tmp_path):
     # Rebind the freeze only to exercise the independent content audit.
     data = target.read_bytes(); digest = __import__("hashlib").sha256(data).hexdigest()
     for material in freeze["fixtures"]:
-        if material["fixture_id"] == "F0": material["files"][0]["sha256"] = digest
+        if material["fixture_id"] == "F0":
+            material["files"][0]["sha256"] = digest
+            material["tree_sha256"] = __import__("hashlib").sha256(
+                (json.dumps(material["files"], sort_keys=True, separators=(",", ":")) + "\n").encode()
+            ).hexdigest()
     unsigned = dict(freeze); unsigned.pop("freeze_sha256")
     freeze["freeze_sha256"] = __import__("hashlib").sha256((json.dumps(unsigned, sort_keys=True, separators=(",", ":")) + "\n").encode()).hexdigest()
     with pytest.raises(SubjectPacketError, match="negative content audit"):
+        build_subject_packet_set(freeze=freeze, source_root=tmp_path)
+
+
+def test_rejects_duplicate_files_and_incomplete_or_duplicate_cells(tmp_path):
+    freeze = _freeze(tmp_path)
+    duplicate = copy.deepcopy(freeze["fixtures"][0]["files"][0])
+    freeze["fixtures"][0]["files"].append(duplicate)
+    freeze["fixtures"][0]["tree_sha256"] = __import__("hashlib").sha256(
+        (json.dumps(freeze["fixtures"][0]["files"], sort_keys=True, separators=(",", ":")) + "\n").encode()
+    ).hexdigest()
+    _rehash(freeze)
+    with pytest.raises(SubjectPacketError, match="duplicate file paths"):
+        build_subject_packet_set(freeze=freeze, source_root=tmp_path)
+
+    freeze = _freeze(tmp_path / "cells") if (tmp_path / "cells").mkdir() is None else None
+    freeze["assignment_ledger"][1]["fixture_id"] = freeze["assignment_ledger"][0]["fixture_id"]
+    freeze["assignment_ledger"][1]["arm"] = freeze["assignment_ledger"][0]["arm"]
+    _rehash(freeze)
+    with pytest.raises(SubjectPacketError, match="cover every fixture-arm"):
+        build_subject_packet_set(freeze=freeze, source_root=tmp_path / "cells")
+
+
+def test_malformed_nested_freeze_fails_with_domain_error(tmp_path):
+    freeze = _freeze(tmp_path)
+    freeze["fixtures"][0]["files"][0]["path"] = 7
+    _rehash(freeze)
+    with pytest.raises(SubjectPacketError, match="schema is invalid"):
         build_subject_packet_set(freeze=freeze, source_root=tmp_path)

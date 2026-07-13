@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from .coordinator import AuditReceipt, CampaignCoordinator
+from .campaign import validate_generated_task_outputs
 from .dispatch import audit_dispatch_handoff, create_dispatch_envelope
 from .scheduler import RetryPolicy
 
@@ -66,6 +67,13 @@ def accept_dispatch_handoff(
         raise ClosureError(str(error)) from error
     if envelope != expected:
         raise ClosureError("dispatch envelope does not match authoritative campaign")
+
+    if project_manifest is not None:
+        semantic = validate_generated_task_outputs(
+            Path(project_manifest).parent, campaign, str(envelope.get("task_id", ""))
+        )
+        if semantic:
+            raise ClosureError("generated output audit failed: " + "; ".join(semantic))
 
     errors = audit_dispatch_handoff(
         envelope,

@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 from dataclasses import asdict
 import json
+import os
 import shutil
 import sys
 from datetime import date
@@ -24,12 +25,30 @@ from .models import ID_RE
 from .review import review_run
 from .runner import run_experiment
 from .scheduler import RetryPolicy, schedule_campaign
+from .subject_packets import SubjectPacketError, build_subject_packet_set
 from .task_runtime import LeaseConflict, TaskRuntime
 from .workspace import WorkspaceError, WorkspaceManager
 from .validate import validate_repository
 
 
 ASSETS = Path(__file__).resolve().parent / "assets"
+
+
+def _assert_no_link_boundary(path: Path, root: Path, *, missing_leaf_ok: bool = False) -> None:
+    """Reject symlinks and Windows reparse points anywhere below root."""
+    relative = path.relative_to(root)
+    current = root
+    for index, part in enumerate(relative.parts):
+        current = current / part
+        if missing_leaf_ok and not current.exists():
+            break
+        try:
+            stat = current.lstat()
+        except OSError as error:
+            raise SubjectPacketError(f"packet path boundary cannot be inspected: {current}") from error
+        attributes = getattr(stat, "st_file_attributes", 0)
+        if current.is_symlink() or attributes & 0x400:
+            raise SubjectPacketError(f"links and reparse points are forbidden in packet paths: {current}")
 
 
 def repo_root(start: Path | None = None) -> Path:
@@ -316,6 +335,39 @@ def cmd_cohort_plan(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_subject_packets_build(args: argparse.Namespace) -> int:
+    """Build an immutable packet set from a pinned freeze and verified inputs."""
+    root = selected_project(args)
+    try:
+        raw_paths = [Path(args.freeze), Path(args.source_root), Path(args.output)]
+        if any(path.is_absolute() or ".." in path.parts for path in raw_paths):
+            raise SubjectPacketError("packet paths must be normalized project-relative paths")
+        freeze_path, source_root, output = (root / path for path in raw_paths)
+        for path in (freeze_path.resolve(), source_root.resolve(), output.parent.resolve()):
+            path.relative_to(root)
+        _assert_no_link_boundary(freeze_path, root)
+        _assert_no_link_boundary(source_root, root)
+        _assert_no_link_boundary(output, root, missing_leaf_ok=True)
+        freeze = json.loads(freeze_path.read_text(encoding="utf-8"))
+        result = build_subject_packet_set(freeze=freeze, source_root=source_root)
+        payload = (json.dumps(result, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
+        output.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            descriptor = os.open(output, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+        except FileExistsError:
+            if output.read_bytes() == payload:
+                print(f"Subject packet set already exists identically: {output.relative_to(root)}")
+                return 0
+            raise SubjectPacketError(f"conflicting packet set already exists: {output}")
+        with os.fdopen(descriptor, "wb") as stream:
+            stream.write(payload); stream.flush(); os.fsync(stream.fileno())
+    except (OSError, ValueError, SubjectPacketError) as error:
+        print(f"Subject packet build failed: {error}", file=sys.stderr)
+        return 2
+    print(f"Subject packet set created: {output.relative_to(root)}")
+    return 0
+
+
 def cmd_workspace_create(args: argparse.Namespace) -> int:
     manager = WorkspaceManager(Path(args.repository), Path(args.sessions_root))
     try:
@@ -532,6 +584,11 @@ def build_parser() -> argparse.ArgumentParser:
     cohort_plan.add_argument("--cohort", default="cohort-v1.yaml")
     cohort_plan.add_argument("--copy-mechanism", default="git-worktree")
     cohort_plan.set_defaults(func=cmd_cohort_plan)
+    packets = sub.add_parser("subject-packets-build", help="atomically build a pinned fail-closed subject packet set")
+    packets.add_argument("--freeze", required=True, help="project-relative cohort freeze JSON")
+    packets.add_argument("--source-root", default=".", help="project-relative root containing frozen materials")
+    packets.add_argument("--output", required=True, help="project-relative immutable output JSON")
+    packets.set_defaults(func=cmd_subject_packets_build)
     workspace_create = sub.add_parser("workspace-create", help="create an audited detached worktree")
     workspace_create.add_argument("session")
     workspace_create.add_argument("revision")

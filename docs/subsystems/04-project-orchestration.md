@@ -13,6 +13,8 @@ code_anchors:
   - science_repo/cohort_freeze.py:build_cohort_freeze
   - science_repo/trusted_attestation.py:verify_attestation
   - science_repo/subject_packets.py:build_subject_packet_set
+  - science_repo/study_verification.py:verify_attempt_manifest
+  - science_repo/study_verification.py:verify_blinded_scoring
   - science_repo/dispatch.py:create_dispatch_envelope
   - science_repo/closure.py:accept_dispatch_handoff
   - science_repo/coordinator.py:CampaignCoordinator
@@ -70,7 +72,9 @@ requires a host verifier and exact cohort/request/scope/subject/expiry bindings.
 construction materializes all 24 cells with unique session, worktree, and context identities, audits
 source paths and content, and stays blocked until host isolation is evidenced. These contracts do not
 prove that the host enforced the underlying claims. Attempt-manifest and blinded-scoring verification
-remain blocked design work after independent review rejected self-reported authorization and blinding.
+now require exact 24-cell coverage, trusted callbacks, strict typed and content-bound evidence, packet
+bijection, identical scoring contexts, and commit-before-reveal. Independent review rejected two weaker
+iterations before this boundary was accepted. These checks still do not authorize subject dispatch.
 
 ## Audited closure and upgrades
 

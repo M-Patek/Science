@@ -41,7 +41,7 @@ def test_doctor_reports_missing_contracts_and_paths(tmp_path: Path) -> None:
     report = diagnose(tmp_path)
     codes = [item["code"] for item in report["findings"]]
     assert "contracts.schema-invalid" in codes
-    assert codes.count("contracts.schema-missing") == 9
+    assert codes.count("contracts.schema-missing") == 11
     assert report["summary"]["error"] >= 5
 
 
