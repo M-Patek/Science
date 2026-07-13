@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "run_id": "20260713T094852Z-3bdb1c15",
+  "experiment_id": "onboarding-smoke",
+  "status": "succeeded",
+  "started_at": "2026-07-13T09:48:52.662628+00:00",
+  "ended_at": "2026-07-13T09:48:52.713807+00:00",
+  "duration_seconds": 0.056823,
+  "command": [
+    "C:\\Users\\asus\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "src/run.py"
+  ],
+  "exit_code": 0,
+  "git_revision": "4270a98e505f0652b08df4752549cc616925af38",
+  "manifest_sha256": "82dd5e640bf3539d270e585340f538e68eba79a05448675b29e6f57e20635b8b",
+  "environment_sha256": "042105a3b90b510afe67e5d46eb24c3d97f651bb54079e5c94baf90ef264bea3",
+  "inputs": [
+    {
+      "path": "templates/experiment/",
+      "exists": true,
+      "sha256": "7e9302d6b93ed45a00bd92aea9f0f6596ef6e8ab87c63e178ef398d023753639",
+      "bytes": 1834,
+      "kind": "directory",
+      "scope": "project",
+      "project_path": "templates/experiment"
+    },
+    {
+      "path": "experiments/framework-onboarding/",
+      "exists": true,
+      "sha256": "e162c1aa3d5c47f00b582b33ada3c549f6e902b8af4936218ed0cc62e491dc33",
+      "bytes": 46647,
+      "kind": "directory",
+      "scope": "project",
+      "project_path": "experiments/framework-onboarding"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "artifacts/validation.json",
+      "exists": true,
+      "sha256": "09728bba24ba820e7461e6746a691a1cd35d43086dd1df6eefc7535bcc5ebfa2",
+      "bytes": 207,
+      "kind": "file"
+    }
+  ],
+  "lineage": {
+    "path": "experiments/onboarding-smoke/records/20260713T094852Z-3bdb1c15/lineage.json",
+    "sha256": "ef334b97b0a99f128938e0d17cc87eb38554d62cd0896944e7e4ebbee1a9ba01",
+    "validation": {
+      "status": "valid",
+      "schema": "schemas/lineage.schema.json"
+    }
+  }
+}

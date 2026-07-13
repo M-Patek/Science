@@ -160,7 +160,16 @@ def review_run(
             if not isinstance(source, dict) or not isinstance(source.get("path"), str):
                 checks.append({"name": f"{category}_record_shape:{index}", "passed": False, "detail": "evidence item requires string path"})
                 continue
-            current = _evidence_item(experiment_root, source["path"])
+            scope = source.get("scope", "experiment") if category == "inputs" else "experiment"
+            if scope not in {"experiment", "project"}:
+                checks.append({
+                    "name": f"{category}_scope:{index}",
+                    "passed": False,
+                    "detail": "evidence scope must be experiment or project",
+                })
+                continue
+            root = project_root if scope == "project" else experiment_root
+            current = _evidence_item(root, source["path"])
             checks.append({
                 "name": f"{'input' if category == 'inputs' else 'artifact'}_integrity:{source['path']}",
                 "passed": bool(current["exists"] and current["sha256"] == source.get("sha256") and current.get("kind") == source.get("kind", "file")),

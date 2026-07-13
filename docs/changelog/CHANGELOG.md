@@ -6,6 +6,22 @@ last_validated: 2026-07-10
 
 # Changelog
 
+## 2026-07-13 — Pilot evidence repair and explicit evidence roots (T4)
+
+- Preserved five privately executed engineering pilots and three smoke run records, while independently
+  classifying them as inadmissible formal cohort observations because required session evidence was not
+  retained and T3/T4 summaries conflict.
+- Added header-only `observations-v3.csv` plus provenance rather than rewriting the unverified v2 raw
+  history; formal cohort observations remain at zero and dispatch remains blocked.
+- Added a non-overwriting `science harness-receipt` diagnostic for `host-observed-unsigned` environment
+  declarations without claiming an immutable provider build or trusted isolation.
+- Replaced ambiguous missing-path fallback with explicit `scope: experiment|project` input binding.
+  Run records and lineage now bind the exact project path whose bytes were hashed.
+- Shipped the updated experiment schema in framework and generated-project schema packs, added regression
+  tests, and recorded the workflow decision in ADR 0014.
+- Made `scripts/refresh_registry.py` directly executable from the documented command and added explicit
+  generated-project selection with `--project`.
+
 ## 2026-07-13
 
 - Added strict 24-cell attempt capture and blinded-scoring verification after two independent no-ship

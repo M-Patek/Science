@@ -22,6 +22,10 @@ and hashes declared inputs before execution and outputs afterward. Files and dir
 content hashes; symlinked evidence is rejected. A missing declared input/output makes the run fail even if
 the process returns zero.
 
+Input paths are experiment-relative by default. Project-level evidence must declare `scope: project`;
+the runner records both scope and canonical project path, and lineage uses that exact binding. Missing
+paths never fall back to another root. Contract-v1 outputs remain experiment-relative.
+
 Known boundary: package capture is Python-oriented and does not yet capture containers, GPU drivers,
 HPC scheduler metadata beyond selected environment variables, atomic directory snapshots, descendant
 process-tree timeout cleanup, or OS-enforced WORM records.

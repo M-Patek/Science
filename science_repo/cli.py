@@ -16,6 +16,7 @@ from .cohort import generate_preassignment, load_cohort, validate_cohort, valida
 from .closure import ClosureError, accept_dispatch_handoff
 from .dispatch import audit_dispatch_handoff, create_dispatch_envelope
 from .handoff import load_handoff, validate_handoff
+from .harness_receipt import generate_cohort_runtime_registration, generate_receipt
 from .lifecycle import LifecycleError, transition_stage
 from .lineage import lineage_digest, load_lineage, validate_lineage
 from .doctor import diagnose
@@ -335,6 +336,24 @@ def cmd_cohort_plan(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_harness_receipt(args: argparse.Namespace) -> int:
+    """Capture declarative harness metadata without claiming host attestation."""
+    payload = (
+        generate_cohort_runtime_registration(cohort_id=args.cohort_id)
+        if args.cohort_id
+        else generate_receipt().to_dict()
+    )
+    if args.output:
+        output = Path(args.output)
+        if output.exists():
+            raise SystemExit(f"refusing to overwrite existing receipt: {output}")
+        dump_json(output, payload)
+        print(output)
+    else:
+        print(json.dumps(payload, indent=2, sort_keys=True))
+    return 0
+
+
 def cmd_subject_packets_build(args: argparse.Namespace) -> int:
     """Build an immutable packet set from a pinned freeze and verified inputs."""
     root = selected_project(args)
@@ -584,6 +603,12 @@ def build_parser() -> argparse.ArgumentParser:
     cohort_plan.add_argument("--cohort", default="cohort-v1.yaml")
     cohort_plan.add_argument("--copy-mechanism", default="git-worktree")
     cohort_plan.set_defaults(func=cmd_cohort_plan)
+    harness_receipt = sub.add_parser(
+        "harness-receipt", help="capture an unsigned declarative harness-environment receipt"
+    )
+    harness_receipt.add_argument("--cohort-id")
+    harness_receipt.add_argument("--output", help="new JSON path; existing files are never overwritten")
+    harness_receipt.set_defaults(func=cmd_harness_receipt)
     packets = sub.add_parser("subject-packets-build", help="atomically build a pinned fail-closed subject packet set")
     packets.add_argument("--freeze", required=True, help="project-relative cohort freeze JSON")
     packets.add_argument("--source-root", default=".", help="project-relative root containing frozen materials")

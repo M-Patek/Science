@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://science-workbench.local/schemas/cohort-freeze.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "cohort_id", "registration_status", "dispatch_allowed", "fixture_count", "fixtures", "baseline_materials", "randomization", "assignment_ledger", "runtime_identity", "authority", "observations", "freeze_sha256"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "cohort_id": {"type": "string", "minLength": 1},
+    "registration_status": {"const": "materials-frozen-dispatch-blocked"},
+    "dispatch_allowed": {"const": false},
+    "fixture_count": {"const": 12},
+    "fixtures": {"type": "array", "minItems": 12, "maxItems": 12, "items": {"$ref": "#/$defs/material"}},
+    "baseline_materials": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/material"}},
+    "randomization": {"type": "object", "additionalProperties": false, "required": ["method", "seed_sha256", "arms"], "properties": {"method": {"const": "sha256-ranked-cells-v1"}, "seed_sha256": {"$ref": "#/$defs/hash"}, "arms": {"const": ["control", "treatment"]}}},
+    "assignment_ledger": {"type": "array", "minItems": 24, "maxItems": 24, "items": {"type": "object", "additionalProperties": false, "required": ["cell_id", "fixture_id", "arm", "execution_order"], "properties": {"cell_id": {"type": "string", "minLength": 1}, "fixture_id": {"type": "string", "minLength": 1}, "arm": {"type": "string", "minLength": 1}, "execution_order": {"type": "integer", "minimum": 1, "maximum": 24}}}},
+    "runtime_identity": {"type": "object", "additionalProperties": false, "required": ["static_identity", "source_receipt", "receipt_verification", "post_run_usage"], "properties": {"static_identity": {"type": "object", "additionalProperties": false, "required": ["provider", "model_name", "exact_model_or_version_id", "inference_runtime_and_version", "agent_harness_and_version", "system_prompt_hash_or_unavailable_reason", "developer_prompt_hash_or_unavailable_reason", "tool_names_and_versions", "permission_and_network_policy", "sampling_parameters", "context_window_limit"], "properties": {"provider": {}, "model_name": {}, "exact_model_or_version_id": {}, "inference_runtime_and_version": {}, "agent_harness_and_version": {}, "system_prompt_hash_or_unavailable_reason": {}, "developer_prompt_hash_or_unavailable_reason": {}, "tool_names_and_versions": {}, "permission_and_network_policy": {}, "sampling_parameters": {}, "context_window_limit": {}}}, "source_receipt": {"type": "object", "additionalProperties": false, "required": ["receipt_id", "authority_id", "source", "issued_at", "identity_sha256"], "properties": {"receipt_id": {"type": "string", "minLength": 1}, "authority_id": {"type": "string", "minLength": 1}, "source": {"type": "string", "minLength": 1}, "issued_at": {"type": "string", "minLength": 1}, "identity_sha256": {"$ref": "#/$defs/hash"}}}, "receipt_verification": {"const": "supplied-not-cryptographically-verified"}, "post_run_usage": {"const": "not-known-before-execution"}}},
+    "authority": {"const": "none-this-artifact-is-not-authorization"},
+    "observations": {"const": "none-recorded"},
+    "freeze_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "file": {"type": "object", "additionalProperties": false, "required": ["path", "sha256"], "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"$ref": "#/$defs/hash"}}},
+    "material": {"type": "object", "additionalProperties": false, "required": ["tree_sha256", "files"], "properties": {"fixture_id": {"type": "string", "minLength": 1}, "path": {"type": "string", "minLength": 1}, "tree_sha256": {"$ref": "#/$defs/hash"}, "files": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/file"}}}}
+  }
+}

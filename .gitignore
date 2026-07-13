@@ -4,6 +4,9 @@ __pycache__/
 .ruff_cache/
 .venv/
 .test-tmp*/
+.test-*/
+.tmp-*/
+test-tmp-*/
 pytest-cache-files-*/
 .pytest-*/
 tests/fixtures/pytest-*/
@@ -14,6 +17,7 @@ dist/
 build/
 *.egg-info/
 .env
+.claude/
 campaigns/*/runtime/
 
 # Keep source data policy explicit; large/private datasets should live outside git.

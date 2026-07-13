@@ -13,6 +13,7 @@ from science_repo.cli import (
     cmd_dispatch_audit,
     cmd_dispatch_envelope,
     cmd_handoff_validate,
+    cmd_harness_receipt,
     cmd_task_claim,
     cmd_task_heartbeat,
     cmd_task_release,
@@ -195,3 +196,19 @@ def test_cli_validates_but_does_not_plan_blocked_cohort(capsys):
                 copy_mechanism="git-worktree",
             )
         )
+
+
+def test_cli_harness_receipt_refuses_overwrite(tmp_path, monkeypatch, capsys):
+    monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "session-1")
+    monkeypatch.setenv("ANTHROPIC_MODEL", "claude-test")
+    monkeypatch.setenv("AI_AGENT", "claude-code-test")
+    monkeypatch.setenv("CLAUDE_EFFORT", "medium")
+    output = tmp_path / "receipt.json"
+    args = Namespace(cohort_id="cohort-1", output=str(output))
+    assert cmd_harness_receipt(args) == 0
+    payload = json.loads(output.read_text(encoding="utf-8"))
+    assert payload["evidence_level"] == "host-observed-unsigned"
+    assert payload["exact_model_or_version_id"].startswith("unavailable:")
+    capsys.readouterr()
+    with pytest.raises(SystemExit, match="refusing to overwrite"):
+        cmd_harness_receipt(args)

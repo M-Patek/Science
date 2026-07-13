@@ -1,8 +1,8 @@
 schema_version: 1
 cohort_id: framework-onboarding-v1
 protocol_id: framework-onboarding-v1
-registration_status: amended-before-observation-blocked
-registration_note: "Independent review and analysis repair occurred before observations. The committed revision and fixture hash are frozen; execution remains blocked pending exact runtime registration."
+registration_status: amended-after-pilot-dispatch-blocked
+registration_note: "Five engineering pilots were inspected before this amendment. They are not formal cohort observations. Dispatch remains blocked pending a newly frozen revision, per-session evidence capture, and accepted host-observed-unsigned verification policy."
 framework:
   git_commit: dd4640449fa647e16b3dc69b8bb802a69319cf5f
   version: 0.2.0.dev0
@@ -11,7 +11,7 @@ contracts:
   campaign: 1
   handoff: 1
 frozen_materials:
-  protocol_sha256: 869d612b90abe34bc255dc6fa6dbee6efcb09edde207b990072ed2528cb4a531
+  protocol_sha256: 071b306019ef2c23571a97be19e7477eab9287d02127db9fa2716522f78925a1
   rubric_sha256: c78160b01efa1f06595e854fed66e1fbb688acc9aa422844180865ded6fa0268
   document_hash_canonicalization: "UTF-8 bytes after normalizing CRLF and CR line endings to LF."
   prompt_set_sha256: b32745e70b3ddf246d84f9e80e4481ee6d5404ea1fd1fce4a86ee37c2641ca2d
@@ -32,7 +32,7 @@ assignment:
   each_task_planned: 3
   rule: "Assign exactly three planned sessions per task before any outcomes are inspected; replacements inherit the censored session's task stratum; retain the assignment ledger."
 limits:
-  onboarding_tokens_per_session: 3000
+  onboarding_tokens_per_session: measurement-only
   wall_clock_minutes: 30
 tool_policy:
   network: disabled
@@ -52,7 +52,26 @@ required_model_metadata:
   - context_window_limit
   - reported_input_output_cached_tokens_or_unavailable_reason
 runtime_registration:
-  status: pending-before-observation
+  status: declarative-observed-dispatch-blocked
+  registered_at: "2026-07-13T02:12:27.703761Z"
+  receipt_id: "94bd13eb-b31a-4698-80b0-79923620b0d4"
+  receipt_sha256: "07abb065527b6f52e555444da94730c57f8a4e585aeffecf60ee2baf86127206"
+  evidence_level: "host-observed-unsigned"
+  attestation_policy: "harness-env-declarative"
+  provider: "anthropic"
+  model_name: "claude-opus-4-8"
+  exact_model_or_version_id: "unavailable: ANTHROPIC_MODEL identifies a requested model alias, not an immutable provider build"
+  inference_runtime_and_version: "unavailable: not exposed by Claude Code CLI"
+  agent_harness_and_version: "claude-code_2-1-195_agent"
+  system_prompt_hash_or_unavailable_reason: "unavailable: system prompt not exposed by harness"
+  developer_prompt_hash_or_unavailable_reason: "unavailable: developer prompt not exposed by harness"
+  tool_names_and_versions: "unavailable: tool versions not exposed by harness"
+  permission_and_network_policy: "unavailable: harness receipt does not observe host permission or network enforcement"
+  sampling_parameters: "xhigh"
+  context_window_limit: "unavailable: not exposed by Claude Code CLI"
+  reported_input_output_cached_tokens_or_unavailable_reason: "unavailable: token counts not exposed at session start"
+  session_id: "e5ad07ee-d751-4251-9133-cf8d7413ce02"
+  child_session: true
   rule: "Register one exact provider, model/version, inference runtime, harness, tool policy, sampling configuration, and context limit before producing the assignment ledger."
 tasks:
   - id: T1-locate-contracts

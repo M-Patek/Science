@@ -24,7 +24,8 @@ def provenance_root():
 
 
 def _experiment(tmp_path: Path, command: list[str], *, outputs: list[str] | None = None,
-                inputs: list[str] | None = None, timeout: float | None = None) -> Path:
+                inputs: list[str] | None = None, input_scope: str | None = None,
+                timeout: float | None = None) -> Path:
     schemas = tmp_path / "schemas"
     schemas.mkdir(exist_ok=True)
     shutil.copy2(Path(__file__).parents[1] / "schemas" / "lineage.schema.json", schemas)
@@ -40,7 +41,10 @@ def _experiment(tmp_path: Path, command: list[str], *, outputs: list[str] | None
     manifest = {
         "schema_version": 1, "id": "provenance-test", "title": "test",
         "stage": "running", "question": "q", "hypothesis": "h",
-        "inputs": [{"path": item} for item in inputs or []], "execution": execution,
+        "inputs": [
+            {"path": item, **({"scope": input_scope} if input_scope else {})}
+            for item in inputs or []
+        ], "execution": execution,
     }
     (root / "experiment.yaml").write_text(yaml.safe_dump(manifest), encoding="utf-8")
     return root
@@ -111,6 +115,35 @@ def test_inputs_are_snapshotted_before_command_mutates_them(provenance_root: Pat
     import hashlib
     assert record["inputs"][0]["sha256"] == hashlib.sha256(b"before").hexdigest()
     assert not review_run(run_dir)[0]
+
+
+def test_missing_experiment_input_does_not_fallback_to_project_root(provenance_root: Path):
+    root = _experiment(provenance_root, ["{python}", "-c", "print('ok')"], inputs=["shared.txt"])
+    (provenance_root / "shared.txt").write_text("wrong root", encoding="utf-8")
+    code, run_dir = run_experiment(provenance_root, "provenance-test")
+    record = _record(run_dir)
+    assert code != 0
+    assert record["inputs"][0]["exists"] is False
+    assert record["inputs"][0]["scope"] == "experiment"
+
+
+def test_explicit_project_input_is_bound_and_reviewed(provenance_root: Path):
+    _experiment(
+        provenance_root,
+        ["{python}", "-c", "print('ok')"],
+        inputs=["shared.txt"],
+        input_scope="project",
+    )
+    (provenance_root / "shared.txt").write_text("project input", encoding="utf-8")
+    code, run_dir = run_experiment(provenance_root, "provenance-test")
+    record = _record(run_dir)
+    assert code == 0
+    assert record["inputs"][0]["project_path"] == "shared.txt"
+    assert record["inputs"][0]["scope"] == "project"
+    assert review_run(run_dir)[0]
+    lineage = json.loads((run_dir / "lineage.json").read_text(encoding="utf-8"))
+    dataset = next(item for item in lineage["entities"] if item["kind"] == "dataset")
+    assert dataset["path"] == "shared.txt"
 
 
 @pytest.mark.skipif(os.name == "nt", reason="symlink creation is privilege-dependent on Windows")

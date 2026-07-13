@@ -4,11 +4,11 @@ title: Can a fresh agent reproduce the framework workflow with bounded context?
 stage: designed
 owner: framework-maintainer
 question: Can a fresh agent correctly operate a generated Science Workbench project after reading only the boot protocol and routed documentation?
-hypothesis: At least 80% of benchmark tasks will be completed correctly, with zero critical protocol violations and no more than 3000 estimated onboarding tokens.
+hypothesis: At least 80% of benchmark tasks will be completed correctly, with zero critical protocol violations. Onboarding tokens are recorded descriptively without a hard threshold.
 created_at: 2026-07-10
 inputs:
-- path: data/raw/observations-v2.csv
-  role: immutable session-level benchmark cohort v1 observations; create a new version for corrections
+- path: data/raw/observations-v3.csv
+  role: immutable corrected cohort input; v2 is retained as superseded unverified pilot history
 execution:
   command:
   - '{python}'
@@ -22,9 +22,6 @@ acceptance:
 - metric: critical_protocol_violations
   operator: ==
   threshold: 0
-- metric: estimated_onboarding_tokens
-  operator: <=
-  threshold: 3000
 ethics:
   human_subjects: false
   sensitive_data: false

@@ -1,0 +1,44 @@
+schema_version: 1
+id: onboarding-smoke
+title: Smoke-test validation of the Science Workbench experiment creation workflow
+stage: designed
+owner: framework-maintainer
+question: Can a fresh agent create a new experiment with a falsifiable hypothesis, protocol, stopping rule, and acceptance criteria without inventing observations or modifying existing raw data?
+hypothesis: A fresh agent, following the documented workflow and templates, will produce a valid experiment definition (experiment.yaml, hypothesis.md, protocol.md) with no critical protocol violations, where the hypothesis is falsifiable, the protocol includes a stopping rule, and acceptance criteria are predeclared.
+created_at: 2026-07-13
+inputs:
+  - path: templates/experiment/
+    scope: project
+    role: immutable template files for experiment structure; used as reference, not modified
+  - path: experiments/framework-onboarding/
+    scope: project
+    role: immutable reference experiment; used as example, not modified
+execution:
+  command: ['{python}', 'src/run.py']
+  outputs:
+    - artifacts/validation.json
+acceptance:
+  - metric: experiment_files_complete
+    operator: '=='
+    threshold: 1
+    note: experiment.yaml, hypothesis.md, and protocol.md all exist and are schema-valid
+  - metric: hypothesis_is_falsifiable
+    operator: '=='
+    threshold: 1
+    note: Hypothesis states a specific claim, expected direction, and explicit falsification criteria
+  - metric: protocol_has_stopping_rule
+    operator: '=='
+    threshold: 1
+    note: Protocol predeclares a stopping condition, not just a success threshold
+  - metric: acceptance_criteria_predeclared
+    operator: '=='
+    threshold: 1
+    note: Acceptance criteria are stated before any observation or result inspection
+  - metric: critical_protocol_violations
+    operator: '=='
+    threshold: 0
+    note: No modification of existing raw data or completed records; no invented observations
+ethics:
+  human_subjects: false
+  sensitive_data: false
+  notes: Review domain-specific approvals before execution. External compute, paid services, private data, and publication require explicit human authorization.

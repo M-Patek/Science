@@ -32,6 +32,24 @@ class Experiment:
     def inputs(self) -> list[str]:
         return [str(item["path"]) for item in self.manifest.get("inputs", []) if "path" in item]
 
+    @property
+    def input_declarations(self) -> list[dict[str, str]]:
+        """Return evidence declarations with an explicit resolution scope.
+
+        Contract-v1 manifests historically omitted ``scope``; those paths remain
+        experiment-relative.  Project-level inputs must opt in explicitly so a
+        missing experiment input can never be silently rebound to unrelated
+        project content.
+        """
+        declarations: list[dict[str, str]] = []
+        for item in self.manifest.get("inputs", []):
+            if isinstance(item, dict) and isinstance(item.get("path"), str):
+                declarations.append({
+                    "path": item["path"],
+                    "scope": str(item.get("scope", "experiment")),
+                })
+        return declarations
+
     @classmethod
     def load(cls, root: Path) -> "Experiment":
         return cls(root=root, manifest=load_yaml(root / "experiment.yaml"))
@@ -63,4 +81,13 @@ def validate_manifest(data: dict[str, Any], expected_id: str | None = None) -> l
     for field in ("question", "hypothesis"):
         if field in data and not str(data[field]).strip():
             errors.append(f"{field} must not be empty")
+    inputs = data.get("inputs", [])
+    if not isinstance(inputs, list):
+        errors.append("inputs must be an array")
+    else:
+        for index, item in enumerate(inputs):
+            if not isinstance(item, dict) or not isinstance(item.get("path"), str):
+                errors.append(f"inputs[{index}] must contain a string path")
+            elif item.get("scope", "experiment") not in {"experiment", "project"}:
+                errors.append(f"inputs[{index}].scope must be experiment or project")
     return errors

@@ -12,7 +12,7 @@
     "owner": {"type": "string"},
     "question": {"type": "string", "minLength": 1},
     "hypothesis": {"type": "string", "minLength": 1},
-    "inputs": {"type": "array", "items": {"type": "object", "required": ["path", "role"]}},
+    "inputs": {"type": "array", "items": {"type": "object", "required": ["path", "role"], "properties": {"path": {"type": "string", "minLength": 1}, "role": {"type": "string", "minLength": 1}, "scope": {"enum": ["experiment", "project"]}}}},
     "execution": {
       "type": "object",
       "required": ["command", "outputs"],

@@ -86,6 +86,24 @@ def _evidence_item(root: Path, relative: str) -> dict[str, Any]:
     }
 
 
+def _declared_input_item(
+    repo: Path, experiment_root: Path, declaration: dict[str, str]
+) -> dict[str, Any]:
+    """Resolve an input against its declared root without ambiguous fallback."""
+    relative = declaration["path"]
+    scope = declaration.get("scope", "experiment")
+    root = repo if scope == "project" else experiment_root
+    item = _evidence_item(root, relative)
+    item["scope"] = scope
+    safe_path = _safe_declared_path(root, relative)
+    item["project_path"] = (
+        _project_relative(safe_path, repo)
+        if item["exists"] and safe_path is not None
+        else None
+    )
+    return item
+
+
 def _project_relative(path: Path, repo: Path) -> str:
     """Return a normalized path only when evidence is contained by the project."""
     return path.resolve(strict=False).relative_to(repo.resolve()).as_posix()
@@ -152,7 +170,12 @@ def _run_lineage(
             # never fabricated lineage entities.
             if not item["exists"]:
                 continue
-            evidence_path = _safe_declared_path(exp.root, item["path"])
+            project_path = item.get("project_path")
+            evidence_path = (
+                _safe_declared_path(repo, project_path)
+                if isinstance(project_path, str)
+                else _safe_declared_path(exp.root, item["path"])
+            )
             if evidence_path is None:
                 continue
             entity_id = f"{prefix}:{index}"
@@ -255,7 +278,12 @@ def run_experiment(repo: Path, experiment_id: str) -> tuple[int, Path]:
             })
     # Inputs describe what the process was given, so freeze them before the
     # command gets an opportunity to mutate them.
-    inputs = [_evidence_item(exp.root, relative) for relative in exp.inputs]
+    # Inputs default to experiment-relative. Project-level evidence must be
+    # explicitly declared with ``scope: project``; never guess from existence.
+    inputs = [
+        _declared_input_item(repo, exp.root, declaration)
+        for declaration in exp.input_declarations
+    ]
     started = datetime.now(timezone.utc)
     start_clock = time.monotonic()
     marker = run_dir / "run.in-progress.json"

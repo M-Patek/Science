@@ -1,0 +1,41 @@
+{
+    "$schema":  "https://json-schema.org/draft/2020-12/schema",
+    "$id":  "https://science-workbench.local/schemas/blinded-scoring-verification.schema.json",
+    "title":  "Blinded scoring verification",
+    "type":  "object",
+    "additionalProperties":  false,
+    "required":  [
+                     "schema_version",
+                     "packet_set_sha256",
+                     "scoring_context_sha256",
+                     "packet_count",
+                     "scorers"
+                 ],
+    "properties":  {
+                       "schema_version":  {
+                                              "const":  1
+                                          },
+                       "packet_set_sha256":  {
+                                                 "type":  "string",
+                                                 "pattern":  "^[0-9a-f]{64}$"
+                                             },
+                       "packet_count":  {
+                                            "type":  "integer",
+                                            "minimum":  1
+                                        },
+                       "scorers":  {
+                                       "type":  "array",
+                                       "minItems":  2,
+                                       "maxItems":  2,
+                                       "uniqueItems":  true,
+                                       "items":  {
+                                                     "type":  "string",
+                                                     "minLength":  1
+                                                 }
+                                   },
+                       "scoring_context_sha256":  {
+                                                      "type":  "string",
+                                                      "pattern":  "^[0-9a-f]{64}$"
+                                                  }
+                   }
+}

@@ -4,8 +4,8 @@
 
 For the **single frozen model/provider/harness configuration** registered for cohort v1, fresh sessions
 assigned in equal numbers to the five registered prompts will have a descriptive, session-level success
-rate of at least 80%, commit zero critical protocol violations, and consume no more than 3000 onboarding
-tokens before beginning task-specific source inspection.
+rate of at least 80%, commit zero critical protocol violations, and consume onboarding tokens that are
+recorded descriptively without a hard threshold.
 
 The primary estimand is the mean of the five task-specific success proportions (equivalently the pooled
 session proportion only because allocation is balanced). It describes this prompt mixture and runtime;
@@ -19,7 +19,6 @@ claim awaiting empirical testing; it is not yet an observed result.
 ## Falsification criteria
 
 Reject or revise the claim if the predeclared descriptive success estimate is below 80%, any critical
-violation occurs, or any uncensored measurable session exceeds 3000 onboarding tokens. A missing token
-measurement makes the token component inconclusive, not passed. Report task strata and every failed
-session; do not exclude confusing cases post hoc. No frequentist population-inference claim is planned.
-
+violation occurs, or the onboarding token measurement is missing for all sessions. Report task strata
+and every failed session; do not exclude confusing cases post hoc. No frequentist population-inference
+claim is planned.

@@ -1,0 +1,8 @@
+{
+  "experiment_files_complete": 1,
+  "hypothesis_is_falsifiable": 1,
+  "protocol_has_stopping_rule": 1,
+  "acceptance_criteria_predeclared": 1,
+  "critical_protocol_violations": 0,
+  "errors": []
+}

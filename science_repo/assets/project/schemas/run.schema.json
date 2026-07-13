@@ -17,7 +17,7 @@
     "git_revision": {"type": ["string", "null"]},
     "manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
     "environment_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
-    "inputs": {"type": "array", "items": {"type": "object", "required": ["path", "exists", "sha256", "bytes"]}},
+    "inputs": {"type": "array", "items": {"type": "object", "required": ["path", "exists", "sha256", "bytes"], "properties": {"path": {"type": "string"}, "exists": {"type": "boolean"}, "sha256": {"type": ["string", "null"]}, "bytes": {"type": ["integer", "null"]}, "kind": {"type": ["string", "null"]}, "scope": {"enum": ["experiment", "project"]}, "project_path": {"type": ["string", "null"]}}}},
     "artifacts": {"type": "array", "items": {"type": "object", "required": ["path", "exists", "sha256", "bytes"]}},
     "lineage": {
       "type": "object",

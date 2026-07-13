@@ -134,7 +134,7 @@ def analyze_rows(rows: Iterable[Mapping[str, str]]) -> dict[str, object]:
 
 def main() -> None:
     root = Path(__file__).resolve().parent.parent
-    source = root / "data" / "raw" / "observations-v2.csv"
+    source = root / "data" / "raw" / "observations-v3.csv"
     with source.open(newline="", encoding="utf-8") as stream:
         rows = list(csv.DictReader(stream))
     try:

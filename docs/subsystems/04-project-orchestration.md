@@ -12,6 +12,7 @@ code_anchors:
   - science_repo/cohort.py:validate_cohort
   - science_repo/cohort_freeze.py:build_cohort_freeze
   - science_repo/trusted_attestation.py:verify_attestation
+  - science_repo/harness_receipt.py:generate_receipt
   - science_repo/subject_packets.py:build_subject_packet_set
   - science_repo/study_verification.py:verify_attempt_manifest
   - science_repo/study_verification.py:verify_blinded_scoring
@@ -23,7 +24,7 @@ code_anchors:
   - science_repo/benchmark.py:build_onboarding_fixture
   - schemas/project.schema.json
   - schemas/campaign.schema.json
-  - schemas/handoff.schema.json
+- schemas/handoff.schema.json
 ---
 
 # 04 — Project and Agent Orchestration Contracts
@@ -75,6 +76,10 @@ prove that the host enforced the underlying claims. Attempt-manifest and blinded
 now require exact 24-cell coverage, trusted callbacks, strict typed and content-bound evidence, packet
 bijection, identical scoring contexts, and commit-before-reveal. Independent review rejected two weaker
 iterations before this boundary was accepted. These checks still do not authorize subject dispatch.
+
+For local diagnostics, `science harness-receipt` captures a `host-observed-unsigned` declaration from
+the harness process environment and refuses to overwrite an existing output. It does not claim an
+immutable provider build, prove context/worktree isolation, or open a dispatch gate.
 
 ## Audited closure and upgrades
 

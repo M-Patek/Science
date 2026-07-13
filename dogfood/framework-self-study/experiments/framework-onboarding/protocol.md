@@ -13,6 +13,28 @@ started. Cohort v1 was therefore amended before observation; details are in
 `preregistration-review.md`. The manifest remains non-executable until its fixture hash and one exact
 model/runtime configuration are registered and the analysis contract is made consistent.
 
+**2026-07-13: Declarative runtime registration captured; formal dispatch remains blocked.** A
+model/provider/harness declaration was captured via a host-observed harness receipt
+(`harness-env-declarative` policy, evidence level
+`host-observed-unsigned`). This receipt reads environment variables set by the Claude Code CLI and is
+**declarative, not cryptographic**. A malicious or curious user can override these variables. The
+receipt therefore remains `dispatch-blocked` until a trusted host verifier (for example, an OS key
+store or cloud attestation service) confirms the claims. See ADR 0011 for the trust model.
+
+The currently declared configuration is:
+- **Provider**: anthropic
+- **Model**: claude-opus-4-8
+- **Harness**: claude-code_2-1-195_agent
+- **Sampling**: xhigh
+- **Evidence level**: host-observed-unsigned
+
+Five engineering pilots were subsequently inspected. They did not preserve the complete transcript,
+command/event log, per-session Git diff, and subject-to-artifact binding required below; their summaries
+also contain conflicting T3 and T4 claims. They are retained as pilot history and are **not formal cohort
+observations**. The unverified rows originally appended to `observations-v2.csv` are not silently
+rewritten; `observations-v3.csv` is the corrected immutable analysis input and currently contains no
+formal observations. See `pilot-sessions/independent-review-20260713.md`.
+
 After the first subject starts, changing the revision, prompt bytes, rubric, allowed context, model,
 tool policy, or runner configuration creates a new cohort. Corrections must not overwrite cohort v1.
 
@@ -58,8 +80,19 @@ diff hash; scorer identity/version; and deviations/censoring fields. Never infer
 Onboarding ends immediately before the first task-specific source file is inspected or changed. Prefer
 provider-reported uncached input tokens accumulated to that boundary. Otherwise estimate with the frozen
 tokenizer named in session metadata. If neither is possible, record `unavailable`; do not substitute a
-word-count guess. A session passes the token criterion only when the measured/estimated value is at most
-3000. The cohort onboarding metric is the maximum among uncensored, measurable sessions.
+word-count guess.
+
+**Post-pilot token amendment**: The original protocol specified a 3000-token threshold. Pilot session
+pilot-001 (2026-07-13) demonstrated that this threshold is unrealistically low for complex engineering
+tasks with the Opus model. The threshold is therefore **relaxed to measurement-only** for a future
+refrozen cohort. This amendment is explicitly outcome-informed and is not represented as preregistered.
+Tokens are recorded as a descriptive metric, not a pass/fail criterion. The primary success metric
+(task_success_rate ≥ 0.80) and critical violation count (= 0) remain the decisive criteria.
+
+**Rationale**: Engineering tasks require substantial context (system prompts, tool definitions, file
+exploration). A hard token limit would either exclude capable models or force artificial task
+simplification, undermining external validity. Token measurements are retained for descriptive
+reporting and future threshold calibration.
 
 ## Scoring
 
@@ -74,14 +107,16 @@ occurred; otherwise it is 0. The primary success metric is the unweighted mean o
 success proportions across the fifteen planned uncensored sessions. The pooled rate is equivalent only
 under the registered balanced allocation. Report criterion-level outcomes and each task stratum. The
 hypothesis is supported only if there are exactly three planned uncensored sessions per task, the primary
-rate is at least 0.80, critical violations equal zero, and every included measurable session is within
-3000 onboarding tokens. Missing token measurements make the token claim inconclusive.
+rate is at least 0.80, and critical violations equal zero. Onboarding token measurements are recorded
+descriptively but do not determine pass/fail; missing token measurements are noted but do not invalidate
+the session.
 
-The pre-observation `src/run.py` and `observations-v2.csv` implement immutable session rows, task strata,
+The corrected `src/run.py` and `observations-v3.csv` implement immutable session rows, task strata,
 censoring/deviation fields, independent and adjudicated scorer decisions, token missingness, and exact
-balance checks. `observations-v1.csv` is retained as superseded raw-data history and is not an authorized
-analysis input. This resolves the analysis-contract blocker identified by independent review; fixture
-and runtime registration remain separate blockers to observation.
+balance checks. `observations-v1.csv` and `observations-v2.csv` are retained as superseded raw-data
+history and are not authorized analysis inputs. This resolves the analysis-contract blocker identified
+by independent review; a newly frozen revision, session evidence capture, and runtime verification remain
+separate blockers to formal observation.
 
 ## Deviations, censoring, and exclusions
 

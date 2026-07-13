@@ -30,6 +30,20 @@ def test_manifest_accepts_minimal_valid_shape():
     assert validate_manifest(data) == []
 
 
+def test_manifest_requires_known_input_scope():
+    data = {
+        "schema_version": 1,
+        "id": "abc",
+        "title": "t",
+        "stage": "idea",
+        "question": "q",
+        "hypothesis": "h",
+        "inputs": [{"path": "shared", "role": "test", "scope": "fallback"}],
+        "execution": {"command": ["python", "run.py"], "outputs": []},
+    }
+    assert "inputs[0].scope must be experiment or project" in validate_manifest(data)
+
+
 def test_framework_and_package_versions_match():
     root = Path(__file__).resolve().parent.parent
     assert load_yaml(root / "science-framework.yaml")["version"] == __version__

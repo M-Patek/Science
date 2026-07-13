@@ -35,6 +35,7 @@ def test_fixture_is_deterministic_and_contains_registered_tasks(fixture_root: Pa
         "attempt-manifest.schema.json",
         "blinded-scoring-verification.schema.json",
         "trusted-attestation-receipt.schema.json",
+        "harness-receipt.schema.json",
             "experiment.schema.json",
             "execution-envelope.schema.json",
             "handoff.schema.json",
