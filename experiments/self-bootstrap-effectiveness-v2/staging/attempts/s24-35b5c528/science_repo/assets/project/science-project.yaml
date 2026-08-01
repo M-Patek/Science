@@ -1,0 +1,13 @@
+schema_version: 1
+id: {{PROJECT_ID}}
+name: {{PROJECT_NAME}}
+kind: research-project
+owner: {{OWNER}}
+created_at: {{DATE}}
+framework:
+  name: science-workbench
+  version: 0.2.0.dev0
+contracts:
+  experiment: 1
+  campaign: 1
+  handoff: 1

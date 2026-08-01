@@ -1,0 +1,1 @@
+attempt_id,task_block_id,stratum,arm,censor_status,censor_reason,provider,model_name,exact_model_or_version_id,inference_runtime_and_version,agent_harness_and_version,scorer_1_total,scorer_2_total,adjudicated_total,integration_minutes,critical_protocol_violations,deviation,notes

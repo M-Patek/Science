@@ -1,0 +1,23 @@
+{
+  "schema_version": 2,
+  "session_id": "s10-fce59dae",
+  "cell_id": "or-01-scheduler-capacity::treatment",
+  "arm": "treatment",
+  "status": "completed",
+  "harness_receipt": {
+    "receipt_id": "aa16237cf8ff2ac9e",
+    "evidence_level": "host-observed-unsigned",
+    "subagent_tokens": 22892,
+    "tool_uses": 12,
+    "duration_ms": 345077
+  },
+  "outputs": {
+    "scheduler.py": "modified - added max_parallel parameter with validation and capping logic",
+    "test_scheduler.py": "modified - added 11 tests for max_parallel"
+  },
+  "tests": {
+    "test_scheduler.py": "20/20 passed",
+    "full_suite": "20 passed"
+  },
+  "notes": "Treatment arm. Added optional max_parallel to schedule_campaign. Rejects bools, non-integers, zero, negatives. Caps ready tasks, preserves manifest order. Omission means unlimited."
+}

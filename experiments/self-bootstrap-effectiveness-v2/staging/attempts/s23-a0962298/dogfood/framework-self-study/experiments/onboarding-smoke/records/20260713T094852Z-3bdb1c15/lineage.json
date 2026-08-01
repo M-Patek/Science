@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "entities": [
+    {
+      "id": "run:observation",
+      "kind": "run",
+      "digest": "sha256:156779ac93fdc1f3cd1bf7559e317aa18c263ad3971405ebbfb2e53d4ce7aee4",
+      "metadata": {
+        "run_id": "20260713T094852Z-3bdb1c15",
+        "status": "succeeded",
+        "digest_basis": "canonical_run_observation_v1",
+        "missing_inputs": [],
+        "missing_outputs": []
+      }
+    },
+    {
+      "id": "code:manifest",
+      "kind": "code",
+      "digest": "sha256:82dd5e640bf3539d270e585340f538e68eba79a05448675b29e6f57e20635b8b",
+      "path": "experiments/onboarding-smoke/records/20260713T094852Z-3bdb1c15/manifest.yaml",
+      "media_type": "application/yaml"
+    },
+    {
+      "id": "code:command:0",
+      "kind": "code",
+      "digest": "sha256:38db2f8fcfcc52e0754ab7b6c69a1ab55c24a2526eba622ec19a6719d6e81d6f",
+      "path": "experiments/onboarding-smoke/src/run.py",
+      "metadata": {
+        "bytes": 3187
+      }
+    },
+    {
+      "id": "input:0",
+      "kind": "dataset",
+      "digest": "sha256:7e9302d6b93ed45a00bd92aea9f0f6596ef6e8ab87c63e178ef398d023753639",
+      "path": "templates/experiment",
+      "metadata": {
+        "kind": "directory",
+        "bytes": 1834
+      }
+    },
+    {
+      "id": "input:1",
+      "kind": "dataset",
+      "digest": "sha256:e162c1aa3d5c47f00b582b33ada3c549f6e902b8af4936218ed0cc62e491dc33",
+      "path": "experiments/framework-onboarding",
+      "metadata": {
+        "kind": "directory",
+        "bytes": 46647
+      }
+    },
+    {
+      "id": "output:0",
+      "kind": "artifact",
+      "digest": "sha256:09728bba24ba820e7461e6746a691a1cd35d43086dd1df6eefc7535bcc5ebfa2",
+      "path": "experiments/onboarding-smoke/artifacts/validation.json",
+      "metadata": {
+        "kind": "file",
+        "bytes": 207
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "run:observation",
+      "target": "code:manifest",
+      "kind": "code_at"
+    },
+    {
+      "source": "run:observation",
+      "target": "code:command:0",
+      "kind": "code_at"
+    },
+    {
+      "source": "run:observation",
+      "target": "input:0",
+      "kind": "used"
+    },
+    {
+      "source": "run:observation",
+      "target": "input:1",
+      "kind": "used"
+    },
+    {
+      "source": "output:0",
+      "target": "run:observation",
+      "kind": "generated_by"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+schema_version: 2
+cohort_id: self-bootstrap-effectiveness-v2
+cell_id: PENDING_FREEZE
+arm: PENDING_FREEZE
+freeze_sha256: PENDING_FREEZE
+allocation_ledger_sha256: PENDING_FREEZE
+packet_set_sha256: PENDING_FREEZE
+subject_packet_sha256: PENDING_FREEZE
+baseline: {git_commit: PENDING_FREEZE, git_tree: PENDING_FREEZE}
+fixture: {prompt: PENDING_FREEZE, prompt_sha256: PENDING_FREEZE}
+arm_policy: {path: PENDING_FREEZE, sha256: PENDING_FREEZE}
+identities: {session_id: PENDING_FREEZE, worktree_id: PENDING_FREEZE, context_id: PENDING_FREEZE}
+limits: {task_elapsed_seconds: 5400, network: forbidden, external_compute: forbidden, paid_resources: forbidden}
+tools: PENDING_FROM_BOUND_ARM_POLICY
+write_scope: PENDING_FROM_FIXTURE
+excluded: [arm-comparison, rubric, answer-key, allocation-ledger, other-attempts, results]
+dispatch_allowed: false

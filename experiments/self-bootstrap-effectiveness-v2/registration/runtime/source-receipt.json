@@ -1,0 +1,7 @@
+{
+    "receipt_id":  "0a617ba7-4ac6-4553-9f13-6dc2e4f429d8",
+    "authority_id":  "native-runtime-registration-004",
+    "source":  "host-observed-unsigned codex-cli process environment, local version command, and self-bootstrap-local-tools-v2 declaration; not cryptographically verified",
+    "issued_at":  "2026-07-14T14:48:45.2364725Z",
+    "identity_sha256":  "9d5bab6cd5eee743421fc42fca4746f18bb7202d5c8dd5c56cd3015d86521206"
+}

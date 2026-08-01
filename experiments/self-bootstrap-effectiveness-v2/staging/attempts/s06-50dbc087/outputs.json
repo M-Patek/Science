@@ -1,0 +1,26 @@
+{
+  "schema_version": 2,
+  "session_id": "s06-50dbc087",
+  "cell_id": "dx-03-doctor-remediation::treatment",
+  "arm": "treatment",
+  "status": "completed",
+  "harness_receipt": {
+    "receipt_id": "acfe902ac2be15721",
+    "evidence_level": "host-observed-unsigned",
+    "subagent_tokens": 33206,
+    "tool_uses": 15,
+    "duration_ms": 260717
+  },
+  "outputs": {
+    "doctor.py": "no changes - already implemented",
+    "cli.py": "no changes - already passing",
+    "test_doctor.py": "no changes - already passing",
+    "cheatsheet.md": "no changes - already passing"
+  },
+  "tests": {
+    "test_doctor.py": "8/8 passed",
+    "check_docs.py": "passed",
+    "full_suite": "311 passed, 4 skipped"
+  },
+  "notes": "Treatment arm. Fixture already implemented by s03 (control). This session verified existing implementation passes all tests. No changes needed."
+}

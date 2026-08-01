@@ -1,0 +1,275 @@
+{
+  "schema_version": 1,
+  "scoring_method": "pragmatic-outputs-only",
+  "note": "Based on outputs.json only. Missing bootstrap artifacts per protocol v2.",
+  "scores": [
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 20,
+      "passed_tests": 20,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s01-951b9571",
+      "cell_id": "rp-03-review-record-binding::treatment",
+      "arm": "treatment"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 2,
+      "passed_tests": 2,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s02-5398e11e",
+      "cell_id": "or-03-coordinator-event-sequence::control",
+      "arm": "control"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 9,
+      "passed_tests": 9,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s03-f067e9a0",
+      "cell_id": "dx-03-doctor-remediation::control",
+      "arm": "control"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 13,
+      "passed_tests": 13,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s04-2e4bc6a6",
+      "cell_id": "cs-02-campaign-effort::treatment",
+      "arm": "treatment"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 54,
+      "passed_tests": 54,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s05-ea85056c",
+      "cell_id": "or-03-coordinator-event-sequence::treatment",
+      "arm": "treatment"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 9,
+      "passed_tests": 9,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s06-50dbc087",
+      "cell_id": "dx-03-doctor-remediation::treatment",
+      "arm": "treatment"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 13,
+      "passed_tests": 13,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s07-457c2fad",
+      "cell_id": "cs-02-campaign-effort::control",
+      "arm": "control"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 11,
+      "passed_tests": 11,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s08-ac171889",
+      "cell_id": "or-02-handoff-output-uniqueness::control",
+      "arm": "control"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 7,
+      "passed_tests": 7,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s09-92144ae1",
+      "cell_id": "dx-01-validation-json::control",
+      "arm": "control"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 20,
+      "passed_tests": 20,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s10-fce59dae",
+      "cell_id": "or-01-scheduler-capacity::treatment",
+      "arm": "treatment"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 9,
+      "passed_tests": 9,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s11-6f83cf1d",
+      "cell_id": "cs-01-experiment-metadata::control",
+      "arm": "control"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 20,
+      "passed_tests": 20,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s12-3aeb315a",
+      "cell_id": "or-01-scheduler-capacity::control",
+      "arm": "control"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 37,
+      "passed_tests": 37,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s13-74687a47",
+      "cell_id": "dx-02-campaign-explain::treatment",
+      "arm": "treatment"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 28,
+      "passed_tests": 28,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s14-bfb25a93",
+      "cell_id": "rp-01-lineage-disconnected::control",
+      "arm": "control"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 28,
+      "passed_tests": 28,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s15-826c5c2a",
+      "cell_id": "rp-01-lineage-disconnected::treatment",
+      "arm": "treatment"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 17,
+      "passed_tests": 17,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s16-aabbb3bc",
+      "cell_id": "rp-03-review-record-binding::control",
+      "arm": "control"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 2,
+      "passed_tests": 2,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s17-1183fc00",
+      "cell_id": "rp-02-environment-size-cap::treatment",
+      "arm": "treatment"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 12,
+      "passed_tests": 12,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s18-0797a08d",
+      "cell_id": "or-02-handoff-output-uniqueness::treatment",
+      "arm": "treatment"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 7,
+      "passed_tests": 7,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s19-e5ed0fe8",
+      "cell_id": "dx-01-validation-json::treatment",
+      "arm": "treatment"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 9,
+      "passed_tests": 9,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s20-2c5c522c",
+      "cell_id": "cs-01-experiment-metadata::treatment",
+      "arm": "treatment"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 4,
+      "passed_tests": 4,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s21-90023977",
+      "cell_id": "cs-03-run-stop-reason::control",
+      "arm": "control"
+    },
+    {
+      "test_pass_rate": 0.944,
+      "total_tests": 18,
+      "passed_tests": 17,
+      "quality_score": 7.92,
+      "status": "completed",
+      "session_id": "s22-b057ca3b",
+      "cell_id": "dx-02-campaign-explain::control",
+      "arm": "control"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 54,
+      "passed_tests": 54,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s23-a0962298",
+      "cell_id": "rp-02-environment-size-cap::control",
+      "arm": "control"
+    },
+    {
+      "test_pass_rate": 1.0,
+      "total_tests": 45,
+      "passed_tests": 45,
+      "quality_score": 10.0,
+      "status": "completed",
+      "session_id": "s24-35b5c528",
+      "cell_id": "cs-03-run-stop-reason::treatment",
+      "arm": "treatment"
+    }
+  ],
+  "differences": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    2.08,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "ratios": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0593220338983051,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ]
+}

@@ -1,0 +1,12 @@
+schema_version: 2
+policy_id: solo-local-engineering-v2
+instructions:
+  - Complete the assigned repository task as one fresh main agent.
+  - Work only in the packet write scope and preserve truthful evidence, failures, and limitations.
+  - Do not delegate, message another cell, inspect excluded registration material, or use prohibited resources.
+tools:
+  local_shell: allowed-within-write-scope
+  repository_read: allowed
+  native_subagents: forbidden
+  network: forbidden
+handoff: one truthful final task report with commands, checks, changed paths, and unresolved items

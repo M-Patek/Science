@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "run_id": "20260713T024731Z-a0a69799",
+  "verdict": "fail",
+  "checks": [
+    {
+      "name": "run_record_readable",
+      "passed": true
+    },
+    {
+      "name": "run_contract",
+      "passed": false,
+      "errors": [
+        "D:\\Github\\Science\\dogfood\\framework-self-study\\schemas\\run.schema.json: missing pinned run contract schema"
+      ]
+    },
+    {
+      "name": "run_completed",
+      "passed": true
+    },
+    {
+      "name": "process_succeeded",
+      "passed": false
+    },
+    {
+      "name": "lineage_readable",
+      "passed": true
+    },
+    {
+      "name": "lineage_canonical_digest",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "lineage_declared_validation",
+      "passed": false,
+      "detail": "lineage must declare valid validation against the pinned schema"
+    },
+    {
+      "name": "lineage_contract_and_dag",
+      "passed": false,
+      "errors": [
+        "D:\\Github\\Science\\dogfood\\framework-self-study\\schemas\\lineage.schema.json: missing pinned lineage contract schema"
+      ]
+    },
+    {
+      "name": "lineage_run_observation_binding",
+      "passed": true
+    },
+    {
+      "name": "manifest_snapshot_integrity",
+      "passed": true
+    },
+    {
+      "name": "environment_snapshot_readable",
+      "passed": true
+    },
+    {
+      "name": "environment_snapshot_integrity",
+      "passed": true
+    },
+    {
+      "name": "input_integrity:templates/experiment/",
+      "passed": false
+    },
+    {
+      "name": "input_integrity:experiments/framework-onboarding/",
+      "passed": false
+    },
+    {
+      "name": "artifact_integrity:artifacts/validation.json",
+      "passed": true
+    }
+  ],
+  "plugin_checks": [],
+  "plugin_policy": {
+    "execution": "not_requested",
+    "decision": "every registered plugin check must pass; fail, unknown, and plugin errors fail closed",
+    "dynamic_loading": false,
+    "human_approval": "not assessed; remains a separate required domain-review gate"
+  },
+  "scope": "mechanical integrity of declared evidence and, when present, runner-captured lineage limited to declared inputs/outputs, manifest, and declared command files; legacy absence does not establish complete provenance; scientific validity requires human review"
+}

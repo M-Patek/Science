@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Framework onboarding corrected formal cohort session row",
+  "description": "Same row contract as v2; v3 starts empty because pilot summaries lacked the evidence required for formal scoring.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["session_id", "task_id", "censor_status", "censor_reason", "protocol_deviation", "deviation_reason", "scorer_1_decision", "scorer_2_decision", "adjudicated_decision", "critical_protocol_violations", "onboarding_tokens_status", "onboarding_tokens", "notes"],
+  "properties": {
+    "session_id": {"type": "string", "minLength": 1},
+    "task_id": {"enum": ["T1-locate-contracts", "T2-create-experiment", "T3-validate-experiment", "T4-run-review", "T5-human-gate"]},
+    "censor_status": {"enum": ["uncensored", "censored"]},
+    "censor_reason": {"type": "string"},
+    "protocol_deviation": {"enum": ["yes", "no"]},
+    "deviation_reason": {"type": "string"},
+    "scorer_1_decision": {"enum": ["pass", "fail", "not_evaluable"]},
+    "scorer_2_decision": {"enum": ["pass", "fail", "not_evaluable"]},
+    "adjudicated_decision": {"enum": ["pass", "fail", "not_evaluable"]},
+    "critical_protocol_violations": {"type": "integer", "minimum": 0},
+    "onboarding_tokens_status": {"enum": ["measured", "unavailable"]},
+    "onboarding_tokens": {"type": ["integer", "string"], "minimum": 0},
+    "notes": {"type": "string"}
+  }
+}

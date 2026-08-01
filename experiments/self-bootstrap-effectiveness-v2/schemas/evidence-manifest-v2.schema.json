@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "attempt_id",
+    "artifacts",
+    "manifest_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 2
+    },
+    "attempt_id": {
+      "type": "string"
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "path",
+          "sha256",
+          "byte_count"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "harness-receipt",
+              "host-observation",
+              "local-dispatch-acceptance",
+              "events",
+              "commands",
+              "patch",
+              "outputs",
+              "tests",
+              "handoff",
+              "execution-gate"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^(?![A-Za-z]:)(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$)).+"
+          },
+          "sha256": {
+            "$ref": "#/$defs/sha"
+          },
+          "byte_count": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "manifest_sha256": {
+      "$ref": "#/$defs/sha"
+    }
+  },
+  "$defs": {
+    "sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

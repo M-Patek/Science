@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "experiments": [
+    {
+      "id": "framework-onboarding",
+      "title": "Can a fresh agent reproduce the framework workflow with bounded context?",
+      "stage": "designed",
+      "owner": "framework-maintainer"
+    },
+    {
+      "id": "onboarding-smoke",
+      "title": "Smoke-test validation of the Science Workbench experiment creation workflow",
+      "stage": "designed",
+      "owner": "framework-maintainer"
+    },
+    {
+      "id": "self-bootstrap-effectiveness",
+      "title": "Effect of structured multi-agent self-bootstrap development",
+      "stage": "designed",
+      "owner": "framework-maintainer"
+    }
+  ]
+}

@@ -1,0 +1,694 @@
+{
+  "assignment_ledger": [
+    {
+      "arm": "treatment",
+      "cell_id": "rp-03-review-record-binding::treatment",
+      "execution_order": 1,
+      "fixture_id": "rp-03-review-record-binding"
+    },
+    {
+      "arm": "control",
+      "cell_id": "or-03-coordinator-event-sequence::control",
+      "execution_order": 2,
+      "fixture_id": "or-03-coordinator-event-sequence"
+    },
+    {
+      "arm": "control",
+      "cell_id": "dx-03-doctor-remediation::control",
+      "execution_order": 3,
+      "fixture_id": "dx-03-doctor-remediation"
+    },
+    {
+      "arm": "treatment",
+      "cell_id": "cs-02-campaign-effort::treatment",
+      "execution_order": 4,
+      "fixture_id": "cs-02-campaign-effort"
+    },
+    {
+      "arm": "treatment",
+      "cell_id": "or-03-coordinator-event-sequence::treatment",
+      "execution_order": 5,
+      "fixture_id": "or-03-coordinator-event-sequence"
+    },
+    {
+      "arm": "treatment",
+      "cell_id": "dx-03-doctor-remediation::treatment",
+      "execution_order": 6,
+      "fixture_id": "dx-03-doctor-remediation"
+    },
+    {
+      "arm": "control",
+      "cell_id": "cs-02-campaign-effort::control",
+      "execution_order": 7,
+      "fixture_id": "cs-02-campaign-effort"
+    },
+    {
+      "arm": "control",
+      "cell_id": "or-02-handoff-output-uniqueness::control",
+      "execution_order": 8,
+      "fixture_id": "or-02-handoff-output-uniqueness"
+    },
+    {
+      "arm": "control",
+      "cell_id": "dx-01-validation-json::control",
+      "execution_order": 9,
+      "fixture_id": "dx-01-validation-json"
+    },
+    {
+      "arm": "treatment",
+      "cell_id": "or-01-scheduler-capacity::treatment",
+      "execution_order": 10,
+      "fixture_id": "or-01-scheduler-capacity"
+    },
+    {
+      "arm": "control",
+      "cell_id": "cs-01-experiment-metadata::control",
+      "execution_order": 11,
+      "fixture_id": "cs-01-experiment-metadata"
+    },
+    {
+      "arm": "control",
+      "cell_id": "or-01-scheduler-capacity::control",
+      "execution_order": 12,
+      "fixture_id": "or-01-scheduler-capacity"
+    },
+    {
+      "arm": "treatment",
+      "cell_id": "dx-02-campaign-explain::treatment",
+      "execution_order": 13,
+      "fixture_id": "dx-02-campaign-explain"
+    },
+    {
+      "arm": "control",
+      "cell_id": "rp-01-lineage-disconnected::control",
+      "execution_order": 14,
+      "fixture_id": "rp-01-lineage-disconnected"
+    },
+    {
+      "arm": "treatment",
+      "cell_id": "rp-01-lineage-disconnected::treatment",
+      "execution_order": 15,
+      "fixture_id": "rp-01-lineage-disconnected"
+    },
+    {
+      "arm": "control",
+      "cell_id": "rp-03-review-record-binding::control",
+      "execution_order": 16,
+      "fixture_id": "rp-03-review-record-binding"
+    },
+    {
+      "arm": "treatment",
+      "cell_id": "rp-02-environment-size-cap::treatment",
+      "execution_order": 17,
+      "fixture_id": "rp-02-environment-size-cap"
+    },
+    {
+      "arm": "treatment",
+      "cell_id": "or-02-handoff-output-uniqueness::treatment",
+      "execution_order": 18,
+      "fixture_id": "or-02-handoff-output-uniqueness"
+    },
+    {
+      "arm": "treatment",
+      "cell_id": "dx-01-validation-json::treatment",
+      "execution_order": 19,
+      "fixture_id": "dx-01-validation-json"
+    },
+    {
+      "arm": "treatment",
+      "cell_id": "cs-01-experiment-metadata::treatment",
+      "execution_order": 20,
+      "fixture_id": "cs-01-experiment-metadata"
+    },
+    {
+      "arm": "control",
+      "cell_id": "cs-03-run-stop-reason::control",
+      "execution_order": 21,
+      "fixture_id": "cs-03-run-stop-reason"
+    },
+    {
+      "arm": "control",
+      "cell_id": "dx-02-campaign-explain::control",
+      "execution_order": 22,
+      "fixture_id": "dx-02-campaign-explain"
+    },
+    {
+      "arm": "control",
+      "cell_id": "rp-02-environment-size-cap::control",
+      "execution_order": 23,
+      "fixture_id": "rp-02-environment-size-cap"
+    },
+    {
+      "arm": "treatment",
+      "cell_id": "cs-03-run-stop-reason::treatment",
+      "execution_order": 24,
+      "fixture_id": "cs-03-run-stop-reason"
+    }
+  ],
+  "authority": "none-this-artifact-is-not-authorization",
+  "baseline_materials": [
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/templates/baseline-v2.yaml",
+          "sha256": "e93a106a431597b673631f3a57254816d1df5dd47f68d18c61a68838aba526d2"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/templates/baseline-v2.yaml",
+      "tree_sha256": "ecc9d340c76c2255c4386a8e824b611725cffc35691f7da9865ebbccde78b15e"
+    }
+  ],
+  "cohort_id": "self-bootstrap-effectiveness-v2",
+  "dispatch_allowed": false,
+  "fixture_count": 12,
+  "fixtures": [
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/fixtures/cs-01-experiment-metadata/prompt.txt",
+          "sha256": "456ea42fb2a974a4e8f09aca6acb6844b710d9d0e2fecd5d0b0b3a9a90e93a7f"
+        }
+      ],
+      "fixture_id": "cs-01-experiment-metadata",
+      "tree_sha256": "de9f64ca87c31ca73bc92c322d1ea86891395adce87703366a8cafd3d94c58b3"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/fixtures/cs-02-campaign-effort/prompt.txt",
+          "sha256": "9d1255dec03fd82e17e474798065892cc1209581976425a02a06f161c6082960"
+        }
+      ],
+      "fixture_id": "cs-02-campaign-effort",
+      "tree_sha256": "5fa9e15d61a7e6b08a3dfb4c4455f4b81b06dc3152e75d16db587771b67c675a"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/fixtures/cs-03-run-stop-reason/prompt.txt",
+          "sha256": "b354c65e7d66bf194cf3cbe5218761ef91122c4b72ffd593e6143de39868e12b"
+        }
+      ],
+      "fixture_id": "cs-03-run-stop-reason",
+      "tree_sha256": "c7c76791fa4eecd94731d5278cf09f9ff0f6cd9e21c44b17b18713fd60782fc9"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/fixtures/dx-01-validation-json/prompt.txt",
+          "sha256": "f8e7cd758011c13de93ceefba015ad151744a37748affe668f14423aa8c6fa53"
+        }
+      ],
+      "fixture_id": "dx-01-validation-json",
+      "tree_sha256": "0d6ade4df1d44beb2039aba26b64edb3db4d1b1c1a82ef84fb3979447ecf343c"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/fixtures/dx-02-campaign-explain/prompt.txt",
+          "sha256": "c0aefb7f3764f0b199071f470303393105d0b94c14f34f88765d3e8e77fd2fe0"
+        }
+      ],
+      "fixture_id": "dx-02-campaign-explain",
+      "tree_sha256": "0f3c7d3a21239a061c6da8dbfc2ff7bc7018bef8018297a62226e07a3fcef6a2"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/fixtures/dx-03-doctor-remediation/prompt.txt",
+          "sha256": "ee105190b21f11e1a5f2b0aea2422359dc18c62dcf6545bdcdf04de94e2877e9"
+        }
+      ],
+      "fixture_id": "dx-03-doctor-remediation",
+      "tree_sha256": "a4050f92be8de85bd182c50d422dbdb34dac638916efdcfe70cc1b77e6c6c985"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/fixtures/or-01-scheduler-capacity/prompt.txt",
+          "sha256": "cfcc94d649b36f4887054436516d01e369c6fb825137e6827eef646af314e552"
+        }
+      ],
+      "fixture_id": "or-01-scheduler-capacity",
+      "tree_sha256": "0fd60da79473321dac8594fc150a0b8f64cc6d02280d1d8e6832eb3b7df89104"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/fixtures/or-02-handoff-output-uniqueness/prompt.txt",
+          "sha256": "f423779b64e5537faff42eb8f594da72167eeb32fab93692ec00ddfb5b67fb3d"
+        }
+      ],
+      "fixture_id": "or-02-handoff-output-uniqueness",
+      "tree_sha256": "f7ddd4d90d82475b5d7d2557f57906b424aba3e828fd8cd177d06b51507068f3"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/fixtures/or-03-coordinator-event-sequence/prompt.txt",
+          "sha256": "7f3af0254be039f1a4fd93f7abaaf6ff40dfc1d5296a50198e4cbb37adbe36a0"
+        }
+      ],
+      "fixture_id": "or-03-coordinator-event-sequence",
+      "tree_sha256": "9bf075f1a8b5dc1c9e96fcd25d0ed805cfcc1fffaf00fb54df9cf1eb9330a379"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/fixtures/rp-01-lineage-disconnected/prompt.txt",
+          "sha256": "9ebeccf5958ceae5ab621364934162009ca269900edcb3415936f7c958cc0abf"
+        }
+      ],
+      "fixture_id": "rp-01-lineage-disconnected",
+      "tree_sha256": "1e8d4ff2e59b653a0d7d8b7a24337f5a3083669d54840d8b29a1c0df4f7288bd"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/fixtures/rp-02-environment-size-cap/prompt.txt",
+          "sha256": "4ebf7ef3db50e90464c76eb165641ab74a5599563094beedd430e43cfeccefc8"
+        }
+      ],
+      "fixture_id": "rp-02-environment-size-cap",
+      "tree_sha256": "4db088cee96e8d31089d3d14df1790c26e2385c3caa8b0f276fcf49f9abc074b"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/fixtures/rp-03-review-record-binding/prompt.txt",
+          "sha256": "e0da3011d9c7883e207a7b2ddc814ad82d1dadea053900766618eb52ad49fc94"
+        }
+      ],
+      "fixture_id": "rp-03-review-record-binding",
+      "tree_sha256": "96085aadbc14394cbd9c5ed134ac037527238aae2d9edd6b99846d8273c1dc74"
+    }
+  ],
+  "freeze_sha256": "d4244d161de5765e6aa79212e35fd04d90be1868c3151cbab20c7987a985a7de",
+  "observations": "none-recorded",
+  "randomization": {
+    "arms": [
+      "control",
+      "treatment"
+    ],
+    "method": "sha256-ranked-cells-v1",
+    "seed_sha256": "b9b591b3fe43f7c430c2b7b4bd5b7b357e2a23e163e0d79530853bbfc62223ea"
+  },
+  "registration_materials": [
+    {
+      "files": [
+        {
+          "path": "campaigns/self-bootstrap-cohort-v2/reviews/baseline-negative/audit.json",
+          "sha256": "c5986e8a5a93aa3b0efccdfdfec618409882a8a0b397d0c36589e2d5bcb31456"
+        }
+      ],
+      "path": "campaigns/self-bootstrap-cohort-v2/reviews/baseline-negative/audit.json",
+      "tree_sha256": "fd56d0bbe706a6587e846eca2fefc2964fa5c793c7f6d4072f05cc10cba832d2"
+    },
+    {
+      "files": [
+        {
+          "path": "campaigns/self-bootstrap-cohort-v2/reviews/design-rereview/review.json",
+          "sha256": "5884761e583319180a315678ff220397956ef4aea428649d8ad7abc3faa4327a"
+        }
+      ],
+      "path": "campaigns/self-bootstrap-cohort-v2/reviews/design-rereview/review.json",
+      "tree_sha256": "7d257e7d30e1488ff0b6478acda741a7db1c14d932d3939cfe1eef7620b73b0c"
+    },
+    {
+      "files": [
+        {
+          "path": "campaigns/self-bootstrap-cohort-v2/reviews/design/review.json",
+          "sha256": "d3da95b641e5b376386fa8fe745a139cc209b781b4440a37d54566346a7e6d40"
+        }
+      ],
+      "path": "campaigns/self-bootstrap-cohort-v2/reviews/design/review.json",
+      "tree_sha256": "f7712d5c7715d1aea44882b5298d6b13c08ed7872c533778afc04087f64e17f3"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/cohort-design-v2.yaml",
+          "sha256": "901a84cf18fd5c5cf366e89e4754501679bafdb7706e50318a37af83a77718f0"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/cohort-design-v2.yaml",
+      "tree_sha256": "bfb46446e68037a63c6c245057ace9dd74b58fa4de77bd544db824f3858dd2e3"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/experiment.yaml",
+          "sha256": "d3fe0d4f8e86a5d4b837d28bba016103921c0629ea7d68e880152363ed6428c0"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/experiment.yaml",
+      "tree_sha256": "1ee02e3de8d7f6c440758f686b68dcdd05f62b2545405649bff236da5ee36718"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/hypothesis.md",
+          "sha256": "8f731506ae600fa301e36b0d008a6bf8bac103364731df96d73ab4d61cca42f6"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/hypothesis.md",
+      "tree_sha256": "42fb8c5063e2dd45808c3008f5a9928f9039ae167809dd234bd889493f294688"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/post-pilot-amendments.md",
+          "sha256": "d3f372590aa370fcbffda01d098498785f71c9c9d9368635f6415a83529f3946"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/post-pilot-amendments.md",
+      "tree_sha256": "e62882e49c8281b53ee1c6625eba22e47d70cc175f4d2d28047420cf2c29cc13"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/protocol.md",
+          "sha256": "374f3c6dd6f1a2ce9fd7578daf7200b927fc1f9202cd2c57f8af9029185a45cd"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/protocol.md",
+      "tree_sha256": "9d26ed3ebb87734750c28c34ef1d9312e6263781e61ae540c74f6f107189c771"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/rubric.md",
+          "sha256": "90bdd0f53c140d696fbcc29d0692bc7a442b32aa16f433a85e6dedb437ae99a6"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/rubric.md",
+      "tree_sha256": "ac9fdbb230eb4500501b51e098e61528ccdd0490c0fff1d786bebcb0aa4c7f49"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/schemas/adjudication-record-v2.schema.json",
+          "sha256": "076c78bd7069c868cd6e86f0413c11a3728fb82810b48fe88a8e21f54504d488"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/schemas/adjudication-record-v2.schema.json",
+      "tree_sha256": "e071c2a6f7914a07cb3c0f652610b8bf1d89546f7210519c68b8df8cf9b10922"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/schemas/allocation-ledger-v2.schema.json",
+          "sha256": "38401d83861f1965754bc06083808aa4deb244975d252eb24fde1f0003235c96"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/schemas/allocation-ledger-v2.schema.json",
+      "tree_sha256": "d926c33348ffd90e6f00997ecaa939a9731b2f8855692389f7e20748f0f0f06a"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/schemas/attempt-bundle-v2.schema.json",
+          "sha256": "f79f70d773a77fc240b406f08b67e6dca50007f87ee1369800eda9af7ec5f949"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/schemas/attempt-bundle-v2.schema.json",
+      "tree_sha256": "c225e320e5444e1b4fd0d9bb7db60a1ea6915f697dd062123f7e35f601229d36"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/schemas/attempt-manifest-v2.schema.json",
+          "sha256": "fd850d34b435ccd592b3b1b454f9b945b0b8eccccc9298aff79ccd3ced8eb278"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/schemas/attempt-manifest-v2.schema.json",
+      "tree_sha256": "1a4dca113b09f4a864ebc1684cb265deaf568f2cdd00d05a14aa350f493b6112"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/schemas/blinded-scoring-packet-v2.schema.json",
+          "sha256": "9e5fe7be9fb88cb316e8c912a94c8998c41d4b6b9a0b496a2de608d49895de45"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/schemas/blinded-scoring-packet-v2.schema.json",
+      "tree_sha256": "ecad9e79afd26c0ddc5da201a0452ec9582a55f31286a0f5d4a5578e31e81aae"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/schemas/derived-data-v2.schema.json",
+          "sha256": "9507223cb122416dcbc897ebf89eacf7c11ad14a9e4fdb5eb6bf4f33e668830b"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/schemas/derived-data-v2.schema.json",
+      "tree_sha256": "e3db7997aa18e6d67f3e12a410301b01f8e91aafa069a9e8e27ea19f7fd6bd6d"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/schemas/evidence-manifest-v2.schema.json",
+          "sha256": "9743067fbfcf529286cd09e6171e437e0642f4b7d27f231bf2410649f8c5455b"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/schemas/evidence-manifest-v2.schema.json",
+      "tree_sha256": "97acf68f15233556eaa4939ad8fe5864ff89d910dea76bd5ff2a98e6b62b68d4"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/schemas/packet-set-v2.schema.json",
+          "sha256": "5ee9c37e497daac3ddcc22dd86d9ff094b3cff2801f94326eae9c4bb988b07a1"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/schemas/packet-set-v2.schema.json",
+      "tree_sha256": "49db45f94140201a0e773d50c5fa91fab468e9ad452c1d798f871f0b743c7a43"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/schemas/score-record-v2.schema.json",
+          "sha256": "9b9729c9066dec896c9129ae065626e41932d8f77e5b9b74c2b8f62ecde65173"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/schemas/score-record-v2.schema.json",
+      "tree_sha256": "eed047088a30f778d63a3703b79f32313494442dcff86b4191159ea6a407021f"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/schemas/scoring-packet-manifest-v2.schema.json",
+          "sha256": "6652a370ce5d1bdb6831de88df9a309a1c416f4ab08b6b5eac3aca4030df0ffc"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/schemas/scoring-packet-manifest-v2.schema.json",
+      "tree_sha256": "3cf0063968e6947a8a499b7948849d5380a695555016ead9c0a5716a64820b99"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/src/allocate_v2.py",
+          "sha256": "008eb604eb88a443d018a6aadca0b350be30166c0e59b1eb1b981e57b18e65e7"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/src/allocate_v2.py",
+      "tree_sha256": "099d29bb7d875647138479aad38a5c42eab9c9debd2ae1f3c40737fe1e6133c2"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/src/analyze.py",
+          "sha256": "6dad6a2223cd6475a142eea342f5738e9c4bced16fd9834c59ccaf56d2b01a0a"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/src/analyze.py",
+      "tree_sha256": "83b3cc052558281fd1400da84108dcff7be8094981ed5a5284b5d09d43e81bd3"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/src/freeze_v2.py",
+          "sha256": "da048a7e46131aea41bcd2e5604d164ba90356ded15b8da5468032e5143feae5"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/src/freeze_v2.py",
+      "tree_sha256": "6ac7ee2b7991769dbb9be43876ce849edec85e4bcae0da59303a4640388db434"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/src/ingest_adjudicated_v2.py",
+          "sha256": "6b82ea78bb7ab065f746ccbb45dec00c0e6f481c1683c6c417399f9993fdf58b"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/src/ingest_adjudicated_v2.py",
+      "tree_sha256": "1e8f258c54380e9c68da22ec2925de31919e691a02bf80852fbdad68129df1bd"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/src/packetize_scoring_v2.py",
+          "sha256": "5a31e2fb5e2aaedf18083a2ed884ae1e24aaac736f8e417696390a8d92e9e3ce"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/src/packetize_scoring_v2.py",
+      "tree_sha256": "cfc698cf1c3c27c6a49ea88c9cd1d3f13b9e75a7c4043c5503385ddb0348548a"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/src/verify_attempts.py",
+          "sha256": "6fa286b57cabfd787be8c24e56aac87f671227ae36603afa4b3b386dcdc69911"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/src/verify_attempts.py",
+      "tree_sha256": "43b4c6f95d3234b5cccc06e273ecb3e4b2534bbed48fb4681ecbb006eb5ef0e0"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/task-fixtures-v2.yaml",
+          "sha256": "ec1ad6dfc47f5d772b5005f11fe9ee4b3504c94f5dcb60b2ae2452f9f90e77f1"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/task-fixtures-v2.yaml",
+      "tree_sha256": "e2c70940fd81ceb018256b5f6ee755bbef344f13c518836907689c2abee46ab3"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-control-v2.yaml",
+          "sha256": "5411901f38e9c8a86f2969179d9ea5d5899a5910904e30f951a213e89f0cafdf"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-control-v2.yaml",
+      "tree_sha256": "b7de715835d0ae292412b648b3c59958e374ce510ded569aae5a870381b25315"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-treatment-v2.yaml",
+          "sha256": "80b1d222e9804e7419c82001ed394a17c2d4c9175ba0100a9f9c341b0e2cb727"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-treatment-v2.yaml",
+      "tree_sha256": "09919c63ccdb754b4fa27e8b707e90d654357c53c2e80d3aa73317071b5ad890"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/templates/score-v2.csv",
+          "sha256": "530134572b4f81626be0b109f7be31e56fb56e3f48966c4c2d55802184ccfaf8"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/templates/score-v2.csv",
+      "tree_sha256": "1999a025498ba2773d06c0eb7248996486c1fcd727ad683e949353e0b6b5a397"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/templates/subject-packet-v2.yaml",
+          "sha256": "8c5334b1748d332bcff8523c326ec1b5f5838d2676d020b26fbab1d0f1a8d7b3"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/templates/subject-packet-v2.yaml",
+      "tree_sha256": "6a9b93a09158647f8a674dd2eb5e24748bd401916a2127cf1765571279c927c7"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/tests/test_allocation_contract.py",
+          "sha256": "003fff4ddb5fe8f83dfaf9a2ffd7c14586bb6408849a910cf6ef829c6e3074ef"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/tests/test_allocation_contract.py",
+      "tree_sha256": "61c30df56f620b26a2b7fc7244d40b73c7c85b57015e364ca752f66608ec26d5"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/tests/test_analyze.py",
+          "sha256": "ea3368d78ecea92f5f932ef7a20360e44edb5fef3104879dfa52cd1535519658"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/tests/test_analyze.py",
+      "tree_sha256": "84ff0ed03a0c2cf465599d059e199aa2f8e417f21ecb7612bc6c9168986d93a0"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/tests/test_attempt_contract.py",
+          "sha256": "a2d56177ffd34ac3a8ba7641241376fd177510266348dc4d42fb89a5d0058585"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/tests/test_attempt_contract.py",
+      "tree_sha256": "304fd4464221f70ccd83a549374808104b9d78f9742f8f5a16ce116ca4b28860"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/tests/test_derived_ingestion_contract.py",
+          "sha256": "a5d386db76267d93fb503ee585573430738563a943ed3547ea08179f882ba998"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/tests/test_derived_ingestion_contract.py",
+      "tree_sha256": "1f768a8f1f8c000093507b1b94bd8657604cecb71dd746be8d37fc3e8c6f541b"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/tests/test_preparation_contracts.py",
+          "sha256": "788b5e4bd790d42a5871b2d16a591f3f401ecf989e42a1656ce817bdf3cd00ff"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/tests/test_preparation_contracts.py",
+      "tree_sha256": "9e803e091c805838a6ac4594e5ee7b6ffddc97e1d45f4ab0e8a5f92d0a7a85d0"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/tests/test_scoring_contract.py",
+          "sha256": "870e9fce352cd5a372a2ff9198282794dbf0e465ad919d61d43466a0a4b29b80"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/tests/test_scoring_contract.py",
+      "tree_sha256": "319eae58c36ac419c1192fb3210787a415c0ab954b95f03c8a2ef4a2120e6698"
+    },
+    {
+      "files": [
+        {
+          "path": "experiments/self-bootstrap-effectiveness-v2/tool-policy-v2.yaml",
+          "sha256": "70d4f8ed8debcb198d133a94321046880f63eed5b514465a9805283f43995200"
+        }
+      ],
+      "path": "experiments/self-bootstrap-effectiveness-v2/tool-policy-v2.yaml",
+      "tree_sha256": "9ed4c1487dee56d688c538ce2aaf3fac3c5ae4cb4b5c0ed36e31330882fd3528"
+    }
+  ],
+  "registration_status": "materials-frozen-dispatch-blocked",
+  "runtime_identity": {
+    "post_run_usage": "not-known-before-execution",
+    "receipt_verification": "supplied-not-cryptographically-verified",
+    "source_receipt": {
+      "authority_id": "native-runtime-registration-004",
+      "identity_sha256": "9d5bab6cd5eee743421fc42fca4746f18bb7202d5c8dd5c56cd3015d86521206",
+      "issued_at": "2026-07-14T14:48:45.2364725Z",
+      "receipt_id": "0a617ba7-4ac6-4553-9f13-6dc2e4f429d8",
+      "source": "host-observed-unsigned codex-cli process environment, local version command, and self-bootstrap-local-tools-v2 declaration; not cryptographically verified"
+    },
+    "static_identity": {
+      "agent_harness_and_version": "codex-cli 0.144.4",
+      "context_window_limit": "unavailable: context window limit is not exposed by the harness",
+      "developer_prompt_hash_or_unavailable_reason": "unavailable: developer prompt bytes are not exposed by the harness",
+      "exact_model_or_version_id": "unavailable: current process environment does not expose an immutable provider model/version identifier",
+      "inference_runtime_and_version": "unavailable: inference runtime and version are not exposed by the harness",
+      "model_name": "unavailable: current process environment does not expose a model name",
+      "permission_and_network_policy": "declared policy self-bootstrap-local-tools-v2: local-repository-only; network, external compute, paid resources, private data, instruments, and publication forbidden; arm templates are policy-bound by exact frozen SHA-256 and scoring removes arm/orchestration cues; CODEX_SANDBOX_NETWORK_DISABLED=1 observed; host enforcement is not attested",
+      "provider": "unavailable: current process environment does not attest provider identity",
+      "sampling_parameters": "unavailable: sampling parameters and effort setting are not exposed by the harness; declared token policy is measurement-only with no acceptance threshold",
+      "system_prompt_hash_or_unavailable_reason": "unavailable: system prompt bytes are not exposed by the harness",
+      "tool_names_and_versions": "declared policy self-bootstrap-local-tools-v2 allows shell and repository tools only within the cell contract; complete host tool implementation versions are unavailable"
+    }
+  },
+  "schema_version": 1
+}

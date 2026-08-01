@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "run_id": "20260713T030652Z-f4981117",
+  "verdict": "pass",
+  "checks": [
+    {
+      "name": "run_record_readable",
+      "passed": true
+    },
+    {
+      "name": "run_contract",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "run_completed",
+      "passed": true
+    },
+    {
+      "name": "process_succeeded",
+      "passed": true
+    },
+    {
+      "name": "lineage_readable",
+      "passed": true
+    },
+    {
+      "name": "lineage_canonical_digest",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "lineage_declared_validation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "lineage_contract_and_dag",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "lineage_run_observation_binding",
+      "passed": true
+    },
+    {
+      "name": "manifest_snapshot_integrity",
+      "passed": true
+    },
+    {
+      "name": "environment_snapshot_readable",
+      "passed": true
+    },
+    {
+      "name": "environment_snapshot_integrity",
+      "passed": true
+    },
+    {
+      "name": "input_integrity:templates/experiment/",
+      "passed": true
+    },
+    {
+      "name": "input_integrity:experiments/framework-onboarding/",
+      "passed": true
+    },
+    {
+      "name": "artifact_integrity:artifacts/validation.json",
+      "passed": true
+    }
+  ],
+  "plugin_checks": [],
+  "plugin_policy": {
+    "execution": "not_requested",
+    "decision": "every registered plugin check must pass; fail, unknown, and plugin errors fail closed",
+    "dynamic_loading": false,
+    "human_approval": "not assessed; remains a separate required domain-review gate"
+  },
+  "scope": "mechanical integrity of declared evidence and, when present, runner-captured lineage limited to declared inputs/outputs, manifest, and declared command files; legacy absence does not establish complete provenance; scientific validity requires human review"
+}

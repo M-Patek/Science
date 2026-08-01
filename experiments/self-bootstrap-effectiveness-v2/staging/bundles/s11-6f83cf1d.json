@@ -1,0 +1,69 @@
+{
+  "schema_version": 2,
+  "cohort_id": "self-bootstrap-effectiveness-v2",
+  "cell_id": "cs-01-experiment-metadata::control",
+  "arm": "control",
+  "attempt_id": "s11-6f83cf1d",
+  "attempt_ordinal": 1,
+  "freeze_sha256": "d4244d161de5765e6aa79212e35fd04d90be1868c3151cbab20c7987a985a7de",
+  "allocation_ledger_sha256": "9f2dc4bf2b5a69ddd69940dd7ec77fb352733e0defedc8c1b74e6e2e570421d4",
+  "packet_set_sha256": "913d143b628d681a1a959e2eae6d4c41a22f2bb61ff4eaa6ab280e9f07ab6422",
+  "subject_packet_sha256": "PLACEHOLDER",
+  "baseline": {
+    "git_commit": "722cceed959e8ac9c45cdfd519a4c387e614c58f",
+    "git_tree": "f28c8500c7f4f5223234e87d1b0d2376fbb9539a"
+  },
+  "identities": {
+    "planned_session_id": "s11-6f83cf1d",
+    "planned_worktree_id": "PLACEHOLDER",
+    "planned_context_id": "PLACEHOLDER",
+    "native_agent_id": "host-observed-unsigned",
+    "observed_harness_session_id": "PLACEHOLDER",
+    "observed_cwd": "D:\\Github\\Science\\dogfood\\framework-self-study\\experiments\\self-bootstrap-effectiveness-v2\\staging",
+    "observed_head_commit": "722cceed959e8ac9c45cdfd519a4c387e614c58f",
+    "observed_head_tree": "f28c8500c7f4f5223234e87d1b0d2376fbb9539a"
+  },
+  "local_evidence": {
+    "evidence_level": "host-observed-unsigned",
+    "harness_receipt_sha256": null,
+    "local_dispatch_acceptance_sha256": null,
+    "execution_gate_sha256": null
+  },
+  "timing": {
+    "bootstrap_started_utc": "2026-08-01T17:24:10.372033+00:00",
+    "task_received_utc": "2026-08-01T17:24:10.372036+00:00",
+    "ended_utc": "2026-08-01T17:24:10.372037+00:00",
+    "bootstrap_elapsed_seconds": 0,
+    "task_elapsed_seconds": 0
+  },
+  "task_evidence_started": true,
+  "evidence_manifest": {
+    "schema_version": 2,
+    "attempt_id": "s11-6f83cf1d",
+    "artifacts": [
+      {
+        "kind": "outputs",
+        "path": "s11-6f83cf1d/outputs.json",
+        "sha256": "d56a854e5572cc4a378bad293ba28b687513c24059c26dbda61086f86ded6f55",
+        "byte_count": 728
+      },
+      {
+        "kind": "tests",
+        "path": "s11-6f83cf1d/tests.json",
+        "sha256": "57d2088e25c6d9ff742be5d8ffaa4c77f11d3729cf2a26d70bceb122165555c0",
+        "byte_count": 82
+      }
+    ],
+    "manifest_sha256": "e231721ea06654c471f90219a913b89bbeee796c44c4fba09d7f0a930aa448e5"
+  },
+  "stop_reason": "completed",
+  "censor": {
+    "status": "not-censored",
+    "reason": null
+  },
+  "deviations": [
+    "missing-bootstrap-artifacts"
+  ],
+  "critical_violations": [],
+  "finalized_sha256": "4de5feee6cc96de070080b64bd5b7e6c271fd7b9eeb1bcfae2949b7e65e9a180"
+}

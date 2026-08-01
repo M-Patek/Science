@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "run_id": "wrong-run-id",
+  "verdict": "fail",
+  "checks": [
+    {
+      "name": "run_record_readable",
+      "passed": true
+    },
+    {
+      "name": "run_contract",
+      "passed": false,
+      "errors": [
+        "tests\\fixtures\\manual-270aa4f318aa49f695b53a95a2f028cc\\experiments\\x\\records\\correct-run\\run.json: schema violation at <root> (schema schemas\\run.schema.json#required): 'schema_version' is a required property",
+        "tests\\fixtures\\manual-270aa4f318aa49f695b53a95a2f028cc\\experiments\\x\\records\\correct-run\\run.json: schema violation at <root> (schema schemas\\run.schema.json#required): 'started_at' is a required property",
+        "tests\\fixtures\\manual-270aa4f318aa49f695b53a95a2f028cc\\experiments\\x\\records\\correct-run\\run.json: schema violation at <root> (schema schemas\\run.schema.json#required): 'ended_at' is a required property",
+        "tests\\fixtures\\manual-270aa4f318aa49f695b53a95a2f028cc\\experiments\\x\\records\\correct-run\\run.json: schema violation at <root> (schema schemas\\run.schema.json#required): 'command' is a required property"
+      ]
+    },
+    {
+      "name": "run_completed",
+      "passed": true
+    },
+    {
+      "name": "process_succeeded",
+      "passed": true
+    },
+    {
+      "name": "lineage_not_present_legacy",
+      "passed": true,
+      "detail": "legacy run has no lineage reference; complete provenance is not asserted"
+    },
+    {
+      "name": "manifest_snapshot_integrity",
+      "passed": false,
+      "detail": "FileNotFoundError: [Errno 2] No such file or directory: 'tests\\\\fixtures\\\\manual-270aa4f318aa49f695b53a95a2f028cc\\\\experiments\\\\x\\\\records\\\\correct-run\\\\manifest.yaml'"
+    },
+    {
+      "name": "environment_snapshot_readable",
+      "passed": false,
+      "detail": "FileNotFoundError: [Errno 2] No such file or directory: 'tests\\\\fixtures\\\\manual-270aa4f318aa49f695b53a95a2f028cc\\\\experiments\\\\x\\\\records\\\\correct-run\\\\environment.json'"
+    },
+    {
+      "name": "environment_snapshot_integrity",
+      "passed": false
+    }
+  ],
+  "plugin_checks": [],
+  "plugin_policy": {
+    "execution": "not_requested",
+    "decision": "every registered plugin check must pass; fail, unknown, and plugin errors fail closed",
+    "dynamic_loading": false,
+    "human_approval": "not assessed; remains a separate required domain-review gate"
+  },
+  "scope": "mechanical integrity of declared evidence and, when present, runner-captured lineage limited to declared inputs/outputs, manifest, and declared command files; legacy absence does not establish complete provenance; scientific validity requires human review"
+}

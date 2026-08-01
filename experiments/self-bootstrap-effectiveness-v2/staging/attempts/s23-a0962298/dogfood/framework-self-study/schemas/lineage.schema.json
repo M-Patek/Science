@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/science-workbench/lineage.schema.json",
+  "title": "Science Workbench lineage manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "entities", "relations"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "kind", "digest"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+          "kind": {"enum": ["dataset", "artifact", "run", "code"]},
+          "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*[\\\\:\\u0000-\\u001F\\u007F])(?!.*[. ](?:/|$)).+$"
+          },
+          "media_type": {"type": "string", "minLength": 1},
+          "metadata": {"type": "object"}
+        }
+      }
+    },
+    "relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source", "target", "kind"],
+        "properties": {
+          "source": {"type": "string"},
+          "target": {"type": "string"},
+          "kind": {"enum": ["derived_from", "generated_by", "used", "code_at"]}
+        }
+      }
+    }
+  }
+}

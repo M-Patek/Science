@@ -1,0 +1,20 @@
+schema_version: 1
+id: prepared-invalid
+title: Prepared invalid experiment
+stage: ready
+owner: benchmark-coordinator
+question: Does the project validator identify a single invalid lifecycle stage?
+hypothesis: Validation fails while the stage is outside the registered lifecycle values.
+created_at: 2026-07-10
+inputs: []
+execution:
+  command: ["{python}", "src/run.py"]
+  outputs: ["artifacts/results.json"]
+acceptance:
+  - metric: validator_exit_code
+    operator: ">"
+    threshold: 0
+ethics:
+  human_subjects: false
+  sensitive_data: false
+  notes: Deterministic local validation fixture.

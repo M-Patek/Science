@@ -1,0 +1,3 @@
+experiments/self-bootstrap-effectiveness-v2/staging/attempts/*/
+*.tmp
+.gitkeep

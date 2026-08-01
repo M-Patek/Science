@@ -1,0 +1,300 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "cohort_id",
+    "freeze_sha256",
+    "allocation_ledger_sha256",
+    "packet_count",
+    "dispatch_allowed",
+    "packets",
+    "packet_set_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 2
+    },
+    "cohort_id": {
+      "const": "self-bootstrap-effectiveness-v2"
+    },
+    "freeze_sha256": {
+      "$ref": "#/$defs/sha"
+    },
+    "allocation_ledger_sha256": {
+      "$ref": "#/$defs/sha"
+    },
+    "packet_count": {
+      "const": 24
+    },
+    "dispatch_allowed": {
+      "const": false
+    },
+    "packet_set_sha256": {
+      "$ref": "#/$defs/sha"
+    },
+    "packets": {
+      "type": "array",
+      "minItems": 24,
+      "maxItems": 24,
+      "items": {
+        "type": "object",
+        "required": [
+          "cell_id",
+          "fixture_id",
+          "arm",
+          "execution_order",
+          "attempt_ordinal",
+          "session_id",
+          "worktree_id",
+          "context_id",
+          "workspace_contract",
+          "inputs",
+          "dispatch_allowed",
+          "cohort_id",
+          "freeze_sha256",
+          "allocation_ledger_sha256",
+          "baseline",
+          "wave",
+          "packet_sha256",
+          "arm_policy",
+          "tools",
+          "write_scope"
+        ],
+        "properties": {
+          "cell_id": {
+            "type": "string"
+          },
+          "fixture_id": {
+            "type": "string"
+          },
+          "arm": {
+            "enum": [
+              "control",
+              "treatment"
+            ]
+          },
+          "execution_order": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 24
+          },
+          "attempt_ordinal": {
+            "const": 1
+          },
+          "session_id": {
+            "type": "string"
+          },
+          "worktree_id": {
+            "type": "string"
+          },
+          "context_id": {
+            "type": "string"
+          },
+          "workspace_contract": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "cwd",
+              "dedicated_worktree_required",
+              "fork_context_required",
+              "network_required",
+              "host_enforcement"
+            ],
+            "properties": {
+              "cwd": {
+                "type": "string",
+                "minLength": 1
+              },
+              "dedicated_worktree_required": {
+                "const": true
+              },
+              "fork_context_required": {
+                "const": "none"
+              },
+              "network_required": {
+                "const": false
+              },
+              "host_enforcement": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "inputs": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "fixture_files",
+              "baseline_files",
+              "arm_policy_files"
+            ],
+            "properties": {
+              "fixture_files": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "source_path",
+                    "sha256"
+                  ],
+                  "properties": {
+                    "source_path": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "sha256": {
+                      "$ref": "#/$defs/sha"
+                    }
+                  }
+                }
+              },
+              "baseline_files": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "source_path",
+                    "sha256"
+                  ],
+                  "properties": {
+                    "source_path": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "sha256": {
+                      "$ref": "#/$defs/sha"
+                    }
+                  }
+                }
+              },
+              "arm_policy_files": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 1,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "source_path",
+                    "sha256"
+                  ],
+                  "properties": {
+                    "source_path": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "sha256": {
+                      "$ref": "#/$defs/sha"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "dispatch_allowed": {
+            "const": false
+          },
+          "cohort_id": {
+            "const": "self-bootstrap-effectiveness-v2"
+          },
+          "freeze_sha256": {
+            "$ref": "#/$defs/sha"
+          },
+          "allocation_ledger_sha256": {
+            "$ref": "#/$defs/sha"
+          },
+          "baseline": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "git_commit",
+              "git_tree"
+            ],
+            "properties": {
+              "git_commit": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{40}$"
+              },
+              "git_tree": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{40}$"
+              }
+            }
+          },
+          "wave": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 8
+          },
+          "packet_sha256": {
+            "$ref": "#/$defs/sha"
+          },
+          "replacement_policy": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "maximum_replacements",
+              "rule"
+            ],
+            "properties": {
+              "maximum_replacements": {
+                "const": 0
+              },
+              "rule": {
+                "const": "no-implicit-replacement-censor-cell"
+              }
+            }
+          },
+          "arm_policy": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "sha256",
+              "content"
+            ],
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^experiments/self-bootstrap-effectiveness-v2/templates/arm-(control|treatment)-v2\\.yaml$"
+              },
+              "sha256": {
+                "$ref": "#/$defs/sha"
+              },
+              "content": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "tools": {
+            "type": "object",
+            "minProperties": 1
+          },
+          "write_scope": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "$defs": {
+    "sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

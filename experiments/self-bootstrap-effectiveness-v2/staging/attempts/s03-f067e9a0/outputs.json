@@ -1,0 +1,26 @@
+{
+  "schema_version": 2,
+  "session_id": "s03-f067e9a0",
+  "cell_id": "dx-03-doctor-remediation::control",
+  "arm": "control",
+  "status": "completed",
+  "harness_receipt": {
+    "receipt_id": "a4b0e38f8156dc248",
+    "evidence_level": "host-observed-unsigned",
+    "subagent_tokens": 33125,
+    "tool_uses": 20,
+    "duration_ms": 188412
+  },
+  "outputs": {
+    "doctor.py": "modified",
+    "cli.py": "modified",
+    "test_doctor.py": "modified",
+    "cheatsheet.md": "modified"
+  },
+  "tests": {
+    "test_doctor.py": "8/8 passed",
+    "check_docs.py": "passed",
+    "full_suite": "305 passed, 4 skipped"
+  },
+  "notes": "Control arm: solo agent. Added REMEDIATION_CODES finite mapping. Codes present for failed/unknown, absent for passing. No environment value leakage."
+}

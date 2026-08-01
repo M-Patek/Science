@@ -1,0 +1,12 @@
+schema_version: 2
+policy_id: structured-local-campaign-v2
+instructions:
+  - Coordinate the assigned repository task through persisted dispatch envelopes and bounded native subagents.
+  - Use disjoint child write scopes, structured handoffs, dispatch audit, and an independent reviewer before integration.
+  - Preserve truthful evidence, failures, and limitations; do not message another cell or inspect excluded material.
+tools:
+  local_shell: allowed-within-write-scope
+  repository_read: allowed
+  native_subagents: {allowed: true, maximum_concurrent: 3, maximum_child_attempts: 4}
+  network: forbidden
+handoff: audited structured handoffs plus one truthful integrated final task report

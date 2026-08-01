@@ -1,0 +1,602 @@
+{
+  "algorithm": "sha256-ranked-cells-v1",
+  "baseline": {
+    "git_commit": "722cceed959e8ac9c45cdfd519a4c387e614c58f",
+    "git_tree": "f28c8500c7f4f5223234e87d1b0d2376fbb9539a"
+  },
+  "baseline_material_sha256": "ecc9d340c76c2255c4386a8e824b611725cffc35691f7da9865ebbccde78b15e",
+  "cell_count": 24,
+  "cohort_id": "self-bootstrap-effectiveness-v2",
+  "entries": [
+    {
+      "arm": "treatment",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-treatment-v2.yaml",
+      "arm_policy_sha256": "80b1d222e9804e7419c82001ed394a17c2d4c9175ba0100a9f9c341b0e2cb727",
+      "block": 6,
+      "cell_id": "rp-03-review-record-binding::treatment",
+      "execution_order": 1,
+      "fixture_id": "rp-03-review-record-binding",
+      "rank_sha256": "0f0a6a45384e244d7f52d7d8af0f651744dfa288071519ab013333d71984c75e",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": {
+          "allowed": true,
+          "maximum_child_attempts": 4,
+          "maximum_concurrent": 3
+        },
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 1,
+      "write_scope": [
+        "science_repo/review.py",
+        "tests/test_review_integration.py",
+        "tests/test_record_resilience.py"
+      ]
+    },
+    {
+      "arm": "control",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-control-v2.yaml",
+      "arm_policy_sha256": "5411901f38e9c8a86f2969179d9ea5d5899a5910904e30f951a213e89f0cafdf",
+      "block": 9,
+      "cell_id": "or-03-coordinator-event-sequence::control",
+      "execution_order": 2,
+      "fixture_id": "or-03-coordinator-event-sequence",
+      "rank_sha256": "13437fff17cdd7e617c0b5011eb8bd9dc457deb0f74533cb61e75e681457bcfc",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": "forbidden",
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 1,
+      "write_scope": [
+        "science_repo/coordinator.py",
+        "tests/test_coordinator.py",
+        "tests/test_coordinator_hardening.py"
+      ]
+    },
+    {
+      "arm": "control",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-control-v2.yaml",
+      "arm_policy_sha256": "5411901f38e9c8a86f2969179d9ea5d5899a5910904e30f951a213e89f0cafdf",
+      "block": 12,
+      "cell_id": "dx-03-doctor-remediation::control",
+      "execution_order": 3,
+      "fixture_id": "dx-03-doctor-remediation",
+      "rank_sha256": "1f51f3c56b722a5cf45fe6b61946203fdcd46ffd81f37dee03cbb0168e56f7e8",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": "forbidden",
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 1,
+      "write_scope": [
+        "science_repo/doctor.py",
+        "science_repo/cli.py",
+        "tests/test_doctor.py",
+        "docs/operations/cheatsheet.md"
+      ]
+    },
+    {
+      "arm": "treatment",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-treatment-v2.yaml",
+      "arm_policy_sha256": "80b1d222e9804e7419c82001ed394a17c2d4c9175ba0100a9f9c341b0e2cb727",
+      "block": 2,
+      "cell_id": "cs-02-campaign-effort::treatment",
+      "execution_order": 4,
+      "fixture_id": "cs-02-campaign-effort",
+      "rank_sha256": "2769a26fcbd645b6f9dd52a5b33803dd309f29600e815497cc5faead7f8a9f36",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": {
+          "allowed": true,
+          "maximum_child_attempts": 4,
+          "maximum_concurrent": 3
+        },
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 2,
+      "write_scope": [
+        "schemas/campaign.schema.json",
+        "science_repo/assets/project/schemas/campaign.schema.json",
+        "science_repo/campaign.py",
+        "tests/test_campaign.py"
+      ]
+    },
+    {
+      "arm": "treatment",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-treatment-v2.yaml",
+      "arm_policy_sha256": "80b1d222e9804e7419c82001ed394a17c2d4c9175ba0100a9f9c341b0e2cb727",
+      "block": 9,
+      "cell_id": "or-03-coordinator-event-sequence::treatment",
+      "execution_order": 5,
+      "fixture_id": "or-03-coordinator-event-sequence",
+      "rank_sha256": "2e0ac9d055c626552270242c896e31af1f8b4e8f53483507e64a5a196e523394",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": {
+          "allowed": true,
+          "maximum_child_attempts": 4,
+          "maximum_concurrent": 3
+        },
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 2,
+      "write_scope": [
+        "science_repo/coordinator.py",
+        "tests/test_coordinator.py",
+        "tests/test_coordinator_hardening.py"
+      ]
+    },
+    {
+      "arm": "treatment",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-treatment-v2.yaml",
+      "arm_policy_sha256": "80b1d222e9804e7419c82001ed394a17c2d4c9175ba0100a9f9c341b0e2cb727",
+      "block": 12,
+      "cell_id": "dx-03-doctor-remediation::treatment",
+      "execution_order": 6,
+      "fixture_id": "dx-03-doctor-remediation",
+      "rank_sha256": "2fe1cff0e0af3cd49832d073acea2966e9707566baaca16f9020aa057c4e6642",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": {
+          "allowed": true,
+          "maximum_child_attempts": 4,
+          "maximum_concurrent": 3
+        },
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 2,
+      "write_scope": [
+        "science_repo/doctor.py",
+        "science_repo/cli.py",
+        "tests/test_doctor.py",
+        "docs/operations/cheatsheet.md"
+      ]
+    },
+    {
+      "arm": "control",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-control-v2.yaml",
+      "arm_policy_sha256": "5411901f38e9c8a86f2969179d9ea5d5899a5910904e30f951a213e89f0cafdf",
+      "block": 2,
+      "cell_id": "cs-02-campaign-effort::control",
+      "execution_order": 7,
+      "fixture_id": "cs-02-campaign-effort",
+      "rank_sha256": "39606926a210c3a14cd56137ecdb2d124c4c250ebd6fe367747eb814714d2070",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": "forbidden",
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 3,
+      "write_scope": [
+        "schemas/campaign.schema.json",
+        "science_repo/assets/project/schemas/campaign.schema.json",
+        "science_repo/campaign.py",
+        "tests/test_campaign.py"
+      ]
+    },
+    {
+      "arm": "control",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-control-v2.yaml",
+      "arm_policy_sha256": "5411901f38e9c8a86f2969179d9ea5d5899a5910904e30f951a213e89f0cafdf",
+      "block": 8,
+      "cell_id": "or-02-handoff-output-uniqueness::control",
+      "execution_order": 8,
+      "fixture_id": "or-02-handoff-output-uniqueness",
+      "rank_sha256": "4819598af863058173c2599b76ed018b4dd6b632c0138acd27350af167e98301",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": "forbidden",
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 3,
+      "write_scope": [
+        "science_repo/handoff.py",
+        "tests/test_handoff.py"
+      ]
+    },
+    {
+      "arm": "control",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-control-v2.yaml",
+      "arm_policy_sha256": "5411901f38e9c8a86f2969179d9ea5d5899a5910904e30f951a213e89f0cafdf",
+      "block": 10,
+      "cell_id": "dx-01-validation-json::control",
+      "execution_order": 9,
+      "fixture_id": "dx-01-validation-json",
+      "rank_sha256": "4daf17ec1263c19c3b73e3a031fc016a75331cf5c6502769cf26869db534d3a9",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": "forbidden",
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 3,
+      "write_scope": [
+        "science_repo/cli.py",
+        "science_repo/validate.py",
+        "tests/test_workbench.py"
+      ]
+    },
+    {
+      "arm": "treatment",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-treatment-v2.yaml",
+      "arm_policy_sha256": "80b1d222e9804e7419c82001ed394a17c2d4c9175ba0100a9f9c341b0e2cb727",
+      "block": 7,
+      "cell_id": "or-01-scheduler-capacity::treatment",
+      "execution_order": 10,
+      "fixture_id": "or-01-scheduler-capacity",
+      "rank_sha256": "64faaec12dec1853f13289083f43c698ddb35d67a90f69c49dcd6d7cb97270a5",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": {
+          "allowed": true,
+          "maximum_child_attempts": 4,
+          "maximum_concurrent": 3
+        },
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 4,
+      "write_scope": [
+        "science_repo/scheduler.py",
+        "tests/test_scheduler.py"
+      ]
+    },
+    {
+      "arm": "control",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-control-v2.yaml",
+      "arm_policy_sha256": "5411901f38e9c8a86f2969179d9ea5d5899a5910904e30f951a213e89f0cafdf",
+      "block": 1,
+      "cell_id": "cs-01-experiment-metadata::control",
+      "execution_order": 11,
+      "fixture_id": "cs-01-experiment-metadata",
+      "rank_sha256": "6931c3488ecfaeef68db5e0750c8b745184d05a7de50f18f222ab01fd0f72785",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": "forbidden",
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 4,
+      "write_scope": [
+        "schemas/experiment.schema.json",
+        "science_repo/assets/project/schemas/experiment.schema.json",
+        "science_repo/models.py",
+        "tests/test_contracts.py"
+      ]
+    },
+    {
+      "arm": "control",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-control-v2.yaml",
+      "arm_policy_sha256": "5411901f38e9c8a86f2969179d9ea5d5899a5910904e30f951a213e89f0cafdf",
+      "block": 7,
+      "cell_id": "or-01-scheduler-capacity::control",
+      "execution_order": 12,
+      "fixture_id": "or-01-scheduler-capacity",
+      "rank_sha256": "80aede0e736af1dd16c825f003a51cdcb258e781dbbe2a9e0b2451a36b834c41",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": "forbidden",
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 4,
+      "write_scope": [
+        "science_repo/scheduler.py",
+        "tests/test_scheduler.py"
+      ]
+    },
+    {
+      "arm": "treatment",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-treatment-v2.yaml",
+      "arm_policy_sha256": "80b1d222e9804e7419c82001ed394a17c2d4c9175ba0100a9f9c341b0e2cb727",
+      "block": 11,
+      "cell_id": "dx-02-campaign-explain::treatment",
+      "execution_order": 13,
+      "fixture_id": "dx-02-campaign-explain",
+      "rank_sha256": "82708019cf1c136761301dc1673ae365a6b2d86a2f4a6e0181e1c964605190aa",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": {
+          "allowed": true,
+          "maximum_child_attempts": 4,
+          "maximum_concurrent": 3
+        },
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 5,
+      "write_scope": [
+        "science_repo/cli.py",
+        "science_repo/scheduler.py",
+        "tests/test_cli_orchestration.py",
+        "tests/test_scheduler.py"
+      ]
+    },
+    {
+      "arm": "control",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-control-v2.yaml",
+      "arm_policy_sha256": "5411901f38e9c8a86f2969179d9ea5d5899a5910904e30f951a213e89f0cafdf",
+      "block": 4,
+      "cell_id": "rp-01-lineage-disconnected::control",
+      "execution_order": 14,
+      "fixture_id": "rp-01-lineage-disconnected",
+      "rank_sha256": "905da5ca827d82e3050e974e6f2789cc54d4800109f17a34fbcff5de38b327b3",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": "forbidden",
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 5,
+      "write_scope": [
+        "science_repo/lineage.py",
+        "tests/test_lineage.py"
+      ]
+    },
+    {
+      "arm": "treatment",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-treatment-v2.yaml",
+      "arm_policy_sha256": "80b1d222e9804e7419c82001ed394a17c2d4c9175ba0100a9f9c341b0e2cb727",
+      "block": 4,
+      "cell_id": "rp-01-lineage-disconnected::treatment",
+      "execution_order": 15,
+      "fixture_id": "rp-01-lineage-disconnected",
+      "rank_sha256": "9796caa6e355c4aa4bf4b62a7d80d6159e0a0c70b9e81c235eb6366c2f535925",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": {
+          "allowed": true,
+          "maximum_child_attempts": 4,
+          "maximum_concurrent": 3
+        },
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 5,
+      "write_scope": [
+        "science_repo/lineage.py",
+        "tests/test_lineage.py"
+      ]
+    },
+    {
+      "arm": "control",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-control-v2.yaml",
+      "arm_policy_sha256": "5411901f38e9c8a86f2969179d9ea5d5899a5910904e30f951a213e89f0cafdf",
+      "block": 6,
+      "cell_id": "rp-03-review-record-binding::control",
+      "execution_order": 16,
+      "fixture_id": "rp-03-review-record-binding",
+      "rank_sha256": "ac95692a753e2b33ca8a3bd4dfcfeca5f84a572281b75ef2716c224ff0cac072",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": "forbidden",
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 6,
+      "write_scope": [
+        "science_repo/review.py",
+        "tests/test_review_integration.py",
+        "tests/test_record_resilience.py"
+      ]
+    },
+    {
+      "arm": "treatment",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-treatment-v2.yaml",
+      "arm_policy_sha256": "80b1d222e9804e7419c82001ed394a17c2d4c9175ba0100a9f9c341b0e2cb727",
+      "block": 5,
+      "cell_id": "rp-02-environment-size-cap::treatment",
+      "execution_order": 17,
+      "fixture_id": "rp-02-environment-size-cap",
+      "rank_sha256": "acc9e3f8986b8a67655a9a92876caf6383da7fa87b8482e549bcb4bcea3c5de7",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": {
+          "allowed": true,
+          "maximum_child_attempts": 4,
+          "maximum_concurrent": 3
+        },
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 6,
+      "write_scope": [
+        "science_repo/environment.py",
+        "science_repo/reproduce.py",
+        "tests/test_environment.py",
+        "tests/test_reproduce.py"
+      ]
+    },
+    {
+      "arm": "treatment",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-treatment-v2.yaml",
+      "arm_policy_sha256": "80b1d222e9804e7419c82001ed394a17c2d4c9175ba0100a9f9c341b0e2cb727",
+      "block": 8,
+      "cell_id": "or-02-handoff-output-uniqueness::treatment",
+      "execution_order": 18,
+      "fixture_id": "or-02-handoff-output-uniqueness",
+      "rank_sha256": "bcde1a0e9607f9c7d9af201253758b64f00c8380f8e318dd09311ff897aca672",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": {
+          "allowed": true,
+          "maximum_child_attempts": 4,
+          "maximum_concurrent": 3
+        },
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 6,
+      "write_scope": [
+        "science_repo/handoff.py",
+        "tests/test_handoff.py"
+      ]
+    },
+    {
+      "arm": "treatment",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-treatment-v2.yaml",
+      "arm_policy_sha256": "80b1d222e9804e7419c82001ed394a17c2d4c9175ba0100a9f9c341b0e2cb727",
+      "block": 10,
+      "cell_id": "dx-01-validation-json::treatment",
+      "execution_order": 19,
+      "fixture_id": "dx-01-validation-json",
+      "rank_sha256": "bee15c1d31b0a7931dfef7f664b98a73a49f53c121952e06ec1bf5e6238b9f23",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": {
+          "allowed": true,
+          "maximum_child_attempts": 4,
+          "maximum_concurrent": 3
+        },
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 7,
+      "write_scope": [
+        "science_repo/cli.py",
+        "science_repo/validate.py",
+        "tests/test_workbench.py"
+      ]
+    },
+    {
+      "arm": "treatment",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-treatment-v2.yaml",
+      "arm_policy_sha256": "80b1d222e9804e7419c82001ed394a17c2d4c9175ba0100a9f9c341b0e2cb727",
+      "block": 1,
+      "cell_id": "cs-01-experiment-metadata::treatment",
+      "execution_order": 20,
+      "fixture_id": "cs-01-experiment-metadata",
+      "rank_sha256": "dc827bc64c722519cfc8b5f41d604a284ffdaf4064ba0c7350e45e2442e45a5c",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": {
+          "allowed": true,
+          "maximum_child_attempts": 4,
+          "maximum_concurrent": 3
+        },
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 7,
+      "write_scope": [
+        "schemas/experiment.schema.json",
+        "science_repo/assets/project/schemas/experiment.schema.json",
+        "science_repo/models.py",
+        "tests/test_contracts.py"
+      ]
+    },
+    {
+      "arm": "control",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-control-v2.yaml",
+      "arm_policy_sha256": "5411901f38e9c8a86f2969179d9ea5d5899a5910904e30f951a213e89f0cafdf",
+      "block": 3,
+      "cell_id": "cs-03-run-stop-reason::control",
+      "execution_order": 21,
+      "fixture_id": "cs-03-run-stop-reason",
+      "rank_sha256": "e8cc5da5ec39a82c2fca288e523fe418815cb54e10b90c24f99b99d960a457b9",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": "forbidden",
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 7,
+      "write_scope": [
+        "schemas/run.schema.json",
+        "science_repo/assets/project/schemas/run.schema.json",
+        "science_repo/runner.py",
+        "tests/test_record_resilience.py",
+        "tests/test_provenance.py"
+      ]
+    },
+    {
+      "arm": "control",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-control-v2.yaml",
+      "arm_policy_sha256": "5411901f38e9c8a86f2969179d9ea5d5899a5910904e30f951a213e89f0cafdf",
+      "block": 11,
+      "cell_id": "dx-02-campaign-explain::control",
+      "execution_order": 22,
+      "fixture_id": "dx-02-campaign-explain",
+      "rank_sha256": "e96ab76ae24fc05b5efce6dacb6a2d35c8b9bf3211985c253ae52d29f316f607",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": "forbidden",
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 8,
+      "write_scope": [
+        "science_repo/cli.py",
+        "science_repo/scheduler.py",
+        "tests/test_cli_orchestration.py",
+        "tests/test_scheduler.py"
+      ]
+    },
+    {
+      "arm": "control",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-control-v2.yaml",
+      "arm_policy_sha256": "5411901f38e9c8a86f2969179d9ea5d5899a5910904e30f951a213e89f0cafdf",
+      "block": 5,
+      "cell_id": "rp-02-environment-size-cap::control",
+      "execution_order": 23,
+      "fixture_id": "rp-02-environment-size-cap",
+      "rank_sha256": "eae46626c95bce87a409203c3fd99196f2e8cb4ee315f70fa5417bea4207e9ac",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": "forbidden",
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 8,
+      "write_scope": [
+        "science_repo/environment.py",
+        "science_repo/reproduce.py",
+        "tests/test_environment.py",
+        "tests/test_reproduce.py"
+      ]
+    },
+    {
+      "arm": "treatment",
+      "arm_policy_path": "experiments/self-bootstrap-effectiveness-v2/templates/arm-treatment-v2.yaml",
+      "arm_policy_sha256": "80b1d222e9804e7419c82001ed394a17c2d4c9175ba0100a9f9c341b0e2cb727",
+      "block": 3,
+      "cell_id": "cs-03-run-stop-reason::treatment",
+      "execution_order": 24,
+      "fixture_id": "cs-03-run-stop-reason",
+      "rank_sha256": "fd2d3d7369487ef103b730ed32d98b367f8af853866c57f4840189bfeaf17749",
+      "tools": {
+        "local_shell": "allowed-within-write-scope",
+        "native_subagents": {
+          "allowed": true,
+          "maximum_child_attempts": 4,
+          "maximum_concurrent": 3
+        },
+        "network": "forbidden",
+        "repository_read": "allowed"
+      },
+      "wave": 8,
+      "write_scope": [
+        "schemas/run.schema.json",
+        "science_repo/assets/project/schemas/run.schema.json",
+        "science_repo/runner.py",
+        "tests/test_record_resilience.py",
+        "tests/test_provenance.py"
+      ]
+    }
+  ],
+  "freeze_sha256": "d4244d161de5765e6aa79212e35fd04d90be1868c3151cbab20c7987a985a7de",
+  "ledger_sha256": "9f2dc4bf2b5a69ddd69940dd7ec77fb352733e0defedc8c1b74e6e2e570421d4",
+  "schema_version": 2,
+  "seed_sha256": "b9b591b3fe43f7c430c2b7b4bd5b7b357e2a23e163e0d79530853bbfc62223ea",
+  "wave_count": 8,
+  "wave_size": 3
+}

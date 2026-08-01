@@ -1,0 +1,13 @@
+{
+    "provider":  "unavailable: current process environment does not attest provider identity",
+    "model_name":  "unavailable: current process environment does not expose a model name",
+    "exact_model_or_version_id":  "unavailable: current process environment does not expose an immutable provider model/version identifier",
+    "inference_runtime_and_version":  "unavailable: inference runtime and version are not exposed by the harness",
+    "agent_harness_and_version":  "codex-cli 0.144.4",
+    "system_prompt_hash_or_unavailable_reason":  "unavailable: system prompt bytes are not exposed by the harness",
+    "developer_prompt_hash_or_unavailable_reason":  "unavailable: developer prompt bytes are not exposed by the harness",
+    "tool_names_and_versions":  "declared policy self-bootstrap-local-tools-v2 allows shell and repository tools only within the cell contract; complete host tool implementation versions are unavailable",
+    "permission_and_network_policy":  "declared policy self-bootstrap-local-tools-v2: local-repository-only; network, external compute, paid resources, private data, instruments, and publication forbidden; arm templates are policy-bound by exact frozen SHA-256 and scoring removes arm/orchestration cues; CODEX_SANDBOX_NETWORK_DISABLED=1 observed; host enforcement is not attested",
+    "sampling_parameters":  "unavailable: sampling parameters and effort setting are not exposed by the harness; declared token policy is measurement-only with no acceptance threshold",
+    "context_window_limit":  "unavailable: context window limit is not exposed by the harness"
+}

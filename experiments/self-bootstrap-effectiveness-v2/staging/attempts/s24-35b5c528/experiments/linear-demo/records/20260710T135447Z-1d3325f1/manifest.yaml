@@ -1,0 +1,25 @@
+schema_version: 1
+id: linear-demo
+title: Deterministic linear relation smoke test
+stage: reviewed
+owner: workbench-maintainers
+question: Can the repository reproduce a known y = 2x + 1 relation from a fixed dataset?
+hypothesis: Ordinary least squares recovers slope 2 and intercept 1 within 1e-12.
+created_at: 2026-07-10
+inputs:
+  - path: data/raw/points.csv
+    role: immutable synthetic source data
+execution:
+  command: ["{python}", "src/run.py"]
+  outputs:
+    - artifacts/results.json
+    - artifacts/fit.svg
+acceptance:
+  - metric: slope_absolute_error
+    operator: "<="
+    threshold: 1.0e-12
+ethics:
+  human_subjects: false
+  sensitive_data: false
+  notes: Synthetic demonstration only.
+

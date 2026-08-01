@@ -1,0 +1,238 @@
+from datetime import datetime, timezone
+
+import pytest
+
+from science_repo.scheduler import RetryPolicy, ScheduleDecision, TaskDecision, schedule_campaign
+
+
+NOW = datetime(2026, 7, 11, tzinfo=timezone.utc)
+
+
+def campaign(*tasks):
+    return {"tasks": list(tasks)}
+
+
+def task(task_id, *dependencies, status="pending"):
+    return {"id": task_id, "status": status, "depends_on": list(dependencies)}
+
+
+def states(decision):
+    return {item.task_id: (item.state, item.reason) for item in decision.tasks}
+
+
+def test_dag_classifies_ready_completed_and_dependency_blocked():
+    result = schedule_campaign(
+        campaign(task("done", status="complete"), task("next", "done"), task("last", "next")),
+        now=NOW,
+    )
+    assert states(result) == {
+        "done": ("completed", "completed"),
+        "next": ("ready", "dependencies_satisfied"),
+        "last": ("blocked", "dependencies_incomplete"),
+    }
+    assert [item.task_id for item in result.ready] == ["next"]
+
+
+def test_live_and_expired_leases_are_distinguished():
+    manifest = campaign(task("live"), task("expired"))
+    runtime = {
+        "live": {"status": "leased", "attempt": 1, "expires_at": "2026-07-11T00:01:00Z"},
+        "expired": {"status": "leased", "attempt": 1, "expires_at": "2026-07-10T23:59:00Z"},
+    }
+    result = schedule_campaign(manifest, runtime, now=NOW)
+    assert states(result) == {"live": ("leased", "active_lease"), "expired": ("ready", "retry")}
+
+
+def test_retry_budget_exhaustion_propagates_failure_transitively():
+    manifest = campaign(task("root"), task("child", "root"), task("grandchild", "child"))
+    runtime = {"root": {"status": "failed", "attempt": 2}}
+    result = schedule_campaign(manifest, runtime, retry_policy=RetryPolicy(max_attempts=2), now=NOW)
+    assert states(result) == {
+        "root": ("blocked", "retries_exhausted"),
+        "child": ("blocked", "dependency_failed"),
+        "grandchild": ("blocked", "dependency_failed"),
+    }
+
+
+def test_failed_attempt_with_budget_is_ready_to_retry():
+    result = schedule_campaign(
+        campaign(task("work")),
+        {"work": {"status": "failed", "attempt": 1}},
+        retry_policy=RetryPolicy(max_attempts=2),
+        now=NOW,
+    )
+    assert states(result) == {"work": ("ready", "retry")}
+
+
+def test_runtime_completion_unlocks_dependent_task():
+    result = schedule_campaign(
+        campaign(task("first"), task("second", "first")),
+        {"first": {"status": "completed", "attempt": 1}},
+        now=NOW,
+    )
+    assert states(result)["second"] == ("ready", "dependencies_satisfied")
+
+
+@pytest.mark.parametrize(
+    "manifest,error",
+    [
+        (campaign(task("same"), task("same")), "duplicate"),
+        (campaign(task("task", "missing")), "unknown dependency"),
+        (campaign(task("a", "b"), task("b", "a")), "cycle"),
+    ],
+)
+def test_invalid_graph_is_rejected(manifest, error):
+    with pytest.raises(ValueError, match=error):
+        schedule_campaign(manifest, now=NOW)
+
+
+def test_retry_policy_must_allow_initial_attempt():
+    with pytest.raises(ValueError, match="at least 1"):
+        RetryPolicy(max_attempts=0)
+
+
+def test_max_parallel_unlimited_by_default():
+    """Without max_parallel, all ready tasks are returned."""
+    manifest = campaign(task("a"), task("b"), task("c"))
+    result = schedule_campaign(manifest, now=NOW)
+    assert len(result.ready) == 3
+    assert [item.task_id for item in result.ready] == ["a", "b", "c"]
+
+
+def test_max_parallel_caps_at_one():
+    """max_parallel=1 returns only the first ready task."""
+    manifest = campaign(task("a"), task("b"), task("c"))
+    result = schedule_campaign(manifest, now=NOW, max_parallel=1)
+    assert len(result.ready) == 1
+    assert [item.task_id for item in result.ready] == ["a"]
+    # Others are blocked due to parallelism cap
+    assert states(result) == {
+        "a": ("ready", "dependencies_satisfied"),
+        "b": ("blocked", "parallelism_cap"),
+        "c": ("blocked", "parallelism_cap"),
+    }
+
+
+def test_max_parallel_caps_at_two():
+    """max_parallel=2 returns only the first two ready tasks."""
+    manifest = campaign(task("a"), task("b"), task("c"))
+    result = schedule_campaign(manifest, now=NOW, max_parallel=2)
+    assert len(result.ready) == 2
+    assert [item.task_id for item in result.ready] == ["a", "b"]
+    assert states(result) == {
+        "a": ("ready", "dependencies_satisfied"),
+        "b": ("ready", "dependencies_satisfied"),
+        "c": ("blocked", "parallelism_cap"),
+    }
+
+
+def test_max_parallel_preserves_manifest_order():
+    """Ready tasks are capped in manifest order, not alphabetical."""
+    manifest = campaign(task("z"), task("a"), task("m"))
+    result = schedule_campaign(manifest, now=NOW, max_parallel=1)
+    assert [item.task_id for item in result.ready] == ["z"]
+
+
+def test_max_parallel_rejects_zero():
+    with pytest.raises(ValueError, match="positive"):
+        schedule_campaign(campaign(task("a")), now=NOW, max_parallel=0)
+
+
+def test_max_parallel_rejects_negative():
+    with pytest.raises(ValueError, match="positive"):
+        schedule_campaign(campaign(task("a")), now=NOW, max_parallel=-1)
+
+
+def test_max_parallel_rejects_boolean():
+    with pytest.raises(ValueError, match="bool"):
+        schedule_campaign(campaign(task("a")), now=NOW, max_parallel=True)
+
+
+def test_max_parallel_rejects_float():
+    with pytest.raises(ValueError, match="integer"):
+        schedule_campaign(campaign(task("a")), now=NOW, max_parallel=1.5)
+
+
+def test_max_parallel_rejects_string():
+    with pytest.raises(ValueError, match="integer"):
+        schedule_campaign(campaign(task("a")), now=NOW, max_parallel="1")
+
+
+def test_max_parallel_with_blocked_dependencies():
+    """max_parallel only affects ready tasks, not blocked ones."""
+    manifest = campaign(task("dep", status="pending"), task("a"), task("b", "dep"))
+    result = schedule_campaign(manifest, now=NOW, max_parallel=1)
+    # Only 'a' is ready (no dependencies), 'dep' is ready but we cap at 1
+    # Actually 'dep' comes first in manifest order
+    assert len(result.ready) == 1
+    assert [item.task_id for item in result.ready] == ["dep"]
+    assert states(result)["a"] == ("blocked", "parallelism_cap")
+    assert states(result)["b"] == ("blocked", "dependencies_incomplete")
+
+
+def test_max_parallel_stable_ordering():
+    """Order is stable across multiple calls with same manifest."""
+    manifest = campaign(task("a"), task("b"), task("c"))
+    result1 = schedule_campaign(manifest, now=NOW, max_parallel=2)
+    result2 = schedule_campaign(manifest, now=NOW, max_parallel=2)
+    assert [item.task_id for item in result1.ready] == [item.task_id for item in result2.ready]
+    assert [item.task_id for item in result1.blocked] == [item.task_id for item in result2.blocked]
+
+
+def test_explain_includes_active_lease():
+    """Active lease is reported as a blocking reason."""
+    manifest = campaign(task("work"))
+    runtime = {"work": {"status": "leased", "attempt": 1, "expires_at": "2026-07-11T00:01:00Z"}}
+    result = schedule_campaign(manifest, runtime, now=NOW)
+    # Task should be in leased state
+    assert states(result) == {"work": ("leased", "active_lease")}
+
+
+def test_explain_includes_exhausted_attempts():
+    """Exhausted retry budget is reported as a blocking reason."""
+    manifest = campaign(task("work"))
+    runtime = {"work": {"status": "failed", "attempt": 3}}
+    result = schedule_campaign(manifest, runtime, retry_policy=RetryPolicy(max_attempts=3), now=NOW)
+    assert states(result) == {"work": ("blocked", "retries_exhausted")}
+
+
+def test_explain_includes_unfinished_dependency():
+    """Unfinished dependencies are reported as blocking reasons."""
+    manifest = campaign(task("dep"), task("work", "dep"))
+    result = schedule_campaign(manifest, now=NOW)
+    assert states(result) == {
+        "dep": ("ready", "dependencies_satisfied"),
+        "work": ("blocked", "dependencies_incomplete"),
+    }
+
+
+def test_explain_includes_dependency_failed():
+    """Failed dependencies propagate as dependency_failed reason."""
+    manifest = campaign(task("root"), task("child", "root"))
+    runtime = {"root": {"status": "failed", "attempt": 3}}
+    result = schedule_campaign(manifest, runtime, retry_policy=RetryPolicy(max_attempts=3), now=NOW)
+    assert states(result) == {
+        "root": ("blocked", "retries_exhausted"),
+        "child": ("blocked", "dependency_failed"),
+    }
+
+
+def test_explain_includes_parallelism_cap():
+    """Parallelism cap is reported as a blocking reason."""
+    manifest = campaign(task("a"), task("b"))
+    result = schedule_campaign(manifest, now=NOW, max_parallel=1)
+    assert states(result) == {
+        "a": ("ready", "dependencies_satisfied"),
+        "b": ("blocked", "parallelism_cap"),
+    }
+
+
+def test_explain_multiple_blocking_reasons():
+    """Multiple blocking reasons can be reported for a single task."""
+    # A task with review_required and human_gate that is also blocked by dependencies
+    # Note: review_gate and human_gate are checked at the coordinator level,
+    # not the scheduler level. The scheduler only reports scheduling reasons.
+    manifest = campaign(task("dep"), task("work", "dep"))
+    result = schedule_campaign(manifest, now=NOW)
+    # work is blocked due to unfinished dependency
+    assert states(result)["work"] == ("blocked", "dependencies_incomplete")

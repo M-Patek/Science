@@ -1,0 +1,9 @@
+schema_version: 1
+id: science-workbench
+name: Science Workbench Framework
+version: 0.2.0.dev0
+kind: framework
+project_contract_version: 1
+experiment_contract_version: 1
+campaign_contract_version: 1
+minimum_python: "3.11"

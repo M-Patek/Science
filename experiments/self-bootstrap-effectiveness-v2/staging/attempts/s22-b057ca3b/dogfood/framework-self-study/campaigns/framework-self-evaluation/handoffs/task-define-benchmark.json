@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "campaign_id": "framework-self-evaluation",
+  "task_id": "task-define-benchmark",
+  "agent_role": "research-designer",
+  "status": "complete",
+  "summary": "Pre-registered a bounded-context onboarding benchmark with explicit success, violation, and token thresholds.",
+  "outputs": [
+    "experiments/framework-onboarding/hypothesis.md",
+    "experiments/framework-onboarding/protocol.md",
+    "experiments/framework-onboarding/experiment.yaml"
+  ],
+  "evidence": ["science-project.yaml", "campaigns/framework-self-evaluation/campaign.yaml"],
+  "unresolved": ["Fresh-agent observations have not yet been collected."],
+  "recommended_next": ["Run at least five fresh-agent sessions using the frozen protocol."]
+}

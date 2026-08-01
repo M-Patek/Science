@@ -1,0 +1,18 @@
+schema_version: 1
+id: template-campaign
+title: Template research campaign
+objective: Define a measurable research objective.
+status: draft
+owner: unassigned
+human_gates: []
+tasks:
+  - id: task-frame-question
+    role: research-planner
+    status: ready
+    depends_on: []
+    inputs: []
+    outputs: [evidence/question.md]
+    write_scope: [evidence/]
+    review_required: true
+    human_gate: false
+

@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "entities": [
+    {
+      "id": "run:observation",
+      "kind": "run",
+      "digest": "sha256:ca3d8aaf78d9fa2f0c85dbbcacd5cd999d3f43e8b8ac4500c5dd421b5179e860",
+      "metadata": {
+        "run_id": "20260713T030652Z-f4981117",
+        "status": "succeeded",
+        "digest_basis": "canonical_run_observation_v1",
+        "missing_inputs": [],
+        "missing_outputs": []
+      }
+    },
+    {
+      "id": "code:manifest",
+      "kind": "code",
+      "digest": "sha256:3752bedc70ae43f90e3c3292f5dcf93eb004507b62c614ed7cb9d704b35f6c93",
+      "path": "experiments/onboarding-smoke/records/20260713T030652Z-f4981117/manifest.yaml",
+      "media_type": "application/yaml"
+    },
+    {
+      "id": "code:command:0",
+      "kind": "code",
+      "digest": "sha256:38db2f8fcfcc52e0754ab7b6c69a1ab55c24a2526eba622ec19a6719d6e81d6f",
+      "path": "experiments/onboarding-smoke/src/run.py",
+      "metadata": {
+        "bytes": 3187
+      }
+    },
+    {
+      "id": "input:0",
+      "kind": "dataset",
+      "digest": "sha256:7e9302d6b93ed45a00bd92aea9f0f6596ef6e8ab87c63e178ef398d023753639",
+      "path": "experiments/onboarding-smoke/templates/experiment",
+      "metadata": {
+        "kind": "directory",
+        "bytes": 1834
+      }
+    },
+    {
+      "id": "input:1",
+      "kind": "dataset",
+      "digest": "sha256:71df31ec7b761cbdace17d57b2fd86aefed9d65d0fe671d2ba35486808fe0d40",
+      "path": "experiments/onboarding-smoke/experiments/framework-onboarding",
+      "metadata": {
+        "kind": "directory",
+        "bytes": 42023
+      }
+    },
+    {
+      "id": "output:0",
+      "kind": "artifact",
+      "digest": "sha256:09728bba24ba820e7461e6746a691a1cd35d43086dd1df6eefc7535bcc5ebfa2",
+      "path": "experiments/onboarding-smoke/artifacts/validation.json",
+      "metadata": {
+        "kind": "file",
+        "bytes": 207
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "run:observation",
+      "target": "code:manifest",
+      "kind": "code_at"
+    },
+    {
+      "source": "run:observation",
+      "target": "code:command:0",
+      "kind": "code_at"
+    },
+    {
+      "source": "run:observation",
+      "target": "input:0",
+      "kind": "used"
+    },
+    {
+      "source": "run:observation",
+      "target": "input:1",
+      "kind": "used"
+    },
+    {
+      "source": "output:0",
+      "target": "run:observation",
+      "kind": "generated_by"
+    }
+  ]
+}

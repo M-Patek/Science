@@ -1,0 +1,1 @@
+opaque_packet_id,source_packet_sha256,scorer_id,criteria_json,total_0_10,missing_evidence_json,evidence_references_json,rationale,committed_at,score_commitment_sha256,arm_guess_recorded_at,arm_guess,arm_guess_confidence,record_sha256

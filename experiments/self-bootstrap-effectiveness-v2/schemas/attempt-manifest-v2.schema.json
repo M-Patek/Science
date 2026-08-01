@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "cohort_id",
+    "freeze_sha256",
+    "allocation_ledger_sha256",
+    "packet_set_sha256",
+    "baseline",
+    "attempt_count",
+    "entries",
+    "manifest_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 2
+    },
+    "cohort_id": {
+      "const": "self-bootstrap-effectiveness-v2"
+    },
+    "freeze_sha256": {
+      "$ref": "#/$defs/sha"
+    },
+    "allocation_ledger_sha256": {
+      "$ref": "#/$defs/sha"
+    },
+    "packet_set_sha256": {
+      "$ref": "#/$defs/sha"
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "git_commit",
+        "git_tree"
+      ],
+      "properties": {
+        "git_commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "git_tree": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      }
+    },
+    "attempt_count": {
+      "const": 24
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 24,
+      "maxItems": 24,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "cell_id",
+          "arm",
+          "attempt_id",
+          "packet_sha256",
+          "bundle_sha256",
+          "evidence_manifest_sha256"
+        ],
+        "properties": {
+          "cell_id": {
+            "type": "string"
+          },
+          "arm": {
+            "enum": [
+              "control",
+              "treatment"
+            ]
+          },
+          "attempt_id": {
+            "type": "string"
+          },
+          "packet_sha256": {
+            "$ref": "#/$defs/sha"
+          },
+          "bundle_sha256": {
+            "$ref": "#/$defs/sha"
+          },
+          "evidence_manifest_sha256": {
+            "$ref": "#/$defs/sha"
+          }
+        }
+      }
+    },
+    "manifest_sha256": {
+      "$ref": "#/$defs/sha"
+    }
+  },
+  "$defs": {
+    "sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

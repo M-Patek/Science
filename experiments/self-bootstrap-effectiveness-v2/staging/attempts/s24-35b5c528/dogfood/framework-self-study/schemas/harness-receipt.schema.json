@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://science-workbench.local/schemas/harness-receipt.schema.json",
+  "title": "Unsigned declarative harness receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "receipt_id", "generated_at", "evidence_level", "attestation_policy", "session_id", "session_id_unavailable_reason", "child_session", "provider", "model_name", "exact_model_or_version_id", "model_unavailable_reason", "agent_harness_and_version", "harness_unavailable_reason", "effort_setting", "effort_unavailable_reason", "receipt_sha256"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "receipt_id": {"type": "string", "minLength": 1},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "evidence_level": {"const": "host-observed-unsigned"},
+    "attestation_policy": {"const": "harness-env-declarative"},
+    "session_id": {"type": ["string", "null"]},
+    "session_id_unavailable_reason": {"type": ["string", "null"]},
+    "child_session": {"type": ["boolean", "null"]},
+    "provider": {"type": ["string", "null"]},
+    "model_name": {"type": ["string", "null"]},
+    "exact_model_or_version_id": {"type": ["string", "null"]},
+    "model_unavailable_reason": {"type": ["string", "null"]},
+    "agent_harness_and_version": {"type": ["string", "null"]},
+    "harness_unavailable_reason": {"type": ["string", "null"]},
+    "effort_setting": {"type": ["string", "null"]},
+    "effort_unavailable_reason": {"type": ["string", "null"]},
+    "receipt_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  }
+}

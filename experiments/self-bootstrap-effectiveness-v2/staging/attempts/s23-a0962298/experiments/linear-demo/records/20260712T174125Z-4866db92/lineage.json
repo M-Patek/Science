@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "entities": [
+    {
+      "id": "run:observation",
+      "kind": "run",
+      "digest": "sha256:210965e47477fcd41530d6a4fe9341879b9e936e777abe02fcb053720663ae20",
+      "metadata": {
+        "run_id": "20260712T174125Z-4866db92",
+        "status": "succeeded",
+        "digest_basis": "canonical_run_observation_v1",
+        "missing_inputs": [],
+        "missing_outputs": []
+      }
+    },
+    {
+      "id": "code:manifest",
+      "kind": "code",
+      "digest": "sha256:f8b003c05f58a30f533258af993b7a6576157b0d35583ccf69f588aac4c82e98",
+      "path": "experiments/linear-demo/records/20260712T174125Z-4866db92/manifest.yaml",
+      "media_type": "application/yaml"
+    },
+    {
+      "id": "code:command:0",
+      "kind": "code",
+      "digest": "sha256:e35af289474189d43f58bb5d70cba17f36c6ff71b644b1cc41c746f5ee8a42c5",
+      "path": "experiments/linear-demo/src/run.py",
+      "metadata": {
+        "bytes": 1720
+      }
+    },
+    {
+      "id": "input:0",
+      "kind": "dataset",
+      "digest": "sha256:ae91c9cff27f1c5976c2c46b33cfb9954f4a7cfbf8a8c67943d7b36b8310383a",
+      "path": "experiments/linear-demo/data/raw/points.csv",
+      "metadata": {
+        "kind": "file",
+        "bytes": 21
+      }
+    },
+    {
+      "id": "output:0",
+      "kind": "artifact",
+      "digest": "sha256:ff49a4c74d032464a351d7693c9714d960888662635b532658bf483cbde27328",
+      "path": "experiments/linear-demo/artifacts/results.json",
+      "metadata": {
+        "kind": "file",
+        "bytes": 155
+      }
+    },
+    {
+      "id": "output:1",
+      "kind": "artifact",
+      "digest": "sha256:30f1bdc4e2c0c9b608850915598e0521c71462a30a856ffdd637b41f35876ee3",
+      "path": "experiments/linear-demo/artifacts/fit.svg",
+      "metadata": {
+        "kind": "file",
+        "bytes": 598
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "run:observation",
+      "target": "code:manifest",
+      "kind": "code_at"
+    },
+    {
+      "source": "run:observation",
+      "target": "code:command:0",
+      "kind": "code_at"
+    },
+    {
+      "source": "run:observation",
+      "target": "input:0",
+      "kind": "used"
+    },
+    {
+      "source": "output:0",
+      "target": "run:observation",
+      "kind": "generated_by"
+    },
+    {
+      "source": "output:1",
+      "target": "run:observation",
+      "kind": "generated_by"
+    }
+  ]
+}

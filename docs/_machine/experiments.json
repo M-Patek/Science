@@ -6,6 +6,12 @@
       "title": "Deterministic linear relation smoke test",
       "stage": "reviewed",
       "owner": "workbench-maintainers"
+    },
+    {
+      "id": "self-bootstrap-effectiveness-v2",
+      "title": "Self-bootstrap effectiveness cohort v2",
+      "stage": "completed",
+      "owner": "framework-maintainer"
     }
   ]
 }

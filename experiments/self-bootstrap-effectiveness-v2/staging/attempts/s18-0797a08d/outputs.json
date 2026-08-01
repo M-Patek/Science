@@ -1,0 +1,23 @@
+{
+  "schema_version": 2,
+  "session_id": "s18-0797a08d",
+  "cell_id": "or-02-handoff-output-uniqueness::treatment",
+  "arm": "treatment",
+  "status": "completed",
+  "harness_receipt": {
+    "receipt_id": "ac6163457e5f1914c",
+    "evidence_level": "host-observed-unsigned",
+    "subagent_tokens": 22330,
+    "tool_uses": 10,
+    "duration_ms": 104332
+  },
+  "outputs": {
+    "handoff.py": "modified - added _normalize_path, _find_duplicate_outputs, duplicate check",
+    "test_handoff.py": "modified - added 6 tests for duplicates"
+  },
+  "tests": {
+    "test_handoff.py": "12/12 passed",
+    "full_suite": "12 passed"
+  },
+  "notes": "Treatment arm. Implemented duplicate output path detection. Covers exact duplicates, slash-equivalent, backslash-equivalent. Diagnostics without trusting worker hashes."
+}

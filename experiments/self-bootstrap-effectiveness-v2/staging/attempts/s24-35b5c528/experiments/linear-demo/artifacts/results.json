@@ -1,0 +1,8 @@
+{
+  "n": 4,
+  "slope": 2.0,
+  "intercept": 1.0,
+  "slope_absolute_error": 0.0,
+  "intercept_absolute_error": 0.0,
+  "max_absolute_residual": 0.0
+}

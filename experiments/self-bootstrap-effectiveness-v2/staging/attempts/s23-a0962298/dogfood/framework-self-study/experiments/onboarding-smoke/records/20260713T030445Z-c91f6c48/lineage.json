@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "entities": [
+    {
+      "id": "run:observation",
+      "kind": "run",
+      "digest": "sha256:ee4007a058020711c74d9c54e29ec4e86744c42b182facfe74efc0dcabcc11e4",
+      "metadata": {
+        "run_id": "20260713T030445Z-c91f6c48",
+        "status": "failed",
+        "digest_basis": "canonical_run_observation_v1",
+        "missing_inputs": [
+          "templates/experiment/",
+          "experiments/framework-onboarding/"
+        ],
+        "missing_outputs": []
+      }
+    },
+    {
+      "id": "code:manifest",
+      "kind": "code",
+      "digest": "sha256:3752bedc70ae43f90e3c3292f5dcf93eb004507b62c614ed7cb9d704b35f6c93",
+      "path": "experiments/onboarding-smoke/records/20260713T030445Z-c91f6c48/manifest.yaml",
+      "media_type": "application/yaml"
+    },
+    {
+      "id": "code:command:0",
+      "kind": "code",
+      "digest": "sha256:38db2f8fcfcc52e0754ab7b6c69a1ab55c24a2526eba622ec19a6719d6e81d6f",
+      "path": "experiments/onboarding-smoke/src/run.py",
+      "metadata": {
+        "bytes": 3187
+      }
+    },
+    {
+      "id": "output:0",
+      "kind": "artifact",
+      "digest": "sha256:09728bba24ba820e7461e6746a691a1cd35d43086dd1df6eefc7535bcc5ebfa2",
+      "path": "experiments/onboarding-smoke/artifacts/validation.json",
+      "metadata": {
+        "kind": "file",
+        "bytes": 207
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "run:observation",
+      "target": "code:manifest",
+      "kind": "code_at"
+    },
+    {
+      "source": "run:observation",
+      "target": "code:command:0",
+      "kind": "code_at"
+    },
+    {
+      "source": "output:0",
+      "target": "run:observation",
+      "kind": "generated_by"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+schema_version: 1
+kind: pinned-git-worktree-baseline
+git_commit: 722cceed959e8ac9c45cdfd519a4c387e614c58f
+git_tree: f28c8500c7f4f5223234e87d1b0d2376fbb9539a
+verification: actual worktree HEAD and tree must match before bootstrap receipt and before task evidence
+content_note: Repository bytes are supplied by the dedicated pinned worktree, not copied from registration materials.

@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "dataset": "data/raw/observations-v2.csv",
+  "sha256": "368d88ab25a361fbbe1ee2a29508b02d1f7f01774e5ef0c2f61fa79da34f180c",
+  "captured_at": "2026-07-13",
+  "source": "Five privately executed pilot summaries; original session evidence was not preserved in the repository.",
+  "status": "superseded-unverified-pilot-history",
+  "reason": "Rows were marked as uncensored passes without the protocol-required transcripts, event logs, per-session diffs, artifact bindings, and independent scorer records.",
+  "correction": "data/raw/observations-v3.csv",
+  "independent_review": "../../../../pilot-sessions/independent-review-20260713.md"
+}

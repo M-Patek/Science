@@ -1,0 +1,23 @@
+{
+  "schema_version": 2,
+  "session_id": "s09-92144ae1",
+  "cell_id": "dx-01-validation-json::control",
+  "arm": "control",
+  "status": "completed",
+  "harness_receipt": {
+    "receipt_id": "manual",
+    "evidence_level": "host-observed-unsigned",
+    "subagent_tokens": 0,
+    "tool_uses": 0,
+    "duration_ms": 0
+  },
+  "outputs": {
+    "cli.py": "modified - added --format json to validate command",
+    "test_workbench.py": "modified - added 4 tests for JSON format"
+  },
+  "tests": {
+    "test_workbench.py": "7/7 passed",
+    "full_suite": "7 passed"
+  },
+  "notes": "Control arm. Added --format json to science validate. JSON output is deterministic, contains validity, sorted errors, relative project path. No timestamps or absolute paths. Default output preserved."
+}

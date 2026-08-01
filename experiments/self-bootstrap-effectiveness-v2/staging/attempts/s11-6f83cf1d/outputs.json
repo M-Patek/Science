@@ -1,0 +1,25 @@
+{
+  "schema_version": 2,
+  "session_id": "s11-6f83cf1d",
+  "cell_id": "cs-01-experiment-metadata::control",
+  "arm": "control",
+  "status": "completed",
+  "harness_receipt": {
+    "receipt_id": "a410cab47b116dc94",
+    "evidence_level": "host-observed-unsigned",
+    "subagent_tokens": 26734,
+    "tool_uses": 17,
+    "duration_ms": 537604
+  },
+  "outputs": {
+    "experiment.schema.json": "modified - added tags property",
+    "models.py": "modified - added TAG_RE and tags validation",
+    "test_contracts.py": "modified - added 5 tests for tags"
+  },
+  "tests": {
+    "test_contracts.py": "8/8 passed",
+    "cli_validate": "passed",
+    "full_suite": "8 passed"
+  },
+  "notes": "Control arm. Added optional tags to experiment manifests. Tags are sorted, duplicate-free, 1-32 lowercase kebab-case strings. Schema copies byte-identical."
+}

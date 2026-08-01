@@ -1,0 +1,9 @@
+schema_version: 1
+opaque_cell_token: PENDING_FREEZE
+subject_packet_sha256: PENDING_FREEZE
+baseline: {git_commit: PENDING_FREEZE, git_tree: PENDING_FREEZE}
+fixture: {prompt: PENDING_FREEZE, prompt_sha256: PENDING_FREEZE}
+limits: {elapsed_minutes: 90, network: forbidden, external_compute: forbidden, paid_resources: forbidden}
+tools: []
+write_scope: []
+excluded: [arm-comparison, rubric, answer-key, allocation-ledger, other-attempts, results]

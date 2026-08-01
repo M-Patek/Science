@@ -1,0 +1,14 @@
+schema_version: 1
+id: framework-self-study
+name: Science Workbench Self Study
+kind: research-project
+owner: framework-maintainer
+created_at: 2026-07-10
+framework:
+  name: science-workbench
+  version: 0.2.0.dev0
+contracts:
+  experiment: 1
+  campaign: 1
+  handoff: 1
+

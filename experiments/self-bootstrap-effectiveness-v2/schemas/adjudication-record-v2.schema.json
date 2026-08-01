@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "opaque_packet_id",
+    "source_packet_sha256",
+    "score_record_sha256",
+    "scorer_ids",
+    "adjudicator_id",
+    "resolution",
+    "resolution_commitment_sha256",
+    "committed_at",
+    "arm_reveal",
+    "record_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 2
+    },
+    "opaque_packet_id": {
+      "type": "string"
+    },
+    "source_packet_sha256": {
+      "$ref": "#/$defs/sha"
+    },
+    "score_record_sha256": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "$ref": "#/$defs/sha"
+      },
+      "uniqueItems": true
+    },
+    "scorer_ids": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "adjudicator_id": {
+      "type": "string"
+    },
+    "resolution": {
+      "type": "object",
+      "required": [
+        "criteria",
+        "total_0_10",
+        "rationale"
+      ],
+      "properties": {
+        "criteria": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3
+          }
+        },
+        "total_0_10": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "rationale": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "committed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "arm_reveal": {
+      "type": "object",
+      "required": [
+        "recorded_at",
+        "arm"
+      ],
+      "properties": {
+        "recorded_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "arm": {
+          "enum": [
+            "control",
+            "treatment"
+          ]
+        }
+      }
+    },
+    "record_sha256": {
+      "$ref": "#/$defs/sha"
+    },
+    "resolution_commitment_sha256": {
+      "$ref": "#/$defs/sha"
+    }
+  },
+  "$defs": {
+    "sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

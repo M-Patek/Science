@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "session_id": "s14-bfb25a93",
+  "cell_id": "rp-01-lineage-disconnected::control",
+  "arm": "control",
+  "status": "completed",
+  "harness_receipt": {
+    "receipt_id": "a8d0e17cb1ae38a7a",
+    "evidence_level": "host-observed-unsigned",
+    "subagent_tokens": 24205,
+    "tool_uses": 8,
+    "duration_ms": 296606
+  },
+  "outputs": {
+    "lineage.py": "modified - added disconnected dataset/artifact validation",
+    "test_lineage.py": "modified - added 4 tests"
+  },
+  "tests": {
+    "test_lineage.py": "27/27 passed (1 skipped)",
+    "test_lineage_review.py": "passed",
+    "full_suite": "27 passed"
+  },
+  "notes": "Control arm. Strengthened lineage validation. Dataset and artifact must participate in at least one relation. Run and code may remain disconnected. Deterministic path-specific diagnostics. No regression."
+}

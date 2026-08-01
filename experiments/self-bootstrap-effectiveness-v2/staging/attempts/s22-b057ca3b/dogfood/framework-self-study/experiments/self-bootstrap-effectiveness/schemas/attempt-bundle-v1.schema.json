@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Immutable self-bootstrap attempt bundle v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "attempt_id", "opaque_cell_token", "attempt_ordinal", "subject_packet_sha256", "baseline", "identities", "authorization_receipt", "timing", "evidence", "stop_reason", "censor", "critical_violations", "finalized_sha256"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "attempt_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,127}$"},
+    "opaque_cell_token": {"type": "string", "minLength": 16},
+    "attempt_ordinal": {"enum": [1, 2]},
+    "subject_packet_sha256": {"$ref": "#/$defs/sha256"},
+    "baseline": {"type": "object", "additionalProperties": false, "required": ["git_commit", "git_tree"], "properties": {"git_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "git_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"}}},
+    "identities": {"type": "object", "additionalProperties": false, "required": ["provider", "model_name", "exact_model_or_version_id", "inference_runtime_and_version", "agent_harness_and_version", "session_id", "worktree_id", "context_id"], "properties": {"provider": {"type": "string", "minLength": 1}, "model_name": {"type": "string", "minLength": 1}, "exact_model_or_version_id": {"type": "string", "minLength": 1}, "inference_runtime_and_version": {"type": "string", "minLength": 1}, "agent_harness_and_version": {"type": "string", "minLength": 1}, "session_id": {"type": "string", "minLength": 1}, "worktree_id": {"type": "string", "minLength": 1}, "context_id": {"type": "string", "minLength": 1}}},
+    "authorization_receipt": {"type": "object", "additionalProperties": false, "required": ["receipt_id", "verified", "receipt_sha256"], "properties": {"receipt_id": {"type": "string", "minLength": 1}, "verified": {"const": true}, "receipt_sha256": {"$ref": "#/$defs/sha256"}}},
+    "timing": {"type": "object", "additionalProperties": false, "required": ["task_received_utc", "ended_utc", "elapsed_seconds"], "properties": {"task_received_utc": {"type": "string", "format": "date-time"}, "ended_utc": {"type": "string", "format": "date-time"}, "elapsed_seconds": {"type": "number", "minimum": 0}}},
+    "evidence": {"type": "object", "additionalProperties": {"$ref": "#/$defs/sha256"}},
+    "stop_reason": {"enum": ["completed", "timeout", "context-exhaustion", "explicit-block", "critical-violation", "infrastructure-failure", "refusal", "test-failure"]},
+    "censor": {"type": "object", "additionalProperties": false, "required": ["status", "reason"], "properties": {"status": {"enum": ["not-censored", "setup-censored"]}, "reason": {"type": ["string", "null"]}}},
+    "deviations": {"type": "array", "items": {"type": "string"}},
+    "critical_violations": {"type": "array", "items": {"type": "string"}},
+    "finalized_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

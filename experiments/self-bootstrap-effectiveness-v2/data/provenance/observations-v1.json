@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "dataset": "data/raw/observations-v1.csv",
+  "status": "header-only-no-observations",
+  "source": "design-time header created before formal execution; preserved and superseded before ingestion",
+  "observations": 0,
+  "immutable_after_first_ingestion": true,
+  "superseded_by_planned_dataset": "data/raw/observations-v2.csv"
+}
