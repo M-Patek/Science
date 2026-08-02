@@ -1,7 +1,0 @@
-__pycache__/
-*.py[cod]
-.env
-.venv/
-experiments/*/data/derived/*
-!experiments/*/data/derived/.gitkeep
-

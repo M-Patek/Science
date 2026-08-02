@@ -1,7 +1,0 @@
-{
-  "schema_version": 1,
-  "experiments": [
-    {"id": "deterministic-smoke", "title": "Deterministic smoke experiment", "stage": "designed", "owner": "benchmark-coordinator"},
-    {"id": "prepared-invalid", "title": "Prepared invalid experiment", "stage": "ready", "owner": "benchmark-coordinator"}
-  ]
-}
